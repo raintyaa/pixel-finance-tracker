@@ -1,4 +1,4 @@
-# 🎮 Pixel Ledger - Pixel Art Personal Finance Tracker & Weekly Excel Ledger
+# 🎮 Pixel Ledger - Pixel Art Personal Finance Tracker & Weekly Ledger Table
 
 ![React](https://img.shields.io/badge/framework-React%2019-61DAFB?logo=react&logoColor=black)
 ![Vite](https://img.shields.io/badge/build-Vite-646CFF?logo=vite&logoColor=white)
@@ -7,9 +7,9 @@
 ![License](https://img.shields.io/badge/license-MIT-yellow.svg)
 ![Status](https://img.shields.io/badge/status-In%20Development-orange.svg)
 
-**Pixel Ledger** adalah aplikasi pencatat keuangan pribadi harian (*Personal Finance Tracker*) yang memadukan estetika visual retro **Pixel Art ala Aseprite / RPG 8-Bit** dengan ketelitian dan efisiensi tabel data **Microsoft Excel / Google Sheets**. 
+**Pixel Ledger** adalah aplikasi pencatat keuangan pribadi harian (*Personal Finance Tracker*) yang memadukan estetika visual retro **Pixel Art ala Aseprite / RPG 8-Bit** dengan kejelasan dan kemudahan visualisasi **Tabel Mingguan (Weekly Ledger)**. 
 
-Aplikasi ini dirancang dengan alur kerja tabel mingguan (*Weekly Expense Ledger*), navigasi periode dinamis per bulan & pekan, serta pencatatan saldo pemasukan dan pengeluaran secara terstruktur dan aman (*offline-first*).
+Aplikasi ini dirancang dengan alur kerja tabel mingguan, navigasi periode dinamis per bulan & pekan, serta pencatatan saldo pemasukan dan pengeluaran secara terstruktur, rapi, dan aman (*offline-first*).
 
 ---
 
@@ -18,7 +18,7 @@ Aplikasi ini dirancang dengan alur kerja tabel mingguan (*Weekly Expense Ledger*
 * 🪙 **Pencatatan Saldo Akurat**: Memantau saldo awal, total arus kas masuk/keluar, dan kalkulasi sisa saldo berjalan (*running balance*) secara otomatis.
 * 📉 **Pencatatan Pengeluaran Harian & Detail**: Input pengeluaran lengkap dengan kategori, nominal uang, tanggal transaksi, dan catatan/keterangan detail.
 * 📈 **Pencatatan Pemasukan (Income)**: Mencatat setiap pemasukan uang yang diterima untuk memperbarui saldo kas secara *real-time*.
-* 📊 **Tampilan Grid Spreadsheet Mingguan (Minggu - Sabtu)**:
+* 📊 **Tampilan Tabel Mingguan (Minggu - Sabtu)**:
   * Layout tabel dengan 7 kolom hari kerja & akhir pekan (**Minggu, Senin, Selasa, Rabu, Kamis, Jumat, Sabtu**).
   * Baris data dinamis untuk setiap transaksi di hari terkait.
   * **Baris Total Mingguan**: Ringkasan akumulasi pengeluaran dan pemasukan di akhir kolom/tabel.
@@ -91,13 +91,13 @@ Roadmap ini dirancang terstruktur per hari untuk mendukung rutinitas kontribusi 
 * [ ] **Hari 3**: Perancangan model data TypeScript (Transaksi, Kategori, Periode Pekanan) & utilitas kalkulasi format Rupiah.
 * [ ] **Hari 4**: Komponen Card Ringkasan Saldo (Saldo Awal, Total Pemasukan, Total Pengeluaran, & Sisa Saldo Berjalan).
 * [ ] **Hari 5**: Komponen Navigator Periode (Pilihan Bulan & Minggu ke-1 s/d Minggu ke-5 dengan State Controller).
-* [ ] **Hari 6**: Tampilan Utama Tabel Spreadsheet Mingguan (Grid 7 Kolom Hari: Minggu - Sabtu).
+* [ ] **Hari 6**: Tampilan Utama Tabel Mingguan (Grid 7 Kolom Hari: Minggu - Sabtu).
 * [ ] **Hari 7**: Form & Modal Input Transaksi Cepat (Pemasukan / Pengeluaran, Kategori, Nominal, & Catatan).
 * [ ] **Hari 8**: Kalkulasi Otomatis Total Pengeluaran Harian & Baris Total Akumulasi Mingguan.
 * [ ] **Hari 9**: Fitur Aksi Baris Tabel (Edit Data, Hapus Transaksi, & Konfirmasi Dialog RPG).
 * [ ] **Hari 10**: Mekanisme Persistensi Data Lokal (LocalStorage / IndexedDB) & pencegahan kehilangan data (*zero data loss*).
 * [ ] **Hari 11**: Indikator Visual Budget (HP / EXP Bar Pengeluaran vs Batas Anggaran).
-* [ ] **Hari 12**: Fitur Export & Import Data (Format Excel `.xlsx` / `.csv` & Backup `.json`).
+* [ ] **Hari 12**: Fitur Export & Import Data (Format CSV & Backup JSON).
 * [ ] **Hari 13**: Unit Test / Self-Check Logic Suite untuk akurasi kalkulasi matematika saldo dan formula mingguan.
 * [ ] **Hari 14**: Polishing UI/UX Pixel Art, Efek Suara 8-Bit (opsional), Responsivitas Mobile/Desktop, & Release v1.0.
 
