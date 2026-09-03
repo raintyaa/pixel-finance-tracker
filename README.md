@@ -87,7 +87,7 @@ npm run build
 Roadmap ini dirancang terstruktur per hari untuk mendukung rutinitas kontribusi (*daily contribution streak*) di GitHub:
 
 * [x] **Hari 1**: Setup project, inisialisasi Git repository, konfigurasi `.gitignore`, penulisan `README.md`, dan perancangan roadmap pengerjaan.
-* [ ] **Hari 2**: Setup fondasi Vite + React + TypeScript + Tailwind CSS serta integrasi tema/font retro Pixel Art.
+* [x] **Hari 2**: Setup fondasi Vite + React + TypeScript + Tailwind CSS serta integrasi tema/font retro Pixel Art.
 * [ ] **Hari 3**: Perancangan model data TypeScript (Transaksi, Kategori, Periode Pekanan) & utilitas kalkulasi format Rupiah.
 * [ ] **Hari 4**: Komponen Card Ringkasan Saldo (Saldo Awal, Total Pemasukan, Total Pengeluaran, & Sisa Saldo Berjalan).
 * [ ] **Hari 5**: Komponen Navigator Periode (Pilihan Bulan & Minggu ke-1 s/d Minggu ke-5 dengan State Controller).
