@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --font-pixel: 'Pixelify Sans', cursive, sans-serif;
+  --font-retro: 'Silkscreen', monospace;
+  --color-pixel-bg: #1a1921;
+  --color-pixel-surface: #252433;
+  --color-pixel-border: #3d3b52;
+  --color-pixel-gold: #f4b41b;
+  --color-pixel-green: #38b764;
+  --color-pixel-red: #e43b44;
+  --color-pixel-blue: #0099db;
+}
+
+body {
+  font-family: 'Pixelify Sans', cursive, sans-serif;
+  background-color: #1a1921;
+  color: #f4f4f0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Crisp Pixel Rendering */
+img,
+canvas,
+svg {
+  image-rendering: pixelated;
+}
+
+/* Retro Pixel Box Shadow & Borders */
+.pixel-box {
+  border: 3px solid #000;
+  box-shadow: 4px 4px 0px 0px #000;
+}
+
+.pixel-box-sm {
+  border: 2px solid #000;
+  box-shadow: 2px 2px 0px 0px #000;
+}
+
+.pixel-button {
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0px 0px #000;
+  transition: transform 0.05s ease, box-shadow 0.05s ease;
+}
+
+.pixel-button:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0px 0px #000;
+}
