@@ -47,7 +47,7 @@ export function getTodayDateString(): string {
 }
 
 // Mengetahui indeks hari (0-6) dari sebuah string tanggal "YYYY-MM-DD"
-export function getDayofWeekFromDate(dateStr: string): number {
+export function getDayOfWeekFromDate(dateStr: string): number {
     const [year, month, day] = dateStr.split('-').map(Number)
     const date = new Date(year, month - 1, day)
     return date.getDay() // 0 = Minggu, 1 = Senin, dst.

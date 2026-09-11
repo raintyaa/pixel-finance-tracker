@@ -35,7 +35,7 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
         dayOfWeek: 1, // Senin
     },
     {
-        id: 'tx-4',
+        id: 'tx-3',
         type: 'expense',
         amount: 50000,
         description: 'Langganan Internet / Kuota',
