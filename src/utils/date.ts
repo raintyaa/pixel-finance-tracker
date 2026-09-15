@@ -59,3 +59,54 @@ export function formatDateIndo(dateStr: string): string {
     if (!year || !month || !day) return dateStr
     return `${day} ${MONTH_NAMES[month - 1]} ${year}`
 }
+
+export interface WeekInfo {
+    weekNumber: number
+    startDate: string
+    endDate: string
+    label: string
+}
+
+export function getWeeksInMonth(year: number, month: number): WeekInfo[] {
+    const weeks: WeekInfo[] = []
+    const firstDay = new Date(year, month - 1, 1)
+    const lastDay = new Date(year, month, 0)
+
+    const start = new Date(firstDay)
+    start.setDate(firstDay.getDate() - firstDay.getDay())
+
+    let currentStart = new Date(start)
+    let weekNum = 1
+
+    while (currentStart <= lastDay) {
+        const currentEnd = new Date(currentStart)
+        currentEnd.setDate(currentStart.getDate() + 6)
+
+        const startMonthName = MONTH_NAMES[currentStart.getMonth()].slice(0, 3)
+        const endMonthName = MONTH_NAMES[currentEnd.getMonth()].slice(0, 3)
+
+        const label =
+            currentStart.getMonth() === currentEnd.getMonth()
+                ? `${currentStart.getDate()} - ${currentEnd.getDate()} ${startMonthName}`
+                : `${currentStart.getDate()} ${startMonthName} - ${currentEnd.getDate()} ${endMonthName}`
+
+        const formatIso = (d: Date) => {
+            const y = d.getFullYear()
+            const m = String(d.getMonth() + 1).padStart(2, '0')
+            const dt = String(d.getDate()).padStart(2, '0')
+            return `${y}-${m}-${dt}`
+        }
+
+        weeks.push({
+            weekNumber: weekNum,
+            startDate: formatIso(currentStart),
+            endDate: formatIso(currentEnd),
+            label,
+        })
+
+        currentStart.setDate(currentStart.getDate() + 7)
+        weekNum++
+    }
+
+    return weeks
+}
