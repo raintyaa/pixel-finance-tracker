@@ -90,7 +90,7 @@ Roadmap ini dirancang terstruktur per hari untuk mendukung rutinitas kontribusi 
 * [x] **Hari 2**: Setup fondasi Vite + React + TypeScript + Tailwind CSS serta integrasi tema/font retro Pixel Art.
 * [x] **Hari 3**: Perancangan model data TypeScript (Transaksi, Kategori, Periode Pekanan) & utilitas kalkulasi format Rupiah.
 * [x] **Hari 4**: Komponen Card Ringkasan Saldo (Saldo Awal, Total Pemasukan, Total Pengeluaran, & Sisa Saldo Berjalan).
-* [ ] **Hari 5**: Komponen Navigator Periode (Pilihan Bulan & Minggu ke-1 s/d Minggu ke-5 dengan State Controller).
+* [x] **Hari 5**: Komponen Navigator Periode (Pilihan Bulan & Minggu ke-1 s/d Minggu ke-5 dengan State Controller).
 * [ ] **Hari 6**: Tampilan Utama Tabel Mingguan (Grid 7 Kolom Hari: Minggu - Sabtu).
 * [ ] **Hari 7**: Form & Modal Input Transaksi Cepat (Pemasukan / Pengeluaran, Kategori, Nominal, & Catatan).
 * [ ] **Hari 8**: Kalkulasi Otomatis Total Pengeluaran Harian & Baris Total Akumulasi Mingguan.
