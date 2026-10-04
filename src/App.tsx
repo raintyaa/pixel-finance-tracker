@@ -1,13 +1,15 @@
 import { useMemo, useState } from 'react'
 import BalanceCards from './components/BalanceCards'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
+import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import { INITIAL_TRANSACTIONS } from './data/initialData'
 import type { Transaction } from './types/finance'
 import { getWeeksInMonth } from './utils/date'
 
 export default function App() {
-  const [transactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS)
+  const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS)
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
 
   // 1. State Periode Navigasi (Tahun, Bulan, Pekan, & Filter Saldo)
   const [selectedYear, setSelectedYear] = useState<number>(2026)
@@ -48,6 +50,12 @@ export default function App() {
     setSelectedYear(2026)
     setSelectedMonth(9)
     setSelectedWeek(2)
+  }
+
+  // 3B. Handler Tambah Transaksi Baru (Hari 7: Form & Modal Input Cepat)
+  const handleAddTransaction = (newTx: Transaction) => {
+    setTransactions((prev) => [newTx, ...prev])
+    setIsModalOpen(false)
   }
 
   // 4A. Sisa Saldo Riil Keseluruhan (FIX: Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
@@ -92,6 +100,13 @@ export default function App() {
           <p className="text-sm text-gray-300">
             Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art & Tabel Mingguan
           </p>
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(true)}
+            className="pixel-button bg-[#f4b41b] hover:bg-[#ffcf4d] text-black font-['Silkscreen'] text-xs px-4 py-2.5 mt-4 cursor-pointer"
+          >
+            + CATAT TRANSAKSI
+          </button>
         </header>
 
         {/* 1. Komponen Navigator Periode */}
@@ -127,6 +142,14 @@ export default function App() {
           Target Berikutnya (Hari 7): Form & Modal Input Transaksi Cepat 📝
         </footer>
       </main>
+
+      {/* Modal Input Transaksi Cepat */}
+      {isModalOpen && (
+        <TransactionModal
+          onSubmit={handleAddTransaction}
+          onClose={() => setIsModalOpen(false)}
+        />
+      )}
     </div>
   )
 }
