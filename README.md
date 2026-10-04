@@ -92,7 +92,7 @@ Roadmap ini dirancang terstruktur per hari untuk mendukung rutinitas kontribusi 
 * [x] **Hari 4**: Komponen Card Ringkasan Saldo (Saldo Awal, Total Pemasukan, Total Pengeluaran, & Sisa Saldo Berjalan).
 * [x] **Hari 5**: Komponen Navigator Periode (Pilihan Bulan & Minggu ke-1 s/d Minggu ke-5 dengan State Controller).
 * [x] **Hari 6**: Tampilan Utama Tabel Mingguan (Grid 7 Kolom Hari: Minggu - Sabtu).
-* [ ] **Hari 7**: Form & Modal Input Transaksi Cepat (Pemasukan / Pengeluaran, Kategori, Nominal, & Catatan).
+* [x] **Hari 7**: Form & Modal Input Transaksi Cepat (Pemasukan / Pengeluaran, Kategori, Nominal, & Catatan).
 * [ ] **Hari 8**: Kalkulasi Otomatis Total Pengeluaran Harian & Baris Total Akumulasi Mingguan.
 * [ ] **Hari 9**: Fitur Aksi Baris Tabel (Edit Data, Hapus Transaksi, & Konfirmasi Dialog RPG).
 * [ ] **Hari 10**: Mekanisme Persistensi Data Lokal (LocalStorage / IndexedDB) & pencegahan kehilangan data (*zero data loss*).
