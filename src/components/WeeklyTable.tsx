@@ -48,6 +48,9 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
     // Akumulasi Total Mingguan
     const totalWeeklyExpense = daysData.reduce((acc, d) => acc + d.dayExpense, 0)
     const totalWeeklyIncome = daysData.reduce((acc, d) => acc + d.dayIncome, 0)
+    const netWeeklyFlow = totalWeeklyIncome - totalWeeklyExpense
+    const avgDailyExpense = Math.round(totalWeeklyExpense / 7)
+    const maxDailyExpense = daysData.reduce((max, d) => Math.max(max, d.dayExpense), 0)
 
     return (
         <section className="pixel-box bg-[#1f1e2c] p-4 flex flex-col gap-4">
@@ -85,6 +88,8 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                 {daysData.map((day) => {
                     const hasTransactions = day.transactions.length > 0
                     const isWeekend = day.dayIndex === 0 || day.dayIndex === 6 // Minggu atau Sabtu
+                    const isHighestExpense =
+                        maxDailyExpense > 0 && day.dayExpense === maxDailyExpense && day.dayExpense > 0
 
                     return (
                         <div
@@ -143,30 +148,66 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                                 )}
                             </div>
 
-                            {/* Footer Subtotal Harian */}
-                            {hasTransactions && (
-                                <div className="border-t border-[#3d3b52] pt-1.5 mt-2 flex flex-col text-[9px] font-mono">
-                                    {day.dayExpense > 0 && (
-                                        <div className="flex justify-between text-[#e43b44]">
-                                            <span>Keluar:</span>
-                                            <span className="font-['Silkscreen']">
-                                                {formatRupiah(day.dayExpense)}
-                                            </span>
-                                        </div>
-                                    )}
-                                    {day.dayIncome > 0 && (
-                                        <div className="flex justify-between text-[#38b764]">
-                                            <span>Masuk:</span>
-                                            <span className="font-['Silkscreen']">
-                                                {formatRupiah(day.dayIncome)}
-                                            </span>
-                                        </div>
-                                    )}
+                            {/* Footer Subtotal Harian — selalu tampil konsisten */}
+                            <div className="border-t-2 border-black pt-1.5 mt-2 flex flex-col gap-1 text-[9px] font-mono bg-[#131219] px-1.5 py-1.5">
+                                {isHighestExpense && (
+                                    <span className="self-start bg-[#e43b44] text-white font-['Silkscreen'] text-[8px] px-1.5 py-0.5 border border-black leading-none">
+                                        🔥 TERTINGGI
+                                    </span>
+                                )}
+                                <div className="flex justify-between items-center text-[#e43b44]">
+                                    <span>Keluar:</span>
+                                    <span className="font-['Silkscreen'] text-[9px]">
+                                        {day.dayExpense > 0 ? formatRupiah(day.dayExpense) : 'Rp 0'}
+                                    </span>
                                 </div>
-                            )}
+                                <div className="flex justify-between items-center text-[#38b764]">
+                                    <span>Masuk:</span>
+                                    <span className="font-['Silkscreen'] text-[9px]">
+                                        {day.dayIncome > 0 ? formatRupiah(day.dayIncome) : '—'}
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     )
                 })}
+            </div>
+
+            {/* Baris Akumulasi Total Mingguan (Weekly Summary Footer) */}
+            <div className="pixel-box-sm bg-[#131219] p-3 border-2 border-black">
+                <div className="font-['Silkscreen'] text-[10px] text-[#f4b41b] mb-2">
+                    🧾 TOTAL AKUMULASI MINGGUAN
+                </div>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
+                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
+                        <span className="font-mono text-[9px] text-gray-400">Total Pemasukan</span>
+                        <span className="font-['Silkscreen'] text-[11px] text-[#38b764]">
+                            + {formatRupiah(totalWeeklyIncome)}
+                        </span>
+                    </div>
+                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
+                        <span className="font-mono text-[9px] text-gray-400">Total Pengeluaran</span>
+                        <span className="font-['Silkscreen'] text-[11px] text-[#e43b44]">
+                            - {formatRupiah(totalWeeklyExpense)}
+                        </span>
+                    </div>
+                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
+                        <span className="font-mono text-[9px] text-gray-400">
+                            Arus Kas Bersih {netWeeklyFlow >= 0 ? '(Surplus)' : '(Defisit)'}
+                        </span>
+                        <span
+                            className={`font-['Silkscreen'] text-[11px] ${netWeeklyFlow >= 0 ? 'text-[#38b764]' : 'text-[#e43b44]'}`}
+                        >
+                            {netWeeklyFlow >= 0 ? '+' : '-'} {formatRupiah(Math.abs(netWeeklyFlow))}
+                        </span>
+                    </div>
+                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
+                        <span className="font-mono text-[9px] text-gray-400">Rata-rata Pengeluaran Harian</span>
+                        <span className="font-['Silkscreen'] text-[11px] text-white">
+                            {formatRupiah(avgDailyExpense)}
+                        </span>
+                    </div>
+                </div>
             </div>
         </section>
     )
