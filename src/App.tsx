@@ -139,7 +139,7 @@ export default function App() {
         )}
 
         <footer className="text-center text-xs text-gray-500 font-mono mt-2">
-          Target Berikutnya (Hari 7): Form & Modal Input Transaksi Cepat 📝
+          Target Berikutnya (Hari 9): Fitur Aksi Baris Tabel (Edit & Hapus Transaksi) ⚙️
         </footer>
       </main>
 
