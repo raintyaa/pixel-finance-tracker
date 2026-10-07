@@ -61,30 +61,18 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                         <span className="font-['Silkscreen'] text-sm text-[#f4b41b]">
                             📊 TABEL PEKAN KE-{weekInfo.weekNumber}
                         </span>
-                        <span className="text-[10px] bg-[#3d3b52] text-gray-200 px-2 py-0.5 font-mono">
+                        <span className="text-xs bg-[#3d3b52] text-[#c8c7d8] px-2 py-0.5 font-mono">
                             {weekInfo.label}
                         </span>
                     </div>
-                    <p className="text-xs text-gray-400 font-mono mt-0.5">
+                    <p className="text-xs text-[#9c9bb0] font-mono mt-0.5">
                         Pencatatan pengeluaran harian dari Minggu sampai Sabtu
                     </p>
                 </div>
-
-                {/* Ringkasan Akumulasi Pekan Ini */}
-                <div className="flex items-center gap-2 text-xs font-mono self-start sm:self-auto">
-                    {totalWeeklyIncome > 0 && (
-                        <span className="text-[#38b764] bg-[#131219] px-2 py-1 border border-black font-['Silkscreen'] text-[10px]">
-                            + {formatRupiah(totalWeeklyIncome)}
-                        </span>
-                    )}
-                    <span className="text-[#e43b44] bg-[#131219] px-2 py-1 border border-black font-['Silkscreen'] text-[10px]">
-                        - {formatRupiah(totalWeeklyExpense)}
-                    </span>
-                </div>
             </div>
 
-            {/* Grid 7 Kolom Hari (Minggu s/d Sabtu) */}
-            <div className="grid grid-cols-1 md:grid-cols-7 gap-2 overflow-x-auto">
+            {/* Grid 7 Kolom Hari (Minggu s/d Sabtu) — Unified Retro Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-7 border-2 border-black divide-y-2 md:divide-y-0 md:divide-x-2 divide-black overflow-x-auto">
                 {daysData.map((day) => {
                     const hasTransactions = day.transactions.length > 0
                     const isWeekend = day.dayIndex === 0 || day.dayIndex === 6 // Minggu atau Sabtu
@@ -94,25 +82,25 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                     return (
                         <div
                             key={day.dayIndex}
-                            className={`flex flex-col justify-between pixel-box-sm min-h-[220px] p-2.5 transition-all ${hasTransactions
-                                    ? 'bg-[#252433] border-[#3d3b52]'
-                                    : 'bg-[#1a1921] opacity-85 hover:opacity-100'
+                            className={`flex flex-col justify-between min-h-[220px] p-2.5 ${hasTransactions
+                                    ? 'bg-[#252433]'
+                                    : 'bg-[#1a1921]'
                                 }`}
                         >
                             {/* Header Kolom Hari */}
                             <div className="border-b border-[#3d3b52] pb-1.5 mb-2">
                                 <div className="flex items-center justify-between">
                                     <span
-                                        className={`font-['Silkscreen'] text-[11px] font-bold ${isWeekend ? 'text-[#f4b41b]' : 'text-gray-200'
+                                        className={`font-['Silkscreen'] text-xs font-bold ${isWeekend ? 'text-[#f4b41b]' : 'text-white'
                                             }`}
                                     >
                                         {day.dayName.toUpperCase()}
                                     </span>
                                     {hasTransactions && (
-                                        <span className="w-1.5 h-1.5 bg-[#38b764] rounded-full animate-pulse" />
+                                        <span className="w-2 h-2 bg-[#38b764] border border-black" />
                                     )}
                                 </div>
-                                <div className="text-[10px] text-gray-400 font-mono">
+                                <div className="text-xs text-[#9c9bb0] font-mono">
                                     {day.dateLabel}
                                 </div>
                             </div>
@@ -120,25 +108,25 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                             {/* Daftar Transaksi di Hari Tersebut */}
                             <div className="flex-1 flex flex-col gap-1.5">
                                 {!hasTransactions ? (
-                                    <div className="h-full flex items-center justify-center text-center text-gray-600 font-mono text-[10px] py-4">
+                                    <div className="h-full flex items-center justify-center text-center text-[#9c9bb0] font-mono text-xs py-4">
                                         - Kosong -
                                     </div>
                                 ) : (
                                     day.transactions.map((tx) => (
                                         <div
                                             key={tx.id}
-                                            className="bg-[#131219] border border-black p-1.5 flex flex-col gap-0.5 text-[11px]"
+                                            className="border-b border-[#3d3b52] py-1.5 last:border-b-0 flex flex-col gap-0.5"
                                         >
-                                            <span className="font-bold text-white truncate text-[10px]">
+                                            <span className="font-bold text-white truncate text-xs">
                                                 {tx.description}
                                             </span>
-                                            <span className="text-gray-400 text-[9px] truncate">
+                                            <span className="text-[#c8c7d8] text-xs truncate">
                                                 {tx.category}
                                             </span>
                                             <span
-                                                className={`font-['Silkscreen'] text-[9px] mt-0.5 ${tx.type === 'income'
+                                                className={`font-['Silkscreen'] text-xs mt-0.5 ${tx.type === 'income'
                                                         ? 'text-[#38b764]'
-                                                        : 'text-[#e43b44]'
+                                                        : 'text-[#ff5c67]'
                                                     }`}
                                             >
                                                 {tx.type === 'income' ? '+' : '-'} {formatRupiah(tx.amount)}
@@ -149,21 +137,21 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                             </div>
 
                             {/* Footer Subtotal Harian — selalu tampil konsisten */}
-                            <div className="border-t-2 border-black pt-1.5 mt-2 flex flex-col gap-1 text-[9px] font-mono bg-[#131219] px-1.5 py-1.5">
+                            <div className="border-t-2 border-black pt-1.5 mt-2 flex flex-col gap-1 text-xs font-mono">
                                 {isHighestExpense && (
-                                    <span className="self-start bg-[#e43b44] text-white font-['Silkscreen'] text-[8px] px-1.5 py-0.5 border border-black leading-none">
+                                    <span className="self-start bg-[#ff5c67] text-black font-['Silkscreen'] text-xs px-1.5 py-0.5 border border-black leading-none">
                                         🔥 TERTINGGI
                                     </span>
                                 )}
-                                <div className="flex justify-between items-center text-[#e43b44]">
+                                <div className="flex justify-between items-center text-[#ff5c67]">
                                     <span>Keluar:</span>
-                                    <span className="font-['Silkscreen'] text-[9px]">
+                                    <span className="font-['Silkscreen'] text-xs">
                                         {day.dayExpense > 0 ? formatRupiah(day.dayExpense) : 'Rp 0'}
                                     </span>
                                 </div>
                                 <div className="flex justify-between items-center text-[#38b764]">
                                     <span>Masuk:</span>
-                                    <span className="font-['Silkscreen'] text-[9px]">
+                                    <span className="font-['Silkscreen'] text-xs">
                                         {day.dayIncome > 0 ? formatRupiah(day.dayIncome) : '—'}
                                     </span>
                                 </div>
@@ -174,36 +162,36 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
             </div>
 
             {/* Baris Akumulasi Total Mingguan (Weekly Summary Footer) */}
-            <div className="pixel-box-sm bg-[#131219] p-3 border-2 border-black">
-                <div className="font-['Silkscreen'] text-[10px] text-[#f4b41b] mb-2">
+            <div className="border-t-2 border-[#3d3b52] pt-3">
+                <div className="font-['Silkscreen'] text-xs text-[#f4b41b] mb-2">
                     🧾 TOTAL AKUMULASI MINGGUAN
                 </div>
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2">
-                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
-                        <span className="font-mono text-[9px] text-gray-400">Total Pemasukan</span>
-                        <span className="font-['Silkscreen'] text-[11px] text-[#38b764]">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-mono text-xs text-[#9c9bb0]">Total Pemasukan</span>
+                        <span className="font-['Silkscreen'] text-xs text-[#38b764]">
                             + {formatRupiah(totalWeeklyIncome)}
                         </span>
                     </div>
-                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
-                        <span className="font-mono text-[9px] text-gray-400">Total Pengeluaran</span>
-                        <span className="font-['Silkscreen'] text-[11px] text-[#e43b44]">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-mono text-xs text-[#9c9bb0]">Total Pengeluaran</span>
+                        <span className="font-['Silkscreen'] text-xs text-[#ff5c67]">
                             - {formatRupiah(totalWeeklyExpense)}
                         </span>
                     </div>
-                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
-                        <span className="font-mono text-[9px] text-gray-400">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-mono text-xs text-[#9c9bb0]">
                             Arus Kas Bersih {netWeeklyFlow >= 0 ? '(Surplus)' : '(Defisit)'}
                         </span>
                         <span
-                            className={`font-['Silkscreen'] text-[11px] ${netWeeklyFlow >= 0 ? 'text-[#38b764]' : 'text-[#e43b44]'}`}
+                            className={`font-['Silkscreen'] text-xs ${netWeeklyFlow >= 0 ? 'text-[#38b764]' : 'text-[#ff5c67]'}`}
                         >
                             {netWeeklyFlow >= 0 ? '+' : '-'} {formatRupiah(Math.abs(netWeeklyFlow))}
                         </span>
                     </div>
-                    <div className="bg-[#1f1e2c] border border-black p-2 flex flex-col gap-1">
-                        <span className="font-mono text-[9px] text-gray-400">Rata-rata Pengeluaran Harian</span>
-                        <span className="font-['Silkscreen'] text-[11px] text-white">
+                    <div className="flex flex-col gap-1">
+                        <span className="font-mono text-xs text-[#9c9bb0]">Rata-rata Pengeluaran Harian</span>
+                        <span className="font-['Silkscreen'] text-xs text-white">
                             {formatRupiah(avgDailyExpense)}
                         </span>
                     </div>
