@@ -91,14 +91,11 @@ export default function App() {
 
         {/* Header Retro */}
         <header className="pixel-box bg-[#252433] p-6 text-center">
-          <div className="inline-block bg-[#f4b41b] text-black px-3 py-1 font-['Silkscreen'] text-xs uppercase mb-3 pixel-box-sm">
-            Fase 4: Tabel Mingguan 7 Kolom
-          </div>
           <h1 className="font-['Silkscreen'] text-xl md:text-3xl text-[#f4b41b] tracking-wider mb-2 drop-shadow-[2px_2px_0px_#000]">
-            🎮 PIXEL LEDGER
+            PIXEL LEDGER
           </h1>
-          <p className="text-sm text-gray-300">
-            Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art & Tabel Mingguan
+          <p className="text-sm text-[#c8c7d8]">
+            Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art &amp; Tabel Mingguan
           </p>
           <button
             type="button"
@@ -138,8 +135,8 @@ export default function App() {
           />
         )}
 
-        <footer className="text-center text-xs text-gray-500 font-mono mt-2">
-          Target Berikutnya (Hari 9): Fitur Aksi Baris Tabel (Edit & Hapus Transaksi) ⚙️
+        <footer className="text-center text-xs text-[#9c9bb0] font-mono mt-2">
+          Target Berikutnya (Hari 9): Fitur Aksi Baris Tabel (Edit &amp; Hapus Transaksi)
         </footer>
       </main>
 
