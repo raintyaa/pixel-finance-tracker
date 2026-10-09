@@ -86,8 +86,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#1a1921] text-[#f4f4f0] flex flex-col items-center justify-center p-4 selection:bg-[#f4b41b] selection:text-black">
-      {/* Lebar container disesuaikan (max-w-5xl) agar 7 kolom hari tampil lega */}
-      <main className="w-full max-w-5xl flex flex-col gap-6 my-6">
+      {/* Lebar container disesuaikan (max-w-6xl) agar 7 kolom hari tampil lega */}
+      <main className="w-full max-w-6xl flex flex-col gap-6 my-6">
 
         {/* Header Retro */}
         <header className="pixel-box bg-[#252433] p-6 text-center">

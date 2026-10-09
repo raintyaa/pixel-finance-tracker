@@ -139,19 +139,19 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                             {/* Footer Subtotal Harian — selalu tampil konsisten */}
                             <div className="border-t-2 border-black pt-1.5 mt-2 flex flex-col gap-1 text-xs font-mono">
                                 {isHighestExpense && (
-                                    <span className="self-start bg-[#ff5c67] text-black font-['Silkscreen'] text-xs px-1.5 py-0.5 border border-black leading-none">
+                                    <span className="self-start bg-[#ff5c67] text-black font-['Silkscreen'] text-[10px] px-1.5 py-0.5 border border-black leading-none mb-0.5">
                                         🔥 TERTINGGI
                                     </span>
                                 )}
-                                <div className="flex justify-between items-center text-[#ff5c67]">
-                                    <span>Keluar:</span>
-                                    <span className="font-['Silkscreen'] text-xs">
+                                <div className="flex justify-between items-baseline gap-1 text-[#ff5c67] text-[11px]">
+                                    <span className="text-[#9c9bb0]">Keluar:</span>
+                                    <span className="font-mono font-bold text-xs truncate">
                                         {day.dayExpense > 0 ? formatRupiah(day.dayExpense) : 'Rp 0'}
                                     </span>
                                 </div>
-                                <div className="flex justify-between items-center text-[#38b764]">
-                                    <span>Masuk:</span>
-                                    <span className="font-['Silkscreen'] text-xs">
+                                <div className="flex justify-between items-baseline gap-1 text-[#38b764] text-[11px]">
+                                    <span className="text-[#9c9bb0]">Masuk:</span>
+                                    <span className="font-mono font-bold text-xs truncate">
                                         {day.dayIncome > 0 ? formatRupiah(day.dayIncome) : '—'}
                                     </span>
                                 </div>
