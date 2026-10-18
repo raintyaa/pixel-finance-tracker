@@ -6,14 +6,22 @@ import { getDayOfWeekFromDate, getTodayDateString } from '../utils/date'
 interface TransactionModalProps {
   onSubmit: (newTx: Transaction) => void
   onClose: () => void
+  // Jika diisi → mode edit (Ubah Transaksi); jika null/undefined → mode tambah
+  initialData?: Transaction | null
 }
 
-export default function TransactionModal({ onSubmit, onClose }: TransactionModalProps) {
-  const [type, setType] = useState<TransactionType>('expense')
-  const [amount, setAmount] = useState<string>('')
-  const [category, setCategory] = useState<string>(DEFAULT_CATEGORIES.find((c) => c.type === 'expense')?.name ?? '')
-  const [date, setDate] = useState<string>(getTodayDateString())
-  const [description, setDescription] = useState<string>('')
+export default function TransactionModal({ onSubmit, onClose, initialData }: TransactionModalProps) {
+  const isEditMode = Boolean(initialData)
+
+  const [type, setType] = useState<TransactionType>(initialData?.type ?? 'expense')
+  const [amount, setAmount] = useState<string>(initialData ? String(initialData.amount) : '')
+  const [category, setCategory] = useState<string>(
+    initialData?.category ??
+      DEFAULT_CATEGORIES.find((c) => c.type === 'expense')?.name ??
+      ''
+  )
+  const [date, setDate] = useState<string>(initialData?.date ?? getTodayDateString())
+  const [description, setDescription] = useState<string>(initialData?.description ?? '')
   const [error, setError] = useState<string>('')
 
   const filteredCategories = DEFAULT_CATEGORIES.filter((c) => c.type === type)
@@ -42,12 +50,14 @@ export default function TransactionModal({ onSubmit, onClose }: TransactionModal
     }
 
     const newTx: Transaction = {
-      id: `tx-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
+      // Mode edit mempertahankan id asli; mode tambah membuat id baru
+      id: initialData?.id ?? `tx-${Date.now()}-${Math.floor(Math.random() * 100000)}`,
       type,
       amount: parsedAmount,
       description: description.trim(),
       category,
       date,
+      // dayOfWeek selalu dihitung ulang dari tanggal terbaru
       dayOfWeek: getDayOfWeekFromDate(date),
     }
 
@@ -66,7 +76,7 @@ export default function TransactionModal({ onSubmit, onClose }: TransactionModal
         {/* Judul Modal */}
         <div className="flex items-center justify-between border-b-2 border-[#3d3b52] pb-3">
           <h2 className="font-['Silkscreen'] text-sm md:text-base text-[#f4b41b] tracking-wider">
-            📝 CATAT TRANSAKSI
+            {isEditMode ? '✏️ UBAH TRANSAKSI' : '📝 CATAT TRANSAKSI'}
           </h2>
           <button
             type="button"
@@ -170,7 +180,7 @@ export default function TransactionModal({ onSubmit, onClose }: TransactionModal
               type="submit"
               className="pixel-button flex-1 bg-[#f4b41b] hover:bg-[#ffcf4d] text-black font-['Silkscreen'] text-xs px-3 py-2.5 cursor-pointer"
             >
-              💾 Simpan Transaksi
+              {isEditMode ? '💾 Simpan Perubahan' : '💾 Simpan Transaksi'}
             </button>
             <button
               type="button"
