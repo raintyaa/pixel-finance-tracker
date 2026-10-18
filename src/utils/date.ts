@@ -75,7 +75,7 @@ export function getWeeksInMonth(year: number, month: number): WeekInfo[] {
     const start = new Date(firstDay)
     start.setDate(firstDay.getDate() - firstDay.getDay())
 
-    let currentStart = new Date(start)
+    const currentStart = new Date(start)
     let weekNum = 1
 
     while (currentStart <= lastDay) {
