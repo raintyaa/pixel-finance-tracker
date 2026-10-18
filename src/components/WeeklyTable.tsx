@@ -5,9 +5,16 @@ import { DAYS_OF_WEEK, MONTH_NAMES, type WeekInfo } from '../utils/date'
 interface WeeklyTableProps {
     weekInfo: WeekInfo
     transactions: Transaction[]
+    onEditTransaction: (tx: Transaction) => void
+    onDeleteTransaction: (tx: Transaction) => void
 }
 
-export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps) {
+export default function WeeklyTable({
+    weekInfo,
+    transactions,
+    onEditTransaction,
+    onDeleteTransaction,
+}: WeeklyTableProps) {
     // Menghitung tanggal kalender untuk ke-7 hari (Indeks 0 = Minggu s/d 6 = Sabtu)
     const daysData = DAYS_OF_WEEK.map((dayName, dayIndex) => {
         // Tanggal spesifik hari ini
@@ -117,9 +124,32 @@ export default function WeeklyTable({ weekInfo, transactions }: WeeklyTableProps
                                             key={tx.id}
                                             className="border-b border-[#3d3b52] py-1.5 last:border-b-0 flex flex-col gap-0.5"
                                         >
-                                            <span className="font-bold text-white truncate text-xs">
-                                                {tx.description}
-                                            </span>
+                                            {/* Baris Judul + Tombol Aksi Mini (Ubah / Hapus) */}
+                                            <div className="flex items-start justify-between gap-1.5">
+                                                <span className="font-bold text-white truncate text-xs flex-1 min-w-0">
+                                                    {tx.description}
+                                                </span>
+                                                <div className="flex items-center gap-1 shrink-0">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onEditTransaction(tx)}
+                                                        title="Ubah transaksi"
+                                                        aria-label={`Ubah transaksi: ${tx.description}`}
+                                                        className="bg-[#2a293b] hover:bg-[#f4b41b] text-[#c8c7d8] hover:text-black border-2 border-black shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none px-1 py-0.5 text-[11px] leading-none cursor-pointer transition-colors"
+                                                    >
+                                                        ✏️
+                                                    </button>
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => onDeleteTransaction(tx)}
+                                                        title="Hapus transaksi"
+                                                        aria-label={`Hapus transaksi: ${tx.description}`}
+                                                        className="bg-[#2a293b] hover:bg-[#ff5c67] text-[#c8c7d8] hover:text-black border-2 border-black shadow-[2px_2px_0px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none px-1 py-0.5 text-[11px] leading-none cursor-pointer transition-colors"
+                                                    >
+                                                        🗑️
+                                                    </button>
+                                                </div>
+                                            </div>
                                             <span className="text-[#c8c7d8] text-xs truncate">
                                                 {tx.category}
                                             </span>

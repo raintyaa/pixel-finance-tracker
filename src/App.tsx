@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import BalanceCards from './components/BalanceCards'
+import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
@@ -10,6 +11,10 @@ import { getWeeksInMonth } from './utils/date'
 export default function App() {
   const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  // State Aksi Baris Tabel (Hari 9): Transaksi yang sedang diubah / akan dihapus
+  const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
+  const [deletingTransaction, setDeletingTransaction] = useState<Transaction | null>(null)
 
   // 1. State Periode Navigasi (Tahun, Bulan, Pekan, & Filter Saldo)
   const [selectedYear, setSelectedYear] = useState<number>(2026)
@@ -56,6 +61,21 @@ export default function App() {
   const handleAddTransaction = (newTx: Transaction) => {
     setTransactions((prev) => [newTx, ...prev])
     setIsModalOpen(false)
+  }
+
+  // 3C. Handler Ubah Transaksi (Hari 9) — pertahankan id, ganti data lama
+  const handleUpdateTransaction = (updatedTx: Transaction) => {
+    setTransactions((prev) =>
+      prev.map((tx) => (tx.id === updatedTx.id ? updatedTx : tx))
+    )
+    setEditingTransaction(null)
+  }
+
+  // 3D. Handler Konfirmasi Hapus Transaksi (Hari 9) — buang transaksi terpilih
+  const handleConfirmDelete = () => {
+    if (!deletingTransaction) return
+    setTransactions((prev) => prev.filter((tx) => tx.id !== deletingTransaction.id))
+    setDeletingTransaction(null)
   }
 
   // 4A. Sisa Saldo Riil Keseluruhan (FIX: Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
@@ -132,21 +152,40 @@ export default function App() {
           <WeeklyTable
             weekInfo={activeWeekInfo}
             transactions={transactions}
+            onEditTransaction={(tx) => setEditingTransaction(tx)}
+            onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
           />
         )}
 
         <footer className="text-center text-xs text-[#9c9bb0] font-mono mt-2">
-          Target Berikutnya (Hari 9): Fitur Aksi Baris Tabel (Edit &amp; Hapus Transaksi)
+          Hari 9 Selesai: Aksi Baris Tabel (Ubah &amp; Hapus Transaksi) ✅
         </footer>
       </main>
 
-      {/* Modal Input Transaksi Cepat */}
+      {/* Modal Input Transaksi Cepat (Mode Tambah) */}
       {isModalOpen && (
         <TransactionModal
           onSubmit={handleAddTransaction}
           onClose={() => setIsModalOpen(false)}
         />
       )}
+
+      {/* Modal Ubah Transaksi (Mode Edit — Hari 9) */}
+      {editingTransaction && (
+        <TransactionModal
+          initialData={editingTransaction}
+          onSubmit={handleUpdateTransaction}
+          onClose={() => setEditingTransaction(null)}
+        />
+      )}
+
+      {/* Dialog Konfirmasi Hapus (Hari 9) */}
+      <ConfirmDialog
+        transaction={deletingTransaction}
+        isOpen={deletingTransaction !== null}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setDeletingTransaction(null)}
+      />
     </div>
   )
 }
