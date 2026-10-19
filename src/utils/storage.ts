@@ -5,7 +5,7 @@ import type { Transaction } from '../types/finance'
  * Utilitas persistensi data transaksi di LocalStorage.
  * Menggunakan Web Storage API bawaan browser tanpa dependensi tambahan.
  */
-export const STORAGE_KEY = 'pixel_ledger_transactions_v1'
+export const STORAGE_KEY = 'pixel_ledger_transactions_v2'
 
 /** Cek ketersediaan LocalStorage (mis. private browsing / SSR) tanpa melempar error. */
 function getStorage(): Storage | null {
@@ -25,6 +25,11 @@ export function loadTransactions(): Transaction[] {
   if (!storage) return INITIAL_TRANSACTIONS
 
   try {
+    // Bersihkan data contoh versi lama jika ada
+    if (storage.getItem('pixel_ledger_transactions_v1')) {
+      storage.removeItem('pixel_ledger_transactions_v1')
+    }
+
     const raw = storage.getItem(STORAGE_KEY)
     if (!raw) return INITIAL_TRANSACTIONS
 
@@ -63,6 +68,7 @@ export function resetTransactionsToDefault(): void {
 
   try {
     storage.removeItem(STORAGE_KEY)
+    storage.removeItem('pixel_ledger_transactions_v1')
   } catch (error) {
     console.warn('Gagal mereset transaksi di LocalStorage:', error)
   }

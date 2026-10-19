@@ -14,33 +14,5 @@ export const DEFAULT_CATEGORIES: Category[] = [
     { id: 'cat-other-inc', name: 'Pemasukan Lain / Hadiah', icon: '🎁', type: 'income' },
 ]
 
-// 2. Data Sampel Transaksi Awal untuk Pengujian
-export const INITIAL_TRANSACTIONS: Transaction[] = [
-    {
-        id: 'tx-1',
-        type: 'income',
-        amount: 1500000,
-        description: 'Transfer Uang Saku Bulanan',
-        category: 'Uang Saku',
-        date: '2026-09-07',
-        dayOfWeek: 1, // Senin
-    },
-    {
-        id: 'tx-2',
-        type: 'expense',
-        amount: 28000,
-        description: 'Nasi Padang + Es Teh',
-        category: 'Makanan & Minuman',
-        date: '2026-09-07',
-        dayOfWeek: 1, // Senin
-    },
-    {
-        id: 'tx-3',
-        type: 'expense',
-        amount: 50000,
-        description: 'Langganan Internet / Kuota',
-        category: 'Tagihan & Utilitas',
-        date: '2026-09-08',
-        dayOfWeek: 2, // Selasa
-    }
-]
+// 2. Data Transaksi Awal (Dikosongkan agar mulai bersih dari 0)
+export const INITIAL_TRANSACTIONS: Transaction[] = []

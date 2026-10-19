@@ -5,7 +5,7 @@ import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import type { Transaction } from './types/finance'
-import { getWeeksInMonth } from './utils/date'
+import { getTodayDateString, getWeeksInMonth } from './utils/date'
 import { loadTransactions, saveTransactions } from './utils/storage'
 
 export default function App() {
@@ -23,9 +23,15 @@ export default function App() {
   const [deletingTransaction, setDeletingTransaction] = useState<Transaction | null>(null)
 
   // 1. State Periode Navigasi (Tahun, Bulan, Pekan, & Filter Saldo)
-  const [selectedYear, setSelectedYear] = useState<number>(2026)
-  const [selectedMonth, setSelectedMonth] = useState<number>(9) // 9 = September
-  const [selectedWeek, setSelectedWeek] = useState<number>(2)   // Default: Minggu ke-2 (ada data uji coba)
+  const [selectedYear, setSelectedYear] = useState<number>(() => new Date().getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState<number>(() => new Date().getMonth() + 1)
+  const [selectedWeek, setSelectedWeek] = useState<number>(() => {
+    const today = new Date()
+    const currentWeeks = getWeeksInMonth(today.getFullYear(), today.getMonth() + 1)
+    const todayIso = getTodayDateString()
+    const match = currentWeeks.find((w) => todayIso >= w.startDate && todayIso <= w.endDate)
+    return match ? match.weekNumber : 1
+  })
   const [viewScope, setViewScope] = useState<ViewScope>('month') // 'month' atau 'all'
 
   // 2. Hitung Daftar Pekan untuk Bulan yang Aktif
@@ -58,9 +64,15 @@ export default function App() {
   }
 
   const handleResetToday = () => {
-    setSelectedYear(2026)
-    setSelectedMonth(9)
-    setSelectedWeek(2)
+    const today = new Date()
+    const y = today.getFullYear()
+    const m = today.getMonth() + 1
+    setSelectedYear(y)
+    setSelectedMonth(m)
+    const currentWeeks = getWeeksInMonth(y, m)
+    const todayIso = getTodayDateString()
+    const match = currentWeeks.find((w) => todayIso >= w.startDate && todayIso <= w.endDate)
+    setSelectedWeek(match ? match.weekNumber : 1)
   }
 
   // 3B. Handler Tambah Transaksi Baru (Hari 7: Form & Modal Input Cepat)
