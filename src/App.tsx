@@ -1,16 +1,22 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import BalanceCards from './components/BalanceCards'
 import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
-import { INITIAL_TRANSACTIONS } from './data/initialData'
 import type { Transaction } from './types/finance'
 import { getWeeksInMonth } from './utils/date'
+import { loadTransactions, saveTransactions } from './utils/storage'
 
 export default function App() {
-  const [transactions, setTransactions] = useState<Transaction[]>(INITIAL_TRANSACTIONS)
+  // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
+  const [transactions, setTransactions] = useState<Transaction[]>(() => loadTransactions())
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+
+  // Persistensi otomatis (Hari 10): simpan setiap kali daftar transaksi berubah
+  useEffect(() => {
+    saveTransactions(transactions)
+  }, [transactions])
 
   // State Aksi Baris Tabel (Hari 9): Transaksi yang sedang diubah / akan dihapus
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
@@ -117,6 +123,14 @@ export default function App() {
           <p className="text-sm text-[#c8c7d8]">
             Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art &amp; Tabel Mingguan
           </p>
+          <div className="flex justify-center mt-3">
+            <span
+              className="inline-flex items-center gap-1.5 bg-[#1f1e2c] border-2 border-black px-2.5 py-1 font-['Silkscreen'] text-[10px] tracking-wider text-[#38b764]"
+              title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
+            >
+              💾 TERSIMPAN LOKAL
+            </span>
+          </div>
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
@@ -158,7 +172,7 @@ export default function App() {
         )}
 
         <footer className="text-center text-xs text-[#9c9bb0] font-mono mt-2">
-          Hari 9 Selesai: Aksi Baris Tabel (Ubah &amp; Hapus Transaksi) ✅
+          Hari 10 Selesai: Persistensi Data Lokal (LocalStorage) ✅
         </footer>
       </main>
 
