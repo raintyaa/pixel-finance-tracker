@@ -95,7 +95,7 @@ Roadmap ini dirancang terstruktur per hari untuk mendukung rutinitas kontribusi 
 * [x] **Hari 7**: Form & Modal Input Transaksi Cepat (Pemasukan / Pengeluaran, Kategori, Nominal, & Catatan).
 * [x] **Hari 8**: Kalkulasi Otomatis Total Pengeluaran Harian & Baris Total Akumulasi Mingguan.
 * [x] **Hari 9**: Fitur Aksi Baris Tabel (Edit Data, Hapus Transaksi, & Konfirmasi Dialog RPG).
-* [ ] **Hari 10**: Mekanisme Persistensi Data Lokal (LocalStorage / IndexedDB) & pencegahan kehilangan data (*zero data loss*).
+* [x] **Hari 10**: Mekanisme Persistensi Data Lokal (LocalStorage / IndexedDB) & pencegahan kehilangan data (*zero data loss*).
 * [ ] **Hari 11**: Indikator Visual Budget (HP / EXP Bar Pengeluaran vs Batas Anggaran).
 * [ ] **Hari 12**: Fitur Export & Import Data (Format CSV & Backup JSON).
 * [ ] **Hari 13**: Unit Test / Self-Check Logic Suite untuk akurasi kalkulasi matematika saldo dan formula mingguan.
