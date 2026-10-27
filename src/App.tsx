@@ -8,7 +8,30 @@ import type { Transaction } from './types/finance'
 import { getTodayDateString, getWeeksInMonth } from './utils/date'
 import { loadTransactions, saveTransactions } from './utils/storage'
 
+export type ThemePalette = 'neo-gold' | 'warm-paper' | 'cyber-arcade'
+
 export default function App() {
+  // 0. State Tema Tampilan (Default: Opsi 1 Clean Neo-Gold)
+  const [theme, setTheme] = useState<ThemePalette>(() => {
+    try {
+      const saved = localStorage.getItem('pixel_ledger_theme')
+      if (saved === 'neo-gold' || saved === 'warm-paper' || saved === 'cyber-arcade') {
+        return saved
+      }
+    } catch {
+      // fallback jika localStorage tidak tersedia
+    }
+    return 'neo-gold'
+  })
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('pixel_ledger_theme', theme)
+    } catch {
+      // ignore
+    }
+  }, [theme])
+
   // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
   const [transactions, setTransactions] = useState<Transaction[]>(() => loadTransactions())
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -123,21 +146,69 @@ export default function App() {
     .reduce((acc, tx) => acc + tx.amount, 0)
 
   return (
-    <div className="min-h-screen bg-[#1a1921] text-[#f4f4f0] flex flex-col items-center justify-center p-4 selection:bg-[#f4b41b] selection:text-black">
+    <div
+      data-theme={theme}
+      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] flex flex-col items-center justify-center p-4 selection:bg-[var(--theme-gold)] selection:text-black transition-colors duration-200"
+    >
       {/* Lebar container disesuaikan (max-w-6xl) agar 7 kolom hari tampil lega */}
       <main className="w-full max-w-6xl flex flex-col gap-6 my-6">
 
-        {/* Header Retro */}
-        <header className="pixel-box bg-[#252433] p-6 text-center">
-          <h1 className="font-['Silkscreen'] text-xl md:text-3xl text-[#f4b41b] tracking-wider mb-2 drop-shadow-[2px_2px_0px_#000]">
+        {/* Bar Pemilih Palet Tema (Opsi 1, Opsi 2, Opsi 3) */}
+        <section className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] p-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-[2px_2px_0px_var(--theme-shadow)]">
+          <div className="flex items-center gap-2">
+            <span className="text-base">🎨</span>
+            <span className="font-['Silkscreen'] text-xs text-[var(--theme-gold-text)] font-bold tracking-wider">
+              PALET WARNA:
+            </span>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 text-xs font-['Silkscreen']">
+            <button
+              type="button"
+              onClick={() => setTheme('neo-gold')}
+              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
+                theme === 'neo-gold'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              🌟 1. Clean Neo-Gold
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme('warm-paper')}
+              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
+                theme === 'warm-paper'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              📜 2. Warm Paper
+            </button>
+            <button
+              type="button"
+              onClick={() => setTheme('cyber-arcade')}
+              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
+                theme === 'cyber-arcade'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              ⚡ 3. Cyber Arcade
+            </button>
+          </div>
+        </section>
+
+        {/* Header Retro Minimalis */}
+        <header className="pixel-box bg-[var(--theme-card)] p-6 text-center">
+          <h1 className="font-['Silkscreen'] text-xl md:text-3xl text-[var(--theme-gold-text)] tracking-wider mb-2 drop-shadow-[1px_1px_0px_var(--theme-shadow)] font-bold">
             PIXEL LEDGER
           </h1>
-          <p className="text-sm text-[#c8c7d8]">
+          <p className="text-sm text-[var(--theme-text-muted)]">
             Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art &amp; Tabel Mingguan
           </p>
           <div className="flex justify-center mt-3">
             <span
-              className="inline-flex items-center gap-1.5 bg-[#1f1e2c] border-2 border-black px-2.5 py-1 font-['Silkscreen'] text-[10px] tracking-wider text-[#38b764]"
+              className="inline-flex items-center gap-1.5 bg-[var(--theme-gold-badge)] border-2 border-[var(--theme-border)] px-2.5 py-1 font-['Silkscreen'] text-[10px] tracking-wider text-[var(--theme-gold-text)] font-bold"
               title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
             >
               💾 TERSIMPAN LOKAL
@@ -146,7 +217,7 @@ export default function App() {
           <button
             type="button"
             onClick={() => setIsModalOpen(true)}
-            className="pixel-button bg-[#f4b41b] hover:bg-[#ffcf4d] text-black font-['Silkscreen'] text-xs px-4 py-2.5 mt-4 cursor-pointer"
+            className="pixel-button bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-['Silkscreen'] text-xs px-4 py-2.5 mt-4 cursor-pointer font-bold"
           >
             + CATAT TRANSAKSI
           </button>
@@ -183,7 +254,7 @@ export default function App() {
           />
         )}
 
-        <footer className="text-center text-xs text-[#9c9bb0] font-mono mt-2">
+        <footer className="text-center text-xs text-[var(--theme-text-muted)] font-mono mt-2">
           Hari 10 Selesai: Persistensi Data Lokal (LocalStorage) ✅
         </footer>
       </main>

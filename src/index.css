@@ -3,21 +3,82 @@
 @theme {
   --font-pixel: 'Pixelify Sans', cursive, sans-serif;
   --font-retro: 'Silkscreen', monospace;
-  --color-pixel-bg: #1a1921;
-  --color-pixel-surface: #252433;
-  --color-pixel-border: #3d3b52;
-  --color-pixel-gold: #f4b41b;
-  --color-pixel-green: #38b764;
-  --color-pixel-red: #e43b44;
-  --color-pixel-blue: #0099db;
+}
+
+/* ========================================================
+   THEME DESIGN TOKENS: WHITE BASE + GOLD / YELLOW ACCENTS
+   ======================================================== */
+
+/* Opsi 1: Clean Neo-Gold (Default) */
+:root, [data-theme="neo-gold"] {
+  --theme-bg: #fafafa;
+  --theme-card: #ffffff;
+  --theme-card-subtle: #f4f4f5;
+  --theme-card-gold: #fef3c7;
+  --theme-border: #000000;
+  --theme-border-subtle: #e4e4e7;
+  --theme-shadow: #000000;
+  --theme-text: #09090b;
+  --theme-text-muted: #71717a;
+  --theme-gold: #f59e0b;
+  --theme-gold-hover: #d97706;
+  --theme-gold-text: #b45309;
+  --theme-gold-badge: #fef3c7;
+  --theme-income: #16a34a;
+  --theme-income-badge: #dcfce7;
+  --theme-expense: #e11d48;
+  --theme-expense-badge: #ffe4e6;
+}
+
+/* Opsi 2: Warm Paper & Vintage Coin */
+[data-theme="warm-paper"] {
+  --theme-bg: #fdfbf7;
+  --theme-card: #ffffff;
+  --theme-card-subtle: #f7f5f0;
+  --theme-card-gold: #fef3c7;
+  --theme-border: #1c1917;
+  --theme-border-subtle: #e7e5e4;
+  --theme-shadow: #1c1917;
+  --theme-text: #1c1917;
+  --theme-text-muted: #78716c;
+  --theme-gold: #d97706;
+  --theme-gold-hover: #b45309;
+  --theme-gold-text: #92400e;
+  --theme-gold-badge: #fef3c7;
+  --theme-income: #15803d;
+  --theme-income-badge: #dcfce7;
+  --theme-expense: #dc2626;
+  --theme-expense-badge: #fee2e2;
+}
+
+/* Opsi 3: Cyber Arcade Yellow */
+[data-theme="cyber-arcade"] {
+  --theme-bg: #ffffff;
+  --theme-card: #ffffff;
+  --theme-card-subtle: #fef9c3;
+  --theme-card-gold: #fef08a;
+  --theme-border: #000000;
+  --theme-border-subtle: #000000;
+  --theme-shadow: #000000;
+  --theme-text: #000000;
+  --theme-text-muted: #52525b;
+  --theme-gold: #eab308;
+  --theme-gold-hover: #ca8a04;
+  --theme-gold-text: #854d0e;
+  --theme-gold-badge: #fef08a;
+  --theme-income: #22c55e;
+  --theme-income-badge: #bbf7d0;
+  --theme-expense: #ef4444;
+  --theme-expense-badge: #fecaca;
 }
 
 body {
   font-family: 'Pixelify Sans', cursive, sans-serif;
-  background-color: #1a1921;
-  color: #f4f4f0;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
   margin: 0;
   padding: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 /* Crisp Pixel Rendering */
@@ -29,22 +90,24 @@ svg {
 
 /* Retro Pixel Box Shadow & Borders */
 .pixel-box {
-  border: 3px solid #000;
-  box-shadow: 4px 4px 0px 0px #000;
+  border: 2px solid var(--theme-border);
+  box-shadow: 3px 3px 0px 0px var(--theme-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pixel-box-sm {
-  border: 2px solid #000;
-  box-shadow: 2px 2px 0px 0px #000;
+  border: 2px solid var(--theme-border);
+  box-shadow: 2px 2px 0px 0px var(--theme-shadow);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .pixel-button {
-  border: 3px solid #000;
-  box-shadow: 3px 3px 0px 0px #000;
-  transition: transform 0.05s ease, box-shadow 0.05s ease;
+  border: 2px solid var(--theme-border);
+  box-shadow: 2px 2px 0px 0px var(--theme-shadow);
+  transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease;
 }
 
 .pixel-button:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0px 0px #000;
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px 0px var(--theme-shadow);
 }

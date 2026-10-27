@@ -66,22 +66,24 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
   return (
     <div
-      className="fixed inset-0 bg-black/70 flex items-center justify-center p-4 z-50"
+      className="fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-4 z-50"
       onClick={onClose}
     >
       <div
-        className="pixel-box bg-[#1f1e2c] border-3 border-black w-full max-w-md p-5 flex flex-col gap-4"
+        role="dialog"
+        aria-modal="true"
+        className="pixel-box bg-[var(--theme-card)] border-3 border-[var(--theme-border)] shadow-[6px_6px_0px_var(--theme-shadow)] w-full max-w-md p-5 flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Judul Modal */}
-        <div className="flex items-center justify-between border-b-2 border-[#3d3b52] pb-3">
-          <h2 className="font-['Silkscreen'] text-sm md:text-base text-[#f4b41b] tracking-wider">
+        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
+          <h2 className="font-['Silkscreen'] text-sm md:text-base text-[var(--theme-gold-text)] tracking-wider font-bold">
             {isEditMode ? '✏️ UBAH TRANSAKSI' : '📝 CATAT TRANSAKSI'}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="pixel-button bg-[#2a293b] hover:bg-[#38374d] text-gray-300 hover:text-white px-2 py-1 text-xs font-['Silkscreen'] cursor-pointer"
+            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] px-2 py-1 text-xs font-['Silkscreen'] cursor-pointer"
             title="Tutup"
           >
             ✕
@@ -90,14 +92,14 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Toggle Tipe Transaksi */}
-          <div className="grid grid-cols-2 gap-2 bg-[#131219] p-1 border-2 border-black">
+          <div className="grid grid-cols-2 gap-2 bg-[var(--theme-card-subtle)] p-1 border-2 border-[var(--theme-border)]">
             <button
               type="button"
               onClick={() => handleSelectType('expense')}
-              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer ${
+              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer font-bold ${
                 type === 'expense'
-                  ? 'bg-[#e43b44] text-white font-bold pixel-box-sm'
-                  : 'text-gray-400 hover:text-white'
+                  ? 'bg-[var(--theme-expense)] text-white pixel-box-sm shadow-none'
+                  : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
               💸 Pengeluaran
@@ -105,10 +107,10 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
             <button
               type="button"
               onClick={() => handleSelectType('income')}
-              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer ${
+              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer font-bold ${
                 type === 'income'
-                  ? 'bg-[#38b764] text-white font-bold pixel-box-sm'
-                  : 'text-gray-400 hover:text-white'
+                  ? 'bg-[var(--theme-income)] text-white pixel-box-sm shadow-none'
+                  : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
               💰 Pemasukan
@@ -117,7 +119,9 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
           {/* Nominal */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-gray-300">NOMINAL (Rp)</span>
+            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+              NOMINAL (Rp)
+            </span>
             <input
               type="number"
               min={1}
@@ -125,20 +129,22 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="cth: 25000"
-              className="bg-[#131219] border-2 border-black px-3 py-2 text-sm text-white font-mono outline-none focus:border-[#f4b41b] placeholder:text-gray-600"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {/* Kategori */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-gray-300">KATEGORI</span>
+            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+              KATEGORI
+            </span>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="bg-[#131219] border-2 border-black px-3 py-2 text-sm text-white font-mono outline-none focus:border-[#f4b41b] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             >
               {filteredCategories.map((c) => (
-                <option key={c.id} value={c.name}>
+                <option key={c.id} value={c.name} className="bg-[var(--theme-card)] text-[var(--theme-text)]">
                   {c.icon} {c.name}
                 </option>
               ))}
@@ -147,29 +153,33 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
           {/* Tanggal */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-gray-300">TANGGAL</span>
+            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+              TANGGAL
+            </span>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-[#131219] border-2 border-black px-3 py-2 text-sm text-white font-mono outline-none focus:border-[#f4b41b] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             />
           </label>
 
           {/* Keterangan */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-gray-300">KETERANGAN</span>
+            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+              KETERANGAN
+            </span>
             <input
               type="text"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="cth: Makan siang nasi padang"
-              className="bg-[#131219] border-2 border-black px-3 py-2 text-sm text-white font-mono outline-none focus:border-[#f4b41b] placeholder:text-gray-600"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {error && (
-            <p className="text-xs font-mono text-[#e43b44] bg-[#e43b44]/10 border-2 border-[#e43b44] px-3 py-2">
+            <p className="text-xs font-mono text-[var(--theme-expense)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
               ⚠️ {error}
             </p>
           )}
@@ -178,14 +188,14 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="pixel-button flex-1 bg-[#f4b41b] hover:bg-[#ffcf4d] text-black font-['Silkscreen'] text-xs px-3 py-2.5 cursor-pointer"
+              className="pixel-button flex-1 bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-['Silkscreen'] text-xs px-3 py-2.5 cursor-pointer font-bold"
             >
               {isEditMode ? '💾 Simpan Perubahan' : '💾 Simpan Transaksi'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="pixel-button bg-[#2a293b] hover:bg-[#38374d] text-gray-300 hover:text-white font-['Silkscreen'] text-xs px-4 py-2.5 cursor-pointer"
+              className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-['Silkscreen'] text-xs px-4 py-2.5 cursor-pointer font-bold"
             >
               Batal
             </button>
