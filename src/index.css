@@ -1,12 +1,38 @@
 @import "tailwindcss";
 
 @theme {
-  --font-pixel: 'Pixelify Sans', cursive, sans-serif;
-  --font-retro: 'Silkscreen', monospace;
+  --font-pixel: 'Pixelify Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-retro: 'Silkscreen', ui-monospace, monospace;
+
+  /* Role-based type scale: purpose first, value second */
+  --text-label: 0.6875rem;   /* 11px */
+  --text-label--line-height: 1rem;
+  --text-label--letter-spacing: 0.12em;
+
+  --text-meta: 0.75rem;      /* 12px */
+  --text-meta--line-height: 1.15rem;
+
+  --text-body: 0.875rem;     /* 14px */
+  --text-body--line-height: 1.5rem;
+
+  --text-brand: 1rem;        /* 16px */
+  --text-brand--line-height: 1.25rem;
+
+  --text-data: 1.125rem;     /* 18px */
+  --text-data--line-height: 1.4rem;
+
+  --text-display: 1.25rem;   /* 20px */
+  --text-display--line-height: 1.5rem;
+
+  --text-display-lg: 1.75rem; /* 28px */
+  --text-display-lg--line-height: 2rem;
+
+  --text-display-xl: 2rem;   /* 32px */
+  --text-display-xl--line-height: 2.25rem;
 }
 
 /* ========================================================
-   THEME DESIGN TOKENS: WHITE BASE + GOLD / YELLOW ACCENTS
+   THEME DESIGN TOKENS: PAPER BASE + GOLD, GREEN & ROSE ROLES
    ======================================================== */
 
 /* Opsi 1: Clean Neo-Gold (Default) */
@@ -24,10 +50,17 @@
   --theme-gold-hover: #d97706;
   --theme-gold-text: #b45309;
   --theme-gold-badge: #fef3c7;
+  --theme-gold-surface: #fffbeb;
   --theme-income: #15803d;
+  --theme-income-fill: #22c55e;
   --theme-income-badge: #dcfce7;
+  --theme-income-surface: #f0fdf4;
   --theme-expense: #e11d48;
+  --theme-expense-text: #be123c;
   --theme-expense-badge: #ffe4e6;
+  --theme-expense-surface: #fff1f2;
+  --theme-text-muted-warm: #57534e;
+  --theme-border-subtle-warm: #f5e6c8;
 }
 
 /* Opsi 2: Warm Paper & Vintage Coin */
@@ -45,10 +78,17 @@
   --theme-gold-hover: #b45309;
   --theme-gold-text: #92400e;
   --theme-gold-badge: #fef3c7;
+  --theme-gold-surface: #fffbeb;
   --theme-income: #15803d;
+  --theme-income-fill: #16a34a;
   --theme-income-badge: #dcfce7;
+  --theme-income-surface: #f0fdf4;
   --theme-expense: #dc2626;
+  --theme-expense-text: #b91c1c;
   --theme-expense-badge: #fee2e2;
+  --theme-expense-surface: #fef2f2;
+  --theme-text-muted-warm: #57534e;
+  --theme-border-subtle-warm: #e7d8c0;
 }
 
 /* Opsi 3: Cyber Arcade Yellow */
@@ -66,19 +106,33 @@
   --theme-gold-hover: #ca8a04;
   --theme-gold-text: #854d0e;
   --theme-gold-badge: #fef08a;
+  --theme-gold-surface: #fef9c3;
   --theme-income: #22c55e;
+  --theme-income-fill: #22c55e;
   --theme-income-badge: #bbf7d0;
+  --theme-income-surface: #dcfce7;
   --theme-expense: #ef4444;
+  --theme-expense-text: #b91c1c;
   --theme-expense-badge: #fecaca;
+  --theme-expense-surface: #ffe4e6;
+  --theme-text-muted-warm: #3f3f46;
+  --theme-border-subtle-warm: #e5d48a;
 }
 
 body {
-  font-family: 'Pixelify Sans', cursive, sans-serif;
+  font-family: var(--font-pixel);
+  font-variant-numeric: tabular-nums;
   background-color: var(--theme-bg);
   color: var(--theme-text);
   margin: 0;
   padding: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Colored data surfaces keep secondary text and separators in the same warm family. */
+.tinted-surface {
+  --theme-text-muted: var(--theme-text-muted-warm);
+  --theme-border-subtle: var(--theme-border-subtle-warm);
 }
 
 /* Fokus keyboard yang konsisten di atas putih maupun emas */
