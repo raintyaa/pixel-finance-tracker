@@ -41,28 +41,13 @@ export default function BalanceCards({
 
         {/* Card 1: Total Uang Masuk */}
         <article className="pixel-box order-2 flex flex-col justify-between gap-5 bg-[var(--theme-card)] p-4 sm:p-5 lg:order-1">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
-                UANG MASUK
-              </p>
-              <p className="mt-1 text-[11px] text-[var(--theme-text-muted)]">
-                Periode terpilih
-              </p>
-            </div>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center border-2 border-black bg-[var(--theme-income-badge)] text-sm">
-              <span aria-hidden="true">↗</span>
-            </span>
-          </div>
+          <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+            UANG MASUK
+          </p>
 
-          <div>
-            <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-income)] sm:text-lg">
-              {formatRupiah(totalIncome)}
-            </p>
-            <span className="mt-2 inline-block border border-black bg-[var(--theme-income-badge)] px-1.5 py-0.5 font-['Silkscreen'] text-[9px] font-bold text-[var(--theme-income)]">
-              +IN
-            </span>
-          </div>
+          <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-income)] sm:text-lg">
+            {formatRupiah(totalIncome)}
+          </p>
         </article>
 
         {/* Card 2: Sisa Saldo Kas — HERO CARD dengan aksen emas */}
@@ -74,75 +59,41 @@ export default function BalanceCards({
             🪙
           </span>
 
-          <div className="relative flex items-start justify-between gap-2">
-            <div>
-              <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-black/70">
-                SISA SALDO KAS
-              </p>
-              <p className="mt-1 text-xs text-black/70">
-                Total kas riil seluruh riwayat
-              </p>
-            </div>
-            <span className="shrink-0 border-2 border-black bg-black px-2 py-1 font-['Silkscreen'] text-[9px] font-bold tracking-wider text-[var(--theme-gold)]">
-              TOTAL KAS
-            </span>
+          <div className="relative">
+            <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-black/70">
+              SISA SALDO KAS
+            </p>
+            <p className="mt-1 text-xs text-black/70">
+              Total kas riil seluruh riwayat
+            </p>
           </div>
 
-          <div className="relative">
-            <p className="break-words font-['Silkscreen'] text-2xl font-bold text-black sm:text-3xl">
-              {formatRupiah(realBalance)}
-            </p>
-            <div className="mt-3 flex flex-wrap items-center gap-2">
-              <span className="inline-flex items-center gap-1.5 border-2 border-black bg-white/70 px-2 py-1 font-mono text-[10px] font-bold text-black">
-                <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
-                Saldo dompet aktif
-              </span>
-              <span className="font-mono text-[10px] text-black/60">
-                tidak terpengaruh navigasi bulan
-              </span>
-            </div>
-          </div>
+          <p className="relative break-words font-['Silkscreen'] text-2xl font-bold text-black sm:text-3xl">
+            {formatRupiah(realBalance)}
+          </p>
         </article>
 
         {/* Card 3: Total Pengeluaran */}
         <article className="pixel-box order-3 flex flex-col justify-between gap-5 bg-[var(--theme-card)] p-4 sm:p-5 lg:order-3">
-          <div className="flex items-start justify-between gap-2">
-            <div>
-              <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
-                PENGELUARAN
-              </p>
-              <p className="mt-1 text-[11px] text-[var(--theme-text-muted)]">
-                Periode terpilih
-              </p>
-            </div>
-            <span className="flex h-8 w-8 shrink-0 items-center justify-center border-2 border-black bg-[var(--theme-expense-badge)] text-sm">
-              <span aria-hidden="true">↘</span>
-            </span>
-          </div>
+          <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+            PENGELUARAN
+          </p>
 
-          <div>
-            <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-expense)] sm:text-lg">
-              {formatRupiah(totalExpense)}
-            </p>
-            <span className="mt-2 inline-block border border-black bg-[var(--theme-expense-badge)] px-1.5 py-0.5 font-['Silkscreen'] text-[9px] font-bold text-[var(--theme-expense)]">
-              -OUT
-            </span>
-          </div>
+          <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-expense)] sm:text-lg">
+            {formatRupiah(totalExpense)}
+          </p>
         </article>
       </div>
 
       {/* Indikator RPG Health Bar Keuangan — menyatu dengan ringkasan saldo */}
       <div className="pixel-box bg-[var(--theme-card)] p-4 sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2.5">
-            <span
-              className="flex h-8 w-8 shrink-0 items-center justify-center border-2 border-black bg-[var(--theme-expense-badge)] text-sm"
-              aria-hidden="true"
-            >
+          <div className="flex items-center gap-2">
+            <span className="text-sm leading-none" aria-hidden="true">
               ❤️
             </span>
             <div>
-              <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+              <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
                 DAYA TAHAN KAS
               </p>
               <p className={`mt-0.5 font-['Silkscreen'] text-xs font-bold ${statusColor}`}>
@@ -151,14 +102,9 @@ export default function BalanceCards({
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <span className="font-mono text-[11px] text-[var(--theme-text-muted)]">
-              Pengeluaran vs pemasukan
-            </span>
-            <span className="border-2 border-black bg-[var(--theme-card-subtle)] px-2 py-0.5 font-['Silkscreen'] text-xs font-bold text-[var(--theme-text)]">
-              {expensePercentage}%
-            </span>
-          </div>
+          <span className="font-mono text-[11px] text-[var(--theme-text-muted)]">
+            {expensePercentage}% terpakai
+          </span>
         </div>
 
         {/* HP Bar Pixel */}
@@ -167,12 +113,6 @@ export default function BalanceCards({
             className={`h-full ${barColor} transition-all duration-300`}
             style={{ width: `${expensePercentage}%` }}
           />
-        </div>
-
-        <div className="mt-1.5 flex items-center justify-between font-mono text-[10px] text-[var(--theme-text-muted)]">
-          <span>0%</span>
-          <span>50%</span>
-          <span>100% terpakai</span>
         </div>
       </div>
     </section>

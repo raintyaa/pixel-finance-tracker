@@ -72,10 +72,6 @@ function NavItem({
         >
           {item.badge}
         </span>
-      ) : item.active ? (
-        <span className="shrink-0 font-['Silkscreen'] text-[10px]" aria-hidden="true">
-          ●
-        </span>
       ) : null}
     </button>
   )
@@ -120,7 +116,7 @@ function SidebarFooter() {
           </p>
         </div>
         <p className="mt-1.5 text-[11px] leading-relaxed text-[#52525b]">
-          Semua transaksi tersimpan otomatis di browser ini.{' '}
+          Tersimpan otomatis di browser ini.{' '}
           <span className="whitespace-nowrap font-bold text-black">Zero data loss.</span>
         </p>
         <div className="mt-2 flex items-center gap-1.5 border-t border-[#e4e4e7] pt-2 font-mono text-[10px] text-[var(--theme-text-muted)]">
@@ -128,9 +124,6 @@ function SidebarFooter() {
           LocalStorage aktif
         </div>
       </div>
-      <p className="mt-3 text-center font-mono text-[10px] text-[#a1a1aa]">
-        v1.0 · Pixel Ledger
-      </p>
     </div>
   )
 }

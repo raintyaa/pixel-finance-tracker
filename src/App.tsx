@@ -134,24 +134,17 @@ export default function App() {
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Top Header: breadcrumb, status penyimpanan, aksi utama */}
           <header className="z-30 border-b-2 border-black bg-white lg:sticky lg:top-0">
-            <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
-              <div className="min-w-0">
-                <nav aria-label="Breadcrumb" className="font-mono text-[11px] text-[var(--theme-text-muted)]">
-                  <ol className="flex items-center gap-1.5">
-                    <li className="font-bold text-[var(--theme-gold-text)]">Pixel Ledger</li>
-                    <li aria-hidden="true" className="text-[#d4d4d8]">
-                      &gt;
-                    </li>
-                    <li className="font-bold text-[var(--theme-text)]">Dashboard</li>
-                  </ol>
-                </nav>
-                <h1 className="mt-1 font-['Silkscreen'] text-lg font-bold tracking-wide text-black sm:text-xl">
-                  DASHBOARD
-                </h1>
-                <p className="mt-0.5 text-xs text-[var(--theme-text-muted)]">
-                  Ringkasan keuangan pribadi, rapi dalam satu layar.
-                </p>
-              </div>
+            <h1 className="sr-only">Dashboard Pixel Ledger</h1>
+            <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+              <nav aria-label="Breadcrumb" className="font-mono text-[11px] text-[var(--theme-text-muted)]">
+                <ol className="flex items-center gap-1.5">
+                  <li className="font-bold text-[var(--theme-gold-text)]">Pixel Ledger</li>
+                  <li aria-hidden="true" className="text-[#d4d4d8]">
+                    &gt;
+                  </li>
+                  <li className="font-bold text-[var(--theme-text)]">Dashboard</li>
+                </ol>
+              </nav>
 
               <div className="flex flex-wrap items-center gap-2">
                 <span
@@ -176,19 +169,14 @@ export default function App() {
           <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
             {/* Section Overview: 3 kartu saldo + health bar */}
             <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
-              <div className="flex flex-wrap items-end justify-between gap-2">
-                <div>
-                  <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.2em] text-[var(--theme-gold-text)]">
-                    OVERVIEW
-                  </p>
-                  <h2
-                    id="overview-heading"
-                    className="mt-0.5 font-['Silkscreen'] text-base font-bold text-black sm:text-lg"
-                  >
-                    Ringkasan Saldo
-                  </h2>
-                </div>
-                <p className="border-2 border-black bg-white px-2.5 py-1 font-mono text-[10px] text-[var(--theme-text-muted)]">
+              <div className="flex flex-wrap items-baseline justify-between gap-2">
+                <h2
+                  id="overview-heading"
+                  className="font-['Silkscreen'] text-base font-bold text-black sm:text-lg"
+                >
+                  Ringkasan Saldo
+                </h2>
+                <p className="font-mono text-[10px] text-[var(--theme-text-muted)]">
                   {viewScope === 'month'
                     ? `${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`
                     : 'Semua riwayat'}
@@ -225,14 +213,6 @@ export default function App() {
                 onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
               />
             )}
-
-            <footer className="mt-2 flex flex-col items-center justify-between gap-2 border-t-2 border-[#e4e4e7] pt-4 font-mono text-[10px] text-[var(--theme-text-muted)] sm:flex-row">
-              <span>🪙 PIXEL LEDGER — Personal Finance Tracker</span>
-              <span className="flex items-center gap-1.5">
-                <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
-                LocalStorage aktif · Zero data loss
-              </span>
-            </footer>
           </main>
         </div>
       </div>

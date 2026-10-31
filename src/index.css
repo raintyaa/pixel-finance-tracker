@@ -24,7 +24,7 @@
   --theme-gold-hover: #d97706;
   --theme-gold-text: #b45309;
   --theme-gold-badge: #fef3c7;
-  --theme-income: #16a34a;
+  --theme-income: #15803d;
   --theme-income-badge: #dcfce7;
   --theme-expense: #e11d48;
   --theme-expense-badge: #ffe4e6;
@@ -79,6 +79,12 @@ body {
   margin: 0;
   padding: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Fokus keyboard yang konsisten di atas putih maupun emas */
+:focus-visible {
+  outline: 2px solid var(--theme-border);
+  outline-offset: 2px;
 }
 
 /* Crisp Pixel Rendering */
