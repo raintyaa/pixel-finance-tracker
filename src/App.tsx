@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
+import AdjustBalanceModal from './components/AdjustBalanceModal'
 import BalanceCards from './components/BalanceCards'
 import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
@@ -13,6 +14,7 @@ export default function App() {
   // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
   const [transactions, setTransactions] = useState<Transaction[]>(() => loadTransactions())
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isAdjustModalOpen, setIsAdjustModalOpen] = useState<boolean>(false)
 
   // Persistensi otomatis (Hari 10): simpan setiap kali daftar transaksi berubah
   useEffect(() => {
@@ -109,6 +111,14 @@ export default function App() {
     setTransactions((prev) => prev.filter((tx) => tx.id !== deletingTransaction.id))
     setSaveTick((tick) => tick + 1)
     setDeletingTransaction(null)
+  }
+
+  // 3E. Handler Atur / Rekonsiliasi Saldo Riil
+  const handleAdjustBalance = (newTx: Transaction) => {
+    setTransactions((prev) => [newTx, ...prev])
+    setHighlight({ id: newTx.id, tick: Date.now() })
+    setSaveTick((tick) => tick + 1)
+    setIsAdjustModalOpen(false)
   }
 
   // 4A. Sisa Saldo Riil Keseluruhan (FIX: Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
@@ -208,6 +218,7 @@ export default function App() {
                 totalIncome={totalIncome}
                 totalExpense={totalExpense}
                 realBalance={realBalance}
+                onAdjustBalance={() => setIsAdjustModalOpen(true)}
               />
             </section>
 
@@ -241,6 +252,15 @@ export default function App() {
           </main>
         </div>
       </div>
+
+      {/* Modal Atur / Koreksi Saldo Riil */}
+      {isAdjustModalOpen && (
+        <AdjustBalanceModal
+          currentBalance={realBalance}
+          onSubmit={handleAdjustBalance}
+          onClose={() => setIsAdjustModalOpen(false)}
+        />
+      )}
 
       {/* Modal Input Transaksi Cepat (Mode Tambah) */}
       {isModalOpen && (

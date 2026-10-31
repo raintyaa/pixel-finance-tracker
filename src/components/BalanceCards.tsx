@@ -5,12 +5,14 @@ interface BalanceCardsProps {
   totalIncome: number   // Sesuai filter scope (Bulan ini / Semua)
   totalExpense: number  // Sesuai filter scope (Bulan ini / Semua)
   realBalance: number   // FIX: Total sisa uang kas riil di dompet saat ini
+  onAdjustBalance?: () => void
 }
 
 export default function BalanceCards({
   totalIncome,
   totalExpense,
   realBalance,
+  onAdjustBalance,
 }: BalanceCardsProps) {
   // Papan skor: nilai bergulir dari angka lama, animasi hanya saat berubah
   const shownIncome = useCountUp(totalIncome, 480)
@@ -77,13 +79,26 @@ export default function BalanceCards({
             🪙
           </span>
 
-          <div className="relative">
-            <p className="font-retro text-label font-bold tracking-[0.12em] text-black/70">
-              SISA SALDO KAS
-            </p>
-            <p className="mt-1 text-meta text-black/70">
-              Total kas riil seluruh riwayat
-            </p>
+          <div className="relative flex items-start justify-between gap-2">
+            <div>
+              <p className="font-retro text-label font-bold tracking-[0.12em] text-black/70">
+                SISA SALDO KAS
+              </p>
+              <p className="mt-1 text-meta text-black/70">
+                Total kas riil seluruh riwayat
+              </p>
+            </div>
+            {onAdjustBalance && (
+              <button
+                type="button"
+                onClick={onAdjustBalance}
+                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
+                title="Atur / Sesuaikan Saldo Riil di Dompet"
+              >
+                <span aria-hidden="true">⚖️</span>
+                <span>ATUR SALDO</span>
+              </button>
+            )}
           </div>
 
           <p
