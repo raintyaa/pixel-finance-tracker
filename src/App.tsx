@@ -2,36 +2,14 @@ import { useEffect, useMemo, useState } from 'react'
 import BalanceCards from './components/BalanceCards'
 import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
+import Sidebar from './components/Sidebar'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import type { Transaction } from './types/finance'
-import { getTodayDateString, getWeeksInMonth } from './utils/date'
+import { getTodayDateString, getWeeksInMonth, MONTH_NAMES } from './utils/date'
 import { loadTransactions, saveTransactions } from './utils/storage'
 
-export type ThemePalette = 'neo-gold' | 'warm-paper' | 'cyber-arcade'
-
 export default function App() {
-  // 0. State Tema Tampilan (Default: Opsi 1 Clean Neo-Gold)
-  const [theme, setTheme] = useState<ThemePalette>(() => {
-    try {
-      const saved = localStorage.getItem('pixel_ledger_theme')
-      if (saved === 'neo-gold' || saved === 'warm-paper' || saved === 'cyber-arcade') {
-        return saved
-      }
-    } catch {
-      // fallback jika localStorage tidak tersedia
-    }
-    return 'neo-gold'
-  })
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('pixel_ledger_theme', theme)
-    } catch {
-      // ignore
-    }
-  }, [theme])
-
   // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
   const [transactions, setTransactions] = useState<Transaction[]>(() => loadTransactions())
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -147,117 +125,117 @@ export default function App() {
 
   return (
     <div
-      data-theme={theme}
-      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] flex flex-col items-center justify-center p-4 selection:bg-[var(--theme-gold)] selection:text-black transition-colors duration-200"
+      data-theme="neo-gold"
+      className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] selection:bg-[var(--theme-gold)] selection:text-black"
     >
-      {/* Lebar container disesuaikan (max-w-6xl) agar 7 kolom hari tampil lega */}
-      <main className="w-full max-w-6xl flex flex-col gap-6 my-6">
+      <div className="flex min-h-screen flex-col lg:flex-row">
+        <Sidebar />
 
-        {/* Bar Pemilih Palet Tema (Opsi 1, Opsi 2, Opsi 3) */}
-        <section className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] p-3 flex flex-col sm:flex-row items-center justify-between gap-3 shadow-[2px_2px_0px_var(--theme-shadow)]">
-          <div className="flex items-center gap-2">
-            <span className="text-base">🎨</span>
-            <span className="font-['Silkscreen'] text-xs text-[var(--theme-gold-text)] font-bold tracking-wider">
-              PALET WARNA:
-            </span>
-          </div>
-          <div className="flex flex-wrap items-center gap-2 text-xs font-['Silkscreen']">
-            <button
-              type="button"
-              onClick={() => setTheme('neo-gold')}
-              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
-                theme === 'neo-gold'
-                  ? 'bg-[var(--theme-gold)] text-black'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
-              }`}
-            >
-              🌟 1. Clean Neo-Gold
-            </button>
-            <button
-              type="button"
-              onClick={() => setTheme('warm-paper')}
-              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
-                theme === 'warm-paper'
-                  ? 'bg-[var(--theme-gold)] text-black'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
-              }`}
-            >
-              📜 2. Warm Paper
-            </button>
-            <button
-              type="button"
-              onClick={() => setTheme('cyber-arcade')}
-              className={`pixel-button px-3 py-1 cursor-pointer font-bold ${
-                theme === 'cyber-arcade'
-                  ? 'bg-[var(--theme-gold)] text-black'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
-              }`}
-            >
-              ⚡ 3. Cyber Arcade
-            </button>
-          </div>
-        </section>
+        <div className="flex min-w-0 flex-1 flex-col">
+          {/* Top Header: breadcrumb, status penyimpanan, aksi utama */}
+          <header className="z-30 border-b-2 border-black bg-white lg:sticky lg:top-0">
+            <div className="mx-auto flex w-full max-w-[1440px] flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+              <div className="min-w-0">
+                <nav aria-label="Breadcrumb" className="font-mono text-[11px] text-[var(--theme-text-muted)]">
+                  <ol className="flex items-center gap-1.5">
+                    <li className="font-bold text-[var(--theme-gold-text)]">Pixel Ledger</li>
+                    <li aria-hidden="true" className="text-[#d4d4d8]">
+                      &gt;
+                    </li>
+                    <li className="font-bold text-[var(--theme-text)]">Dashboard</li>
+                  </ol>
+                </nav>
+                <h1 className="mt-1 font-['Silkscreen'] text-lg font-bold tracking-wide text-black sm:text-xl">
+                  DASHBOARD
+                </h1>
+                <p className="mt-0.5 text-xs text-[var(--theme-text-muted)]">
+                  Ringkasan keuangan pribadi, rapi dalam satu layar.
+                </p>
+              </div>
 
-        {/* Header Retro Minimalis */}
-        <header className="pixel-box bg-[var(--theme-card)] p-6 text-center">
-          <h1 className="font-['Silkscreen'] text-xl md:text-3xl text-[var(--theme-gold-text)] tracking-wider mb-2 drop-shadow-[1px_1px_0px_var(--theme-shadow)] font-bold">
-            PIXEL LEDGER
-          </h1>
-          <p className="text-sm text-[var(--theme-text-muted)]">
-            Aplikasi Pencatat Keuangan Pribadi Bergaya Retro Pixel Art &amp; Tabel Mingguan
-          </p>
-          <div className="flex justify-center mt-3">
-            <span
-              className="inline-flex items-center gap-1.5 bg-[var(--theme-gold-badge)] border-2 border-[var(--theme-border)] px-2.5 py-1 font-['Silkscreen'] text-[10px] tracking-wider text-[var(--theme-gold-text)] font-bold"
-              title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
-            >
-              💾 TERSIMPAN LOKAL
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={() => setIsModalOpen(true)}
-            className="pixel-button bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-['Silkscreen'] text-xs px-4 py-2.5 mt-4 cursor-pointer font-bold"
-          >
-            + CATAT TRANSAKSI
-          </button>
-        </header>
+              <div className="flex flex-wrap items-center gap-2">
+                <span
+                  className="inline-flex items-center gap-1.5 border-2 border-black bg-[var(--theme-card-subtle)] px-2.5 py-1.5 font-['Silkscreen'] text-[9px] font-bold tracking-wider text-[var(--theme-text)]"
+                  title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
+                >
+                  <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
+                  TERSIMPAN LOKAL
+                </span>
 
-        {/* 1. Komponen Navigator Periode */}
-        <PeriodNavigator
-          currentYear={selectedYear}
-          currentMonth={selectedMonth}
-          selectedWeek={selectedWeek}
-          weeks={weeks}
-          viewScope={viewScope}
-          onPrevMonth={handlePrevMonth}
-          onNextMonth={handleNextMonth}
-          onSelectWeek={(w) => setSelectedWeek(w)}
-          onToggleViewScope={(s) => setViewScope(s)}
-          onResetToday={handleResetToday}
-        />
+                <button
+                  type="button"
+                  onClick={() => setIsModalOpen(true)}
+                  className="pixel-button cursor-pointer bg-[var(--theme-gold)] px-4 py-2.5 font-['Silkscreen'] text-[10px] font-bold text-black hover:bg-[var(--theme-gold-hover)] sm:text-xs"
+                >
+                  + CATAT TRANSAKSI
+                </button>
+              </div>
+            </div>
+          </header>
 
-        {/* 2. Kartu Saldo (3 Kartu Bersih: Uang Masuk, Pengeluaran, Sisa Saldo FIX) */}
-        <BalanceCards
-          totalIncome={totalIncome}
-          totalExpense={totalExpense}
-          realBalance={realBalance}
-        />
+          <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+            {/* Section Overview: 3 kartu saldo + health bar */}
+            <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
+              <div className="flex flex-wrap items-end justify-between gap-2">
+                <div>
+                  <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.2em] text-[var(--theme-gold-text)]">
+                    OVERVIEW
+                  </p>
+                  <h2
+                    id="overview-heading"
+                    className="mt-0.5 font-['Silkscreen'] text-base font-bold text-black sm:text-lg"
+                  >
+                    Ringkasan Saldo
+                  </h2>
+                </div>
+                <p className="border-2 border-black bg-white px-2.5 py-1 font-mono text-[10px] text-[var(--theme-text-muted)]">
+                  {viewScope === 'month'
+                    ? `${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`
+                    : 'Semua riwayat'}
+                </p>
+              </div>
 
-        {/* 3. Tampilan Utama Tabel Mingguan (7 Kolom Hari: Minggu s/d Sabtu) */}
-        {activeWeekInfo && (
-          <WeeklyTable
-            weekInfo={activeWeekInfo}
-            transactions={transactions}
-            onEditTransaction={(tx) => setEditingTransaction(tx)}
-            onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
-          />
-        )}
+              <BalanceCards
+                totalIncome={totalIncome}
+                totalExpense={totalExpense}
+                realBalance={realBalance}
+              />
+            </section>
 
-        <footer className="text-center text-xs text-[var(--theme-text-muted)] font-mono mt-2">
-          Hari 10 Selesai: Persistensi Data Lokal (LocalStorage) ✅
-        </footer>
-      </main>
+            {/* Section Navigator Periode */}
+            <PeriodNavigator
+              currentYear={selectedYear}
+              currentMonth={selectedMonth}
+              selectedWeek={selectedWeek}
+              weeks={weeks}
+              viewScope={viewScope}
+              onPrevMonth={handlePrevMonth}
+              onNextMonth={handleNextMonth}
+              onSelectWeek={(w) => setSelectedWeek(w)}
+              onToggleViewScope={(s) => setViewScope(s)}
+              onResetToday={handleResetToday}
+            />
+
+            {/* Section Tabel Mingguan (7 Kolom Hari: Minggu s/d Sabtu) */}
+            {activeWeekInfo && (
+              <WeeklyTable
+                weekInfo={activeWeekInfo}
+                transactions={transactions}
+                onEditTransaction={(tx) => setEditingTransaction(tx)}
+                onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
+              />
+            )}
+
+            <footer className="mt-2 flex flex-col items-center justify-between gap-2 border-t-2 border-[#e4e4e7] pt-4 font-mono text-[10px] text-[var(--theme-text-muted)] sm:flex-row">
+              <span>🪙 PIXEL LEDGER — Personal Finance Tracker</span>
+              <span className="flex items-center gap-1.5">
+                <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
+                LocalStorage aktif · Zero data loss
+              </span>
+            </footer>
+          </main>
+        </div>
+      </div>
 
       {/* Modal Input Transaksi Cepat (Mode Tambah) */}
       {isModalOpen && (
