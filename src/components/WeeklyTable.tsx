@@ -5,6 +5,9 @@ import { DAYS_OF_WEEK, MONTH_NAMES, getTodayDateString, type WeekInfo } from '..
 interface WeeklyTableProps {
     weekInfo: WeekInfo
     transactions: Transaction[]
+    // Transaksi yang baru dicatat/diubah — barisnya diberi cap emas sekali
+    highlightId?: string | null
+    highlightTick?: number
     onEditTransaction: (tx: Transaction) => void
     onDeleteTransaction: (tx: Transaction) => void
 }
@@ -12,6 +15,8 @@ interface WeeklyTableProps {
 export default function WeeklyTable({
     weekInfo,
     transactions,
+    highlightId,
+    highlightTick,
     onEditTransaction,
     onDeleteTransaction,
 }: WeeklyTableProps) {
@@ -63,7 +68,7 @@ export default function WeeklyTable({
     const weeklyTransactionCount = daysData.reduce((acc, d) => acc + d.transactions.length, 0)
 
     return (
-        <section className="pixel-box flex flex-col gap-5 bg-[var(--theme-card)] p-4 sm:p-5">
+        <section className="pixel-box flex min-w-0 flex-col gap-5 bg-[var(--theme-card)] p-4 sm:p-5">
             {/* Header Tabel Mingguan */}
             <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-4 sm:flex-row sm:items-baseline sm:justify-between">
                 <div>
@@ -99,7 +104,8 @@ export default function WeeklyTable({
                     return (
                         <div
                             key={day.dayIndex}
-                            className={`flex min-w-0 flex-col justify-between p-3 ${
+                            style={{ animationDelay: `${day.dayIndex * 28}ms` }}
+                            className={`motion-rise-in flex min-w-0 flex-col justify-between p-3 ${
                                 isTinted
                                     ? 'tinted-surface bg-[var(--theme-gold-surface)]'
                                     : 'bg-[var(--theme-card)]'
@@ -116,12 +122,12 @@ export default function WeeklyTable({
                                 >
                                     {day.dayName.toUpperCase()}
                                 </span>
-                                <div className="flex items-center gap-1.5 md:mt-0.5">
-                                    <span className="font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
+                                <div className="flex items-center gap-1.5 md:mt-0.5 md:flex-col md:items-start md:gap-1">
+                                    <span className="whitespace-nowrap font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
                                         {day.dateLabel}
                                     </span>
                                     {isToday && (
-                                        <span className="border border-[var(--theme-border)] bg-[var(--theme-gold)] px-1 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-black">
+                                        <span className="whitespace-nowrap border border-[var(--theme-border)] bg-[var(--theme-gold)] px-1 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-black">
                                             HARI INI
                                         </span>
                                     )}
@@ -137,8 +143,14 @@ export default function WeeklyTable({
                                 ) : (
                                     day.transactions.map((tx) => (
                                         <div
-                                            key={tx.id}
-                                            className="flex flex-col gap-1 border-b border-[var(--theme-border-subtle)] py-1.5 last:border-b-0"
+                                            key={
+                                                tx.id === highlightId
+                                                    ? `${tx.id}-${highlightTick ?? 0}`
+                                                    : tx.id
+                                            }
+                                            className={`flex flex-col gap-1 border-b border-[var(--theme-border-subtle)] py-1.5 last:border-b-0 ${
+                                                tx.id === highlightId ? 'motion-stamp' : ''
+                                            }`}
                                         >
                                             {/* Baris Judul + Tombol Aksi Mini (Ubah / Hapus) */}
                                             <div className="flex items-start justify-between gap-1">
@@ -209,7 +221,10 @@ export default function WeeklyTable({
             </div>
 
             {/* Akumulasi Total Mingguan */}
-            <div className="border-t-2 border-[var(--theme-border-subtle)] pt-4">
+            <div
+                className="motion-rise-in border-t-2 border-[var(--theme-border-subtle)] pt-4"
+                style={{ animationDelay: '196ms' }}
+            >
                 <p className="font-pixel text-meta text-[var(--theme-text-muted)]">
                     Akumulasi mingguan
                 </p>

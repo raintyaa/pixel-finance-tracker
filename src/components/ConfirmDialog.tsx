@@ -1,5 +1,6 @@
 import type { Transaction } from '../types/finance'
 import { formatRupiah } from '../utils/currency'
+import { useExitAnimation } from '../utils/motion'
 
 interface ConfirmDialogProps {
   transaction: Transaction | null
@@ -14,6 +15,8 @@ export default function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
+  const { closing, requestClose } = useExitAnimation(onCancel)
+
   // Tidak ada transaksi terpilih atau dialog ditutup → jangan render apa pun
   if (!isOpen || !transaction) return null
 
@@ -21,15 +24,17 @@ export default function ConfirmDialog({
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-4 z-50"
-      onClick={onCancel}
+      className={`${closing ? 'motion-backdrop-out' : 'motion-backdrop'} fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-4 z-50`}
+      onClick={requestClose}
     >
       {/* Satu-satunya box container (border 2px, tanpa nested card) */}
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="confirm-dialog-title"
-        className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] shadow-[4px_4px_0px_var(--theme-shadow)] w-full max-w-sm p-5 flex flex-col gap-4"
+        className={`${
+          closing ? 'motion-crt-off' : 'motion-crt'
+        } bg-[var(--theme-card)] border-2 border-[var(--theme-border)] shadow-[4px_4px_0px_var(--theme-shadow)] w-full max-w-sm p-5 flex flex-col gap-4`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Judul */}
@@ -84,7 +89,7 @@ export default function ConfirmDialog({
           </button>
           <button
             type="button"
-            onClick={onCancel}
+            onClick={requestClose}
             className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-retro text-meta px-4 py-2.5 cursor-pointer font-bold"
           >
             BATAL

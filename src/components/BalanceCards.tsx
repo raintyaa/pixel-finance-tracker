@@ -1,4 +1,5 @@
 import { formatRupiah } from '../utils/currency'
+import { useChangeKey, useCountUp } from '../utils/motion'
 
 interface BalanceCardsProps {
   totalIncome: number   // Sesuai filter scope (Bulan ini / Semua)
@@ -11,6 +12,15 @@ export default function BalanceCards({
   totalExpense,
   realBalance,
 }: BalanceCardsProps) {
+  // Papan skor: nilai bergulir dari angka lama, animasi hanya saat berubah
+  const shownIncome = useCountUp(totalIncome, 480)
+  const shownExpense = useCountUp(totalExpense, 480)
+  const shownBalance = useCountUp(realBalance, 680)
+
+  const incomeKey = useChangeKey(totalIncome)
+  const expenseKey = useChangeKey(totalExpense)
+  const balanceKey = useChangeKey(realBalance)
+
   // Kalkulasi Rasio HP / Daya Tahan Keuangan periode ini
   const expensePercentage =
     totalIncome > 0
@@ -45,15 +55,23 @@ export default function BalanceCards({
             UANG MASUK
           </p>
 
-          <p className="break-words font-retro text-data font-bold tabular-nums text-[var(--theme-income)] sm:text-display">
-            {formatRupiah(totalIncome)}
+          <p
+            key={`income-${incomeKey}`}
+            className={`break-words font-retro text-data font-bold tabular-nums text-[var(--theme-income)] sm:text-display ${
+              incomeKey > 0 ? 'motion-pop' : ''
+            }`}
+          >
+            {formatRupiah(shownIncome)}
           </p>
         </article>
 
         {/* Card 2: Sisa Saldo Kas — HERO CARD dengan aksen emas */}
         <article className="pixel-box relative order-1 flex flex-col justify-between gap-5 overflow-hidden bg-[var(--theme-gold)] p-5 sm:p-6 lg:order-2">
           <span
-            className="pointer-events-none absolute -right-3 -top-5 select-none text-8xl opacity-20"
+            key={`coin-${balanceKey}`}
+            className={`pointer-events-none absolute -right-3 -top-5 select-none text-8xl opacity-20 ${
+              balanceKey > 0 ? 'motion-coin' : ''
+            }`}
             aria-hidden="true"
           >
             🪙
@@ -68,8 +86,13 @@ export default function BalanceCards({
             </p>
           </div>
 
-          <p className="relative break-words font-retro text-display-lg font-bold tabular-nums text-black sm:text-display-xl">
-            {formatRupiah(realBalance)}
+          <p
+            key={`balance-${balanceKey}`}
+            className={`relative break-words font-retro text-display-lg font-bold tabular-nums text-black sm:text-display-xl ${
+              balanceKey > 0 ? 'motion-pop' : ''
+            }`}
+          >
+            {formatRupiah(shownBalance)}
           </p>
         </article>
 
@@ -79,8 +102,13 @@ export default function BalanceCards({
             PENGELUARAN
           </p>
 
-          <p className="break-words font-retro text-data font-bold tabular-nums text-[var(--theme-expense-text)] sm:text-display">
-            {formatRupiah(totalExpense)}
+          <p
+            key={`expense-${expenseKey}`}
+            className={`break-words font-retro text-data font-bold tabular-nums text-[var(--theme-expense-text)] sm:text-display ${
+              expenseKey > 0 ? 'motion-pop' : ''
+            }`}
+          >
+            {formatRupiah(shownExpense)}
           </p>
         </article>
       </div>
@@ -110,8 +138,8 @@ export default function BalanceCards({
         {/* HP Bar Pixel */}
         <div className="mt-3 h-4 w-full border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5">
           <div
-            className={`h-full ${barColor} transition-all duration-300`}
-            style={{ width: `${expensePercentage}%` }}
+            className={`h-full ${barColor} motion-health-fill`}
+            style={{ transform: `scaleX(${expensePercentage / 100})` }}
           />
         </div>
       </div>

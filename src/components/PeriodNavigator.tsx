@@ -8,6 +8,8 @@ interface PeriodNavigatorProps {
     selectedWeek: number
     weeks: WeekInfo[]
     viewScope: ViewScope
+    // Arah navigasi bulan terakhir — menentukan arah geser label ('null' = muat awal)
+    monthDirection: 'prev' | 'next' | null
     onPrevMonth: () => void
     onNextMonth: () => void
     onSelectWeek: (weekNum: number) => void
@@ -32,6 +34,7 @@ export default function PeriodNavigator({
     selectedWeek,
     weeks,
     viewScope,
+    monthDirection,
     onPrevMonth,
     onNextMonth,
     onSelectWeek,
@@ -41,10 +44,10 @@ export default function PeriodNavigator({
     return (
         <section
             aria-label="Navigator periode"
-            className="pixel-box flex flex-col gap-4 bg-[var(--theme-card)] p-4 sm:p-5"
+            className="pixel-box flex min-w-0 flex-col gap-4 bg-[var(--theme-card)] p-4 sm:p-5"
         >
             {/* 1. Filter scope saldo & kembali ke hari ini */}
-            <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-1 border-2 border-black bg-[var(--theme-card-subtle)] p-1">
                     <button
                         type="button"
@@ -94,7 +97,16 @@ export default function PeriodNavigator({
                 </button>
 
                 <div className="min-w-0 text-center">
-                    <div className="truncate font-retro text-display font-bold tracking-wide text-[var(--theme-text)] md:text-2xl">
+                    <div
+                        key={`${currentYear}-${currentMonth}`}
+                        className={`truncate font-retro text-display font-bold tracking-wide text-[var(--theme-text)] md:text-2xl ${
+                            monthDirection === 'prev'
+                                ? 'motion-page-prev'
+                                : monthDirection === 'next'
+                                  ? 'motion-page-next'
+                                  : ''
+                        }`}
+                    >
                         {MONTH_NAMES[currentMonth - 1]}{' '}
                         <span className="text-[var(--theme-gold-text)]">{currentYear}</span>
                     </div>
@@ -112,7 +124,7 @@ export default function PeriodNavigator({
             </div>
 
             {/* 3. Pilihan pekan (Mgg 1–5) */}
-            <div className="grid grid-cols-5 gap-1.5 sm:gap-2">
+            <div className="grid min-w-0 grid-cols-5 gap-1.5 sm:gap-2">
                 {weeks.map((w) => {
                     const isActive = w.weekNumber === selectedWeek
                     return (
@@ -121,7 +133,7 @@ export default function PeriodNavigator({
                             type="button"
                             onClick={() => onSelectWeek(w.weekNumber)}
                             aria-pressed={isActive}
-                            className={`flex min-h-[52px] flex-col items-center justify-center gap-0.5 border-2 border-[var(--theme-border)] px-1 py-2 text-center transition-all cursor-pointer ${
+                            className={`flex min-h-[52px] min-w-0 flex-col items-center justify-center gap-0.5 border-2 border-[var(--theme-border)] px-1 py-2 text-center transition-all cursor-pointer ${
                                 isActive
                                     ? 'bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_var(--theme-shadow)]'
                                     : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card)] hover:text-[var(--theme-text)]'

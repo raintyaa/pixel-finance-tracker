@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { DEFAULT_CATEGORIES } from '../data/initialData'
 import type { Transaction, TransactionType } from '../types/finance'
 import { getDayOfWeekFromDate, getTodayDateString } from '../utils/date'
+import { useExitAnimation } from '../utils/motion'
 
 interface TransactionModalProps {
   onSubmit: (newTx: Transaction) => void
@@ -12,6 +13,7 @@ interface TransactionModalProps {
 
 export default function TransactionModal({ onSubmit, onClose, initialData }: TransactionModalProps) {
   const isEditMode = Boolean(initialData)
+  const { closing, requestClose } = useExitAnimation(onClose)
 
   const [type, setType] = useState<TransactionType>(initialData?.type ?? 'expense')
   const [amount, setAmount] = useState<string>(initialData ? String(initialData.amount) : '')
@@ -66,13 +68,15 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
   return (
     <div
-      className="fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-4 z-50"
-      onClick={onClose}
+      className={`${closing ? 'motion-backdrop-out' : 'motion-backdrop'} fixed inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center p-4 z-50`}
+      onClick={requestClose}
     >
       <div
         role="dialog"
         aria-modal="true"
-        className="pixel-box bg-[var(--theme-card)] border-3 border-[var(--theme-border)] shadow-[6px_6px_0px_var(--theme-shadow)] w-full max-w-md p-5 flex flex-col gap-4 max-h-[90vh] overflow-y-auto"
+        className={`${
+          closing ? 'motion-crt-off' : 'motion-crt'
+        } pixel-box bg-[var(--theme-card)] border-3 border-[var(--theme-border)] shadow-[6px_6px_0px_var(--theme-shadow)] w-full max-w-md p-5 flex flex-col gap-4 max-h-[90vh] overflow-y-auto`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Judul Modal */}
@@ -82,7 +86,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
           </h2>
           <button
             type="button"
-            onClick={onClose}
+            onClick={requestClose}
             className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] px-2 py-1 text-meta font-retro cursor-pointer"
             title="Tutup"
           >
@@ -194,7 +198,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
             </button>
             <button
               type="button"
-              onClick={onClose}
+              onClick={requestClose}
               className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-retro text-meta px-4 py-2.5 cursor-pointer font-bold"
             >
               Batal

@@ -19,6 +19,9 @@ export default function App() {
     saveTransactions(transactions)
   }, [transactions])
 
+  // Denyut indikator "TERSIMPAN LOKAL" — dipicu dari aksi pengguna yang menulis data
+  const [saveTick, setSaveTick] = useState<number>(0)
+
   // State Aksi Baris Tabel (Hari 9): Transaksi yang sedang diubah / akan dihapus
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null)
   const [deletingTransaction, setDeletingTransaction] = useState<Transaction | null>(null)
@@ -35,6 +38,10 @@ export default function App() {
   })
   const [viewScope, setViewScope] = useState<ViewScope>('month') // 'month' atau 'all'
 
+  // Arah navigasi bulan & transaksi yang baru disentuh (untuk animasi gerak)
+  const [monthDirection, setMonthDirection] = useState<'prev' | 'next' | null>(null)
+  const [highlight, setHighlight] = useState<{ id: string; tick: number } | null>(null)
+
   // 2. Hitung Daftar Pekan untuk Bulan yang Aktif
   const weeks = useMemo(
     () => getWeeksInMonth(selectedYear, selectedMonth),
@@ -45,6 +52,7 @@ export default function App() {
 
   // 3. Handler Navigasi Bulan & Reset Hari Ini
   const handlePrevMonth = () => {
+    setMonthDirection('prev')
     if (selectedMonth === 1) {
       setSelectedYear((y) => y - 1)
       setSelectedMonth(12)
@@ -55,6 +63,7 @@ export default function App() {
   }
 
   const handleNextMonth = () => {
+    setMonthDirection('next')
     if (selectedMonth === 12) {
       setSelectedYear((y) => y + 1)
       setSelectedMonth(1)
@@ -79,6 +88,8 @@ export default function App() {
   // 3B. Handler Tambah Transaksi Baru (Hari 7: Form & Modal Input Cepat)
   const handleAddTransaction = (newTx: Transaction) => {
     setTransactions((prev) => [newTx, ...prev])
+    setHighlight({ id: newTx.id, tick: Date.now() })
+    setSaveTick((tick) => tick + 1)
     setIsModalOpen(false)
   }
 
@@ -87,6 +98,8 @@ export default function App() {
     setTransactions((prev) =>
       prev.map((tx) => (tx.id === updatedTx.id ? updatedTx : tx))
     )
+    setHighlight({ id: updatedTx.id, tick: Date.now() })
+    setSaveTick((tick) => tick + 1)
     setEditingTransaction(null)
   }
 
@@ -94,6 +107,7 @@ export default function App() {
   const handleConfirmDelete = () => {
     if (!deletingTransaction) return
     setTransactions((prev) => prev.filter((tx) => tx.id !== deletingTransaction.id))
+    setSaveTick((tick) => tick + 1)
     setDeletingTransaction(null)
   }
 
@@ -151,7 +165,10 @@ export default function App() {
                   className="inline-flex items-center gap-1.5 border-2 border-black bg-[var(--theme-card-subtle)] px-2.5 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-text)]"
                   title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
                 >
-                  <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
+                  <span
+                    key={saveTick}
+                    className="motion-save-beat h-2 w-2 border border-black bg-[var(--theme-income)]"
+                  />
                   TERSIMPAN LOKAL
                 </span>
 
@@ -166,7 +183,7 @@ export default function App() {
             </div>
           </header>
 
-          <main className="mx-auto flex w-full max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <main className="mx-auto flex w-full min-w-0 max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
             {/* Section Overview: 3 kartu saldo + health bar */}
             <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
@@ -201,6 +218,7 @@ export default function App() {
               selectedWeek={selectedWeek}
               weeks={weeks}
               viewScope={viewScope}
+              monthDirection={monthDirection}
               onPrevMonth={handlePrevMonth}
               onNextMonth={handleNextMonth}
               onSelectWeek={(w) => setSelectedWeek(w)}
@@ -211,8 +229,11 @@ export default function App() {
             {/* Section Tabel Mingguan (7 Kolom Hari: Minggu s/d Sabtu) */}
             {activeWeekInfo && (
               <WeeklyTable
+                key={activeWeekInfo.startDate}
                 weekInfo={activeWeekInfo}
                 transactions={transactions}
+                highlightId={highlight?.id ?? null}
+                highlightTick={highlight?.tick}
                 onEditTransaction={(tx) => setEditingTransaction(tx)}
                 onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
               />

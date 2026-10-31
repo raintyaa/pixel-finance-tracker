@@ -49,7 +49,7 @@ function NavItem({
       type="button"
       onClick={onNavigate}
       aria-current={item.active ? 'page' : undefined}
-      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body transition-all ${
+      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body transition-all hover:translate-x-0.5 ${
         item.active
           ? 'border-black bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_#000]'
           : 'border-transparent text-[#3f3f46] hover:border-black hover:bg-[var(--theme-gold-surface)] hover:shadow-[2px_2px_0px_#000]'
@@ -89,7 +89,7 @@ function NavGroup({
   return (
     <div>
       <div className="mb-2 flex items-center gap-2 px-1">
-        <p className="font-retro text-label font-bold tracking-[0.12em] text-[#a1a1aa]">
+        <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
           {label}
         </p>
         <span className="h-px flex-1 bg-[#e4e4e7]" />
@@ -209,7 +209,7 @@ export default function Sidebar() {
       {mobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
           <div
-            className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"
+            className="motion-backdrop absolute inset-0 bg-black/50 backdrop-blur-[2px]"
             onClick={closeMobile}
             aria-hidden="true"
           />
@@ -218,7 +218,7 @@ export default function Sidebar() {
             role="dialog"
             aria-modal="true"
             aria-label="Menu navigasi utama"
-            className="absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r-2 border-black bg-white shadow-[6px_0_0_#000]"
+            className="motion-drawer absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r-2 border-black bg-white shadow-[6px_0_0_#000]"
           >
             <div className="flex shrink-0 items-center justify-between border-b-2 border-black p-4">
               <BrandMark />
