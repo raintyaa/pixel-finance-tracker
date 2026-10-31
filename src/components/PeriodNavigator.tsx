@@ -50,7 +50,7 @@ export default function PeriodNavigator({
                         type="button"
                         onClick={() => onToggleViewScope('month')}
                         aria-pressed={viewScope === 'month'}
-                        className={`px-2.5 py-1 font-['Silkscreen'] text-[9px] font-bold tracking-wide transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 font-retro text-label font-bold tracking-normal transition-all cursor-pointer ${
                             viewScope === 'month'
                                 ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
                                 : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -62,7 +62,7 @@ export default function PeriodNavigator({
                         type="button"
                         onClick={() => onToggleViewScope('all')}
                         aria-pressed={viewScope === 'all'}
-                        className={`px-2.5 py-1 font-['Silkscreen'] text-[9px] font-bold tracking-wide transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 font-retro text-label font-bold tracking-normal transition-all cursor-pointer ${
                             viewScope === 'all'
                                 ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
                                 : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -75,7 +75,7 @@ export default function PeriodNavigator({
                 <button
                     type="button"
                     onClick={onResetToday}
-                    className="pixel-button cursor-pointer bg-[var(--theme-card)] px-3 py-1.5 font-['Silkscreen'] text-[9px] font-bold text-[var(--theme-text)] hover:bg-[var(--theme-card-gold)]"
+                    className="pixel-button cursor-pointer bg-[var(--theme-gold-surface)] px-3 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)] hover:bg-[var(--theme-gold-badge)]"
                 >
                     ⚡ HARI INI
                 </button>
@@ -86,7 +86,7 @@ export default function PeriodNavigator({
                 <button
                     type="button"
                     onClick={onPrevMonth}
-                    className="pixel-button flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-['Silkscreen'] text-sm font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
+                    className="pixel-button flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-retro text-body font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
                     title="Bulan Sebelumnya"
                     aria-label="Bulan sebelumnya"
                 >
@@ -94,7 +94,7 @@ export default function PeriodNavigator({
                 </button>
 
                 <div className="min-w-0 text-center">
-                    <div className="truncate font-['Silkscreen'] text-base font-bold tracking-wide text-[var(--theme-text)] md:text-xl">
+                    <div className="truncate font-retro text-display font-bold tracking-wide text-[var(--theme-text)] md:text-2xl">
                         {MONTH_NAMES[currentMonth - 1]}{' '}
                         <span className="text-[var(--theme-gold-text)]">{currentYear}</span>
                     </div>
@@ -103,7 +103,7 @@ export default function PeriodNavigator({
                 <button
                     type="button"
                     onClick={onNextMonth}
-                    className="pixel-button flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-['Silkscreen'] text-sm font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
+                    className="pixel-button flex h-9 w-9 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-retro text-body font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
                     title="Bulan Berikutnya"
                     aria-label="Bulan berikutnya"
                 >
@@ -127,11 +127,11 @@ export default function PeriodNavigator({
                                     : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card)] hover:text-[var(--theme-text)]'
                             }`}
                         >
-                            <span className="font-['Silkscreen'] text-[10px]">
+                            <span className="font-retro text-label tracking-normal">
                                 MGG {w.weekNumber}
                             </span>
                             <span
-                                className={`max-w-full truncate font-mono text-[10px] ${
+                                className={`max-w-full truncate font-pixel text-meta tabular-nums ${
                                     isActive ? 'font-bold text-black' : 'text-[var(--theme-text-muted)]'
                                 }`}
                             >

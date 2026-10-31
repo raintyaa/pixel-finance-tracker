@@ -37,35 +37,35 @@ export default function ConfirmDialog({
           <span className="text-xl leading-none">🗑️</span>
           <h2
             id="confirm-dialog-title"
-            className="font-['Silkscreen'] text-sm text-[var(--theme-expense)] tracking-wider font-bold"
+            className="font-retro text-data text-[var(--theme-expense-text)] tracking-normal font-bold"
           >
             HAPUS TRANSAKSI?
           </h2>
         </div>
 
-        <p className="text-xs text-[var(--theme-text-muted)] font-mono">
+        <p className="text-body text-[var(--theme-text-muted)] font-pixel">
           Data yang dihapus tidak dapat dikembalikan. Periksa kembali rincian di bawah ini.
         </p>
 
         {/* Rincian transaksi — baris pemisah, bukan kartu bersarang */}
         <div className="border-y-2 border-[var(--theme-border-subtle)] divide-y-2 divide-[var(--theme-border-subtle)]">
           <div className="flex items-baseline justify-between gap-3 py-2">
-            <span className="text-xs text-[var(--theme-text-muted)] font-mono shrink-0">Deskripsi</span>
-            <span className="text-xs text-[var(--theme-text)] font-bold text-right break-words">
+            <span className="text-label tracking-normal text-[var(--theme-text-muted)] font-pixel shrink-0">Deskripsi</span>
+            <span className="text-meta text-[var(--theme-text)] font-bold text-right break-words">
               {transaction.description || 'Tanpa keterangan'}
             </span>
           </div>
           <div className="flex items-baseline justify-between gap-3 py-2">
-            <span className="text-xs text-[var(--theme-text-muted)] font-mono shrink-0">Kategori</span>
-            <span className="text-xs text-[var(--theme-text-muted)] text-right break-words">
+            <span className="text-label tracking-normal text-[var(--theme-text-muted)] font-pixel shrink-0">Kategori</span>
+            <span className="text-meta text-[var(--theme-text-muted)] text-right break-words">
               {transaction.category}
             </span>
           </div>
           <div className="flex items-baseline justify-between gap-3 py-2">
-            <span className="text-xs text-[var(--theme-text-muted)] font-mono shrink-0">Nominal</span>
+            <span className="text-label tracking-normal text-[var(--theme-text-muted)] font-pixel shrink-0">Nominal</span>
             <span
-              className={`font-['Silkscreen'] text-xs text-right font-bold ${
-                isIncome ? 'text-[var(--theme-income)]' : 'text-[var(--theme-expense)]'
+              className={`font-retro text-body tabular-nums text-right font-bold ${
+                isIncome ? 'text-[var(--theme-income)]' : 'text-[var(--theme-expense-text)]'
               }`}
             >
               {isIncome ? '+' : '-'} {formatRupiah(transaction.amount)}
@@ -78,14 +78,14 @@ export default function ConfirmDialog({
           <button
             type="button"
             onClick={onConfirm}
-            className="pixel-button flex-1 bg-[var(--theme-expense)] hover:opacity-90 text-white font-['Silkscreen'] text-xs px-3 py-2.5 cursor-pointer font-bold"
+            className="pixel-button flex-1 bg-[var(--theme-expense)] hover:opacity-90 text-white font-retro text-meta px-3 py-2.5 cursor-pointer font-bold"
           >
             YA, HAPUS
           </button>
           <button
             type="button"
             onClick={onCancel}
-            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-['Silkscreen'] text-xs px-4 py-2.5 cursor-pointer font-bold"
+            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-retro text-meta px-4 py-2.5 cursor-pointer font-bold"
           >
             BATAL
           </button>

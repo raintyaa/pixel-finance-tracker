@@ -21,13 +21,13 @@ export default function BalanceCards({
 
   // Status RPG Berdasarkan Persentase Pengeluaran
   let statusText = 'DOMPET SEHAT 💚'
-  let barColor = 'bg-[var(--theme-income)]'
+  let barColor = 'bg-[var(--theme-income-fill)]'
   let statusColor = 'text-[var(--theme-income)]'
 
   if (expensePercentage >= 80) {
     statusText = 'STATUS KRITIS! 🚨'
     barColor = 'bg-[var(--theme-expense)]'
-    statusColor = 'text-[var(--theme-expense)]'
+    statusColor = 'text-[var(--theme-expense-text)]'
   } else if (expensePercentage >= 50) {
     statusText = 'MULAI MENIPIS ⚠️'
     barColor = 'bg-[var(--theme-gold)]'
@@ -40,12 +40,12 @@ export default function BalanceCards({
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.35fr)_minmax(0,1fr)] lg:items-stretch">
 
         {/* Card 1: Total Uang Masuk */}
-        <article className="pixel-box order-2 flex flex-col justify-between gap-5 bg-[var(--theme-card)] p-4 sm:p-5 lg:order-1">
-          <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+        <article className="pixel-box order-2 flex flex-col justify-between gap-5 bg-[var(--theme-income-surface)] p-4 sm:p-5 lg:order-1">
+          <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
             UANG MASUK
           </p>
 
-          <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-income)] sm:text-lg">
+          <p className="break-words font-retro text-data font-bold tabular-nums text-[var(--theme-income)] sm:text-display">
             {formatRupiah(totalIncome)}
           </p>
         </article>
@@ -60,26 +60,26 @@ export default function BalanceCards({
           </span>
 
           <div className="relative">
-            <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-black/70">
+            <p className="font-retro text-label font-bold tracking-[0.12em] text-black/70">
               SISA SALDO KAS
             </p>
-            <p className="mt-1 text-xs text-black/70">
+            <p className="mt-1 text-meta text-black/70">
               Total kas riil seluruh riwayat
             </p>
           </div>
 
-          <p className="relative break-words font-['Silkscreen'] text-2xl font-bold text-black sm:text-3xl">
+          <p className="relative break-words font-retro text-display-lg font-bold tabular-nums text-black sm:text-display-xl">
             {formatRupiah(realBalance)}
           </p>
         </article>
 
         {/* Card 3: Total Pengeluaran */}
-        <article className="pixel-box order-3 flex flex-col justify-between gap-5 bg-[var(--theme-card)] p-4 sm:p-5 lg:order-3">
-          <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+        <article className="pixel-box order-3 flex flex-col justify-between gap-5 bg-[var(--theme-expense-surface)] p-4 sm:p-5 lg:order-3">
+          <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
             PENGELUARAN
           </p>
 
-          <p className="break-words font-['Silkscreen'] text-base font-bold text-[var(--theme-expense)] sm:text-lg">
+          <p className="break-words font-retro text-data font-bold tabular-nums text-[var(--theme-expense-text)] sm:text-display">
             {formatRupiah(totalExpense)}
           </p>
         </article>
@@ -93,16 +93,16 @@ export default function BalanceCards({
               ❤️
             </span>
             <div>
-              <p className="font-['Silkscreen'] text-[10px] font-bold tracking-[0.16em] text-[var(--theme-text-muted)]">
+              <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
                 DAYA TAHAN KAS
               </p>
-              <p className={`mt-0.5 font-['Silkscreen'] text-xs font-bold ${statusColor}`}>
+              <p className={`mt-0.5 font-retro text-body font-bold ${statusColor}`}>
                 {statusText}
               </p>
             </div>
           </div>
 
-          <span className="font-mono text-[11px] text-[var(--theme-text-muted)]">
+          <span className="font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
             {expensePercentage}% terpakai
           </span>
         </div>

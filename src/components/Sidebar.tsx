@@ -26,10 +26,10 @@ function BrandMark() {
         <span aria-hidden="true">🪙</span>
       </div>
       <div className="min-w-0">
-        <p className="font-['Silkscreen'] text-sm font-bold tracking-wide text-black">
+        <p className="font-retro text-brand font-bold tracking-wide text-black">
           PIXEL LEDGER
         </p>
-        <span className="mt-1 inline-block border border-black bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-['Silkscreen'] text-[8px] font-bold tracking-[0.14em] text-[var(--theme-gold-text)]">
+        <span className="mt-1 inline-block border border-black bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-[0.1em] text-[var(--theme-gold-text)]">
           RETRO FINANCE
         </span>
       </div>
@@ -49,10 +49,10 @@ function NavItem({
       type="button"
       onClick={onNavigate}
       aria-current={item.active ? 'page' : undefined}
-      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-sm transition-all ${
+      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body transition-all ${
         item.active
           ? 'border-black bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_#000]'
-          : 'border-transparent text-[#3f3f46] hover:border-black hover:bg-[#fffbeb] hover:shadow-[2px_2px_0px_#000]'
+          : 'border-transparent text-[#3f3f46] hover:border-black hover:bg-[var(--theme-gold-surface)] hover:shadow-[2px_2px_0px_#000]'
       }`}
     >
       <span className="flex min-w-0 items-center gap-2.5">
@@ -64,7 +64,7 @@ function NavItem({
 
       {item.badge ? (
         <span
-          className={`shrink-0 border border-black px-1.5 py-0.5 font-['Silkscreen'] text-[9px] leading-none ${
+          className={`shrink-0 border border-black px-1 py-0.5 font-retro text-label leading-none tracking-normal ${
             item.active
               ? 'bg-black text-[var(--theme-gold)]'
               : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)]'
@@ -89,7 +89,7 @@ function NavGroup({
   return (
     <div>
       <div className="mb-2 flex items-center gap-2 px-1">
-        <p className="font-['Silkscreen'] text-[9px] font-bold tracking-[0.2em] text-[#a1a1aa]">
+        <p className="font-retro text-label font-bold tracking-[0.12em] text-[#a1a1aa]">
           {label}
         </p>
         <span className="h-px flex-1 bg-[#e4e4e7]" />
@@ -106,20 +106,20 @@ function NavGroup({
 function SidebarFooter() {
   return (
     <div className="shrink-0 border-t-2 border-black p-4">
-      <div className="pixel-box-sm bg-[#fffbeb] p-3.5">
+      <div className="pixel-box-sm tinted-surface bg-[var(--theme-gold-surface)] p-3.5">
         <div className="flex items-center gap-2">
           <span className="text-base" aria-hidden="true">
             💾
           </span>
-          <p className="font-['Silkscreen'] text-[10px] font-bold tracking-wider text-[var(--theme-gold-text)]">
+          <p className="font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)]">
             OFFLINE-FIRST
           </p>
         </div>
-        <p className="mt-1.5 text-[11px] leading-relaxed text-[#52525b]">
+        <p className="mt-1.5 text-body leading-relaxed text-[var(--theme-text-muted)]">
           Tersimpan otomatis di browser ini.{' '}
           <span className="whitespace-nowrap font-bold text-black">Zero data loss.</span>
         </p>
-        <div className="mt-2 flex items-center gap-1.5 border-t border-[#e4e4e7] pt-2 font-mono text-[10px] text-[var(--theme-text-muted)]">
+        <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--theme-border-subtle)] pt-2 font-pixel text-meta text-[var(--theme-text-muted)]">
           <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
           LocalStorage aktif
         </div>
@@ -176,10 +176,10 @@ export default function Sidebar() {
             <span aria-hidden="true">🪙</span>
           </div>
           <div>
-            <p className="font-['Silkscreen'] text-xs font-bold tracking-wide text-black">
+            <p className="font-retro text-brand font-bold tracking-wide text-black">
               PIXEL LEDGER
             </p>
-            <p className="font-mono text-[9px] text-[var(--theme-text-muted)]">
+            <p className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
               RETRO FINANCE
             </p>
           </div>

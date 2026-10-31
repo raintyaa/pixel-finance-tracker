@@ -77,13 +77,13 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
       >
         {/* Judul Modal */}
         <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
-          <h2 className="font-['Silkscreen'] text-sm md:text-base text-[var(--theme-gold-text)] tracking-wider font-bold">
+          <h2 className="font-retro text-data text-[var(--theme-gold-text)] tracking-normal font-bold">
             {isEditMode ? '✏️ UBAH TRANSAKSI' : '📝 CATAT TRANSAKSI'}
           </h2>
           <button
             type="button"
             onClick={onClose}
-            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] px-2 py-1 text-xs font-['Silkscreen'] cursor-pointer"
+            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] px-2 py-1 text-meta font-retro cursor-pointer"
             title="Tutup"
           >
             ✕
@@ -96,7 +96,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
             <button
               type="button"
               onClick={() => handleSelectType('expense')}
-              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer font-bold ${
+              className={`px-3 py-2 text-label font-retro tracking-normal transition-all cursor-pointer font-bold ${
                 type === 'expense'
                   ? 'bg-[var(--theme-expense)] text-white pixel-box-sm shadow-none'
                   : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -107,7 +107,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
             <button
               type="button"
               onClick={() => handleSelectType('income')}
-              className={`px-3 py-2 text-[11px] font-['Silkscreen'] transition-all cursor-pointer font-bold ${
+              className={`px-3 py-2 text-label font-retro tracking-normal transition-all cursor-pointer font-bold ${
                 type === 'income'
                   ? 'bg-[var(--theme-income)] text-white pixel-box-sm shadow-none'
                   : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -119,7 +119,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
           {/* Nominal */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
               NOMINAL (Rp)
             </span>
             <input
@@ -129,19 +129,19 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="cth: 25000"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {/* Kategori */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
               KATEGORI
             </span>
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             >
               {filteredCategories.map((c) => (
                 <option key={c.id} value={c.name} className="bg-[var(--theme-card)] text-[var(--theme-text)]">
@@ -153,20 +153,20 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
           {/* Tanggal */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
               TANGGAL
             </span>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             />
           </label>
 
           {/* Keterangan */}
           <label className="flex flex-col gap-1">
-            <span className="font-['Silkscreen'] text-[11px] text-[var(--theme-text)] font-bold">
+            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
               KETERANGAN
             </span>
             <input
@@ -174,12 +174,12 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="cth: Makan siang nasi padang"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-sm text-[var(--theme-text)] font-mono outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {error && (
-            <p className="text-xs font-mono text-[var(--theme-expense)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
+            <p className="text-meta font-pixel text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
               ⚠️ {error}
             </p>
           )}
@@ -188,14 +188,14 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="pixel-button flex-1 bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-['Silkscreen'] text-xs px-3 py-2.5 cursor-pointer font-bold"
+              className="pixel-button flex-1 bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-retro text-meta px-3 py-2.5 cursor-pointer font-bold"
             >
               {isEditMode ? '💾 Simpan Perubahan' : '💾 Simpan Transaksi'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-['Silkscreen'] text-xs px-4 py-2.5 cursor-pointer font-bold"
+              className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-retro text-meta px-4 py-2.5 cursor-pointer font-bold"
             >
               Batal
             </button>
