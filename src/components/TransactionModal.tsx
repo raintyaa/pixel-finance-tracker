@@ -133,7 +133,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               value={amount}
               onChange={(e) => setAmount(e.target.value)}
               placeholder="cth: 25000"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-data font-bold text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
@@ -145,7 +145,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
             <select
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-sans outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             >
               {filteredCategories.map((c) => (
                 <option key={c.id} value={c.name} className="bg-[var(--theme-card)] text-[var(--theme-text)]">
@@ -164,7 +164,7 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             />
           </label>
 
@@ -178,12 +178,12 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="cth: Makan siang nasi padang"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-sans outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {error && (
-            <p className="text-meta font-pixel text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
+            <p className="text-meta font-sans text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
               ⚠️ {error}
             </p>
           )}

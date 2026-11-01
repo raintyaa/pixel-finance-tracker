@@ -104,16 +104,16 @@ export default function AdjustBalanceModal({
           </button>
         </div>
 
-        <p className="text-body text-[var(--theme-text-muted)] font-pixel leading-relaxed">
+        <p className="text-body text-[var(--theme-text-muted)] font-sans leading-relaxed">
           Gunakan fitur ini jika saldo di dompet/rekening riilmu berbeda dengan aplikasi (misal lupa mencatat pengeluaran jajan).
         </p>
 
         {/* Info Saldo Tercatat Saat Ini */}
         <div className="border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-3 flex items-center justify-between">
-          <span className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+          <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
             Saldo Tercatat di Aplikasi:
           </span>
-          <span className="font-retro text-data font-bold tabular-nums text-black">
+          <span className="font-mono text-data font-bold tabular-nums text-black">
             {formatRupiah(currentBalance)}
           </span>
         </div>
@@ -135,7 +135,7 @@ export default function AdjustBalanceModal({
                 setError('')
               }}
               placeholder={`cth: ${Math.max(0, currentBalance - 25000)}`}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-data font-bold text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-data font-bold text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
@@ -151,19 +151,19 @@ export default function AdjustBalanceModal({
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className="font-pixel text-label tracking-normal font-bold">
+                <span className="font-sans text-label tracking-normal font-bold">
                   {difference < 0
                     ? '🔻 Selisih Berkurang (Pengeluaran)'
                     : difference > 0
                     ? '🔺 Selisih Bertambah (Pemasukan)'
                     : '⚖️ Tidak Ada Selisih'}
                 </span>
-                <span className="font-retro text-body font-bold tabular-nums">
+                <span className="font-mono text-body font-bold tabular-nums">
                   {difference > 0 ? '+' : ''}
                   {formatRupiah(difference)}
                 </span>
               </div>
-              <p className="font-pixel text-meta leading-tight mt-0.5 opacity-90">
+              <p className="font-sans text-meta leading-tight mt-0.5 opacity-90">
                 {difference < 0
                   ? `Aplikasi akan otomatis mencatat pengeluaran sebesar ${formatRupiah(Math.abs(difference))} agar saldo menjadi pas.`
                   : difference > 0
@@ -187,7 +187,7 @@ export default function AdjustBalanceModal({
                   ? 'cth: Lupa catat kopi dan parkir'
                   : 'cth: Penyesuaian kas bulanan'
               }
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-sans outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
@@ -200,12 +200,12 @@ export default function AdjustBalanceModal({
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-pixel outline-none focus:border-[var(--theme-gold)] cursor-pointer"
+              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] cursor-pointer"
             />
           </label>
 
           {error && (
-            <p className="text-meta font-pixel text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
+            <p className="text-meta font-sans text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
               ⚠️ {error}
             </p>
           )}

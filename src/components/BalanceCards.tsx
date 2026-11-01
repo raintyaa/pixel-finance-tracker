@@ -145,7 +145,7 @@ export default function BalanceCards({
             </div>
           </div>
 
-          <span className="font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
+          <span className="font-mono text-meta tabular-nums text-[var(--theme-text-muted)]">
             {expensePercentage}% terpakai
           </span>
         </div>

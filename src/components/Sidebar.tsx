@@ -119,7 +119,7 @@ function SidebarFooter() {
           Tersimpan otomatis di browser ini.{' '}
           <span className="whitespace-nowrap font-bold text-black">Zero data loss.</span>
         </p>
-        <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--theme-border-subtle)] pt-2 font-pixel text-meta text-[var(--theme-text-muted)]">
+        <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--theme-border-subtle)] pt-2 font-sans text-meta text-[var(--theme-text-muted)]">
           <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
           LocalStorage aktif
         </div>

@@ -160,7 +160,7 @@ export default function App() {
           <header className="z-30 border-b-2 border-black bg-white lg:sticky lg:top-0">
             <h1 className="sr-only">Dashboard Pixel Ledger</h1>
             <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
-              <nav aria-label="Breadcrumb" className="font-pixel text-meta text-[var(--theme-text-muted)]">
+              <nav aria-label="Breadcrumb" className="font-sans text-meta text-[var(--theme-text-muted)]">
                 <ol className="flex items-center gap-1.5">
                   <li className="font-bold text-[var(--theme-gold-text)]">Pixel Ledger</li>
                   <li aria-hidden="true" className="text-[#d4d4d8]">
@@ -207,7 +207,7 @@ export default function App() {
                   />
                   Ringkasan Saldo
                 </h2>
-                <p className="font-pixel text-meta text-[var(--theme-text-muted)]">
+                <p className="font-sans text-meta text-[var(--theme-text-muted)]">
                   {viewScope === 'month'
                     ? `${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`
                     : 'Semua riwayat'}

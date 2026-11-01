@@ -79,15 +79,15 @@ export default function WeeklyTable({
                         />
                         Aktivitas Mingguan
                     </h2>
-                    <p className="mt-0.5 font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
-                        Pekan <span className="font-bold text-[var(--theme-gold-text)]">{weekInfo.weekNumber}</span> ·{' '}
+                    <p className="mt-0.5 font-sans text-meta text-[var(--theme-text-muted)]">
+                        Pekan <span className="font-mono font-bold tabular-nums text-[var(--theme-gold-text)]">{weekInfo.weekNumber}</span> ·{' '}
                         {weekInfo.label}
                     </p>
                 </div>
-                <span className="font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
+                <span className="font-sans text-meta text-[var(--theme-text-muted)]">
                     {weeklyTransactionCount === 0
                         ? 'Belum ada transaksi'
-                        : `${weeklyTransactionCount} transaksi`}
+                        : <><span className="font-mono tabular-nums">{weeklyTransactionCount}</span> transaksi</>}
                 </span>
             </div>
 
@@ -123,7 +123,7 @@ export default function WeeklyTable({
                                     {day.dayName.toUpperCase()}
                                 </span>
                                 <div className="flex items-center gap-1.5 md:mt-0.5 md:flex-col md:items-start md:gap-1">
-                                    <span className="whitespace-nowrap font-pixel text-meta tabular-nums text-[var(--theme-text-muted)]">
+                                    <span className="whitespace-nowrap font-mono text-meta tabular-nums text-[var(--theme-text-muted)]">
                                         {day.dateLabel}
                                     </span>
                                     {isToday && (
@@ -137,7 +137,7 @@ export default function WeeklyTable({
                             {/* Daftar Transaksi di Hari Tersebut */}
                             <div className="flex flex-1 flex-col gap-1">
                                 {!hasTransactions ? (
-                                    <div className="flex h-full min-h-[48px] items-center justify-center py-4 text-center font-pixel text-meta text-[var(--theme-text-muted)] md:min-h-[80px]">
+                                    <div className="flex h-full min-h-[48px] items-center justify-center py-4 text-center font-sans text-meta text-[var(--theme-text-muted)] md:min-h-[80px]">
                                         Kosong
                                     </div>
                                 ) : (
@@ -178,11 +178,11 @@ export default function WeeklyTable({
                                                     </button>
                                                 </div>
                                             </div>
-                                            <span className="truncate font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+                                            <span className="truncate font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                                                 {tx.category}
                                             </span>
                                             <span
-                                                className={`mt-0.5 break-words font-retro text-meta font-bold tabular-nums ${
+                                                className={`mt-0.5 break-words font-mono text-meta font-bold tabular-nums ${
                                                     tx.type === 'income'
                                                         ? 'text-[var(--theme-income)]'
                                                         : 'text-[var(--theme-expense-text)]'
@@ -196,7 +196,7 @@ export default function WeeklyTable({
                             </div>
 
                             {/* Footer Subtotal Harian */}
-                            <div className="mt-2 flex flex-col gap-1 border-t-2 border-[var(--theme-border)] pt-2 font-pixel text-meta">
+                            <div className="mt-2 flex flex-col gap-1 border-t-2 border-[var(--theme-border)] pt-2 font-sans text-meta">
                                 {isHighestExpense && (
                                     <span className="mb-0.5 self-start border border-[var(--theme-border)] bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
                                         🔥 TERTINGGI
@@ -204,13 +204,13 @@ export default function WeeklyTable({
                                 )}
                                 <div className="flex items-baseline justify-between gap-1 text-[var(--theme-expense-text)]">
                                     <span className="text-[var(--theme-text-muted)]">Keluar</span>
-                                    <span className="truncate font-bold">
+                                    <span className="truncate font-mono font-bold tabular-nums">
                                         {day.dayExpense > 0 ? formatRupiah(day.dayExpense) : '—'}
                                     </span>
                                 </div>
                                 <div className="flex items-baseline justify-between gap-1 text-[var(--theme-income)]">
                                     <span className="text-[var(--theme-text-muted)]">Masuk</span>
-                                    <span className="truncate font-bold">
+                                    <span className="truncate font-mono font-bold tabular-nums">
                                         {day.dayIncome > 0 ? formatRupiah(day.dayIncome) : '—'}
                                     </span>
                                 </div>
@@ -225,35 +225,35 @@ export default function WeeklyTable({
                 className="motion-rise-in border-t-2 border-[var(--theme-border-subtle)] pt-4"
                 style={{ animationDelay: '196ms' }}
             >
-                <p className="font-pixel text-meta text-[var(--theme-text-muted)]">
+                <p className="font-sans text-meta text-[var(--theme-text-muted)]">
                     Akumulasi mingguan
                 </p>
 
                 <div className="mt-3 grid grid-cols-2 gap-4 lg:grid-cols-4">
                     <div>
-                        <span className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+                        <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                             Pemasukan
                         </span>
-                        <p className="mt-1 break-words font-retro text-body font-bold tabular-nums text-[var(--theme-income)]">
+                        <p className="mt-1 break-words font-mono text-body font-bold tabular-nums text-[var(--theme-income)]">
                             + {formatRupiah(totalWeeklyIncome)}
                         </p>
                     </div>
 
                     <div>
-                        <span className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+                        <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                             Pengeluaran
                         </span>
-                        <p className="mt-1 break-words font-retro text-body font-bold tabular-nums text-[var(--theme-expense-text)]">
+                        <p className="mt-1 break-words font-mono text-body font-bold tabular-nums text-[var(--theme-expense-text)]">
                             - {formatRupiah(totalWeeklyExpense)}
                         </p>
                     </div>
 
                     <div>
-                        <span className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+                        <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                             Arus kas bersih {netWeeklyFlow >= 0 ? '(Surplus)' : '(Defisit)'}
                         </span>
                         <p
-                            className={`mt-1 break-words font-retro text-body font-bold tabular-nums ${
+                            className={`mt-1 break-words font-mono text-body font-bold tabular-nums ${
                                 netWeeklyFlow >= 0
                                     ? 'text-[var(--theme-income)]'
                                     : 'text-[var(--theme-expense-text)]'
@@ -264,10 +264,10 @@ export default function WeeklyTable({
                     </div>
 
                     <div>
-                        <span className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+                        <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                             Rata-rata harian
                         </span>
-                        <p className="mt-1 break-words font-retro text-body font-bold tabular-nums text-[var(--theme-text)]">
+                        <p className="mt-1 break-words font-mono text-body font-bold tabular-nums text-[var(--theme-text)]">
                             {formatRupiah(avgDailyExpense)}
                         </p>
                     </div>
