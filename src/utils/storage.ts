@@ -6,6 +6,7 @@ import type { Transaction } from '../types/finance'
  * Menggunakan Web Storage API bawaan browser tanpa dependensi tambahan.
  */
 export const STORAGE_KEY = 'pixel_ledger_transactions_v2'
+export const STORAGE_BACKUP_KEY = 'pixel_ledger_transactions_backup'
 
 /** Cek ketersediaan LocalStorage (mis. private browsing / SSR) tanpa melempar error. */
 function getStorage(): Storage | null {
@@ -31,7 +32,18 @@ export function loadTransactions(): Transaction[] {
     }
 
     const raw = storage.getItem(STORAGE_KEY)
-    if (!raw) return INITIAL_TRANSACTIONS
+    if (!raw) {
+      // Fallback ke snapshot cadangan jika ada
+      const backup = storage.getItem(STORAGE_BACKUP_KEY)
+      if (backup) {
+        const parsedBackup: unknown = JSON.parse(backup)
+        if (Array.isArray(parsedBackup) && parsedBackup.length > 0) {
+          storage.setItem(STORAGE_KEY, backup)
+          return parsedBackup as Transaction[]
+        }
+      }
+      return INITIAL_TRANSACTIONS
+    }
 
     const parsed: unknown = JSON.parse(raw)
     if (!Array.isArray(parsed)) return INITIAL_TRANSACTIONS
@@ -53,6 +65,9 @@ export function saveTransactions(transactions: Transaction[]): void {
 
   try {
     storage.setItem(STORAGE_KEY, JSON.stringify(transactions))
+    if (transactions.length > 0) {
+      storage.setItem(STORAGE_BACKUP_KEY, JSON.stringify(transactions))
+    }
   } catch (error) {
     console.warn('Gagal menyimpan transaksi ke LocalStorage:', error)
   }
