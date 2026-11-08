@@ -53,7 +53,7 @@ export default function PeriodNavigator({
                         type="button"
                         onClick={() => onToggleViewScope('month')}
                         aria-pressed={viewScope === 'month'}
-                        className={`px-2.5 py-1 font-retro text-label font-bold tracking-normal transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
                             viewScope === 'month'
                                 ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
                                 : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -65,7 +65,7 @@ export default function PeriodNavigator({
                         type="button"
                         onClick={() => onToggleViewScope('all')}
                         aria-pressed={viewScope === 'all'}
-                        className={`px-2.5 py-1 font-retro text-label font-bold tracking-normal transition-all cursor-pointer ${
+                        className={`px-2.5 py-1 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
                             viewScope === 'all'
                                 ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
                                 : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
@@ -78,7 +78,7 @@ export default function PeriodNavigator({
                 <button
                     type="button"
                     onClick={onResetToday}
-                    className="pixel-button cursor-pointer bg-[var(--theme-gold-surface)] px-3 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)] hover:bg-[var(--theme-gold-badge)]"
+                    className="pixel-button cursor-pointer bg-[var(--theme-gold-surface)] px-3 py-1.5 font-sans text-label font-bold tracking-wide text-[var(--theme-gold-text)] hover:bg-[var(--theme-gold-badge)]"
                 >
                     ⚡ HARI INI
                 </button>
@@ -136,15 +136,15 @@ export default function PeriodNavigator({
                             className={`flex min-h-[52px] min-w-0 flex-col items-center justify-center gap-0.5 border-2 border-[var(--theme-border)] px-1 py-2 text-center transition-all cursor-pointer ${
                                 isActive
                                     ? 'bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_var(--theme-shadow)]'
-                                    : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card)] hover:text-[var(--theme-text)]'
+                                    : 'bg-[var(--theme-card-subtle)] text-[#52525b] hover:bg-[var(--theme-card)] hover:text-black'
                             }`}
                         >
-                            <span className="font-retro text-label tracking-normal">
-                                MGG {w.weekNumber}
+                            <span className="font-sans text-label font-bold tracking-normal">
+                                MGG <span className="font-mono tabular-nums">{w.weekNumber}</span>
                             </span>
                             <span
                                 className={`max-w-full truncate font-mono text-meta tabular-nums ${
-                                    isActive ? 'font-bold text-black' : 'text-[var(--theme-text-muted)]'
+                                    isActive ? 'font-bold text-black' : 'text-[#71717a]'
                                 }`}
                             >
                                 {formatWeekRange(w)}

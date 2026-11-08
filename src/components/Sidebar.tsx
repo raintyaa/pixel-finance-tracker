@@ -49,7 +49,7 @@ function NavItem({
       type="button"
       onClick={onNavigate}
       aria-current={item.active ? 'page' : undefined}
-      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body transition-all hover:translate-x-0.5 ${
+      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body font-sans font-medium transition-all hover:translate-x-0.5 ${
         item.active
           ? 'border-black bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_#000]'
           : 'border-transparent text-[#3f3f46] hover:border-black hover:bg-[var(--theme-gold-surface)] hover:shadow-[2px_2px_0px_#000]'
@@ -179,7 +179,7 @@ export default function Sidebar() {
             <p className="font-retro text-brand font-bold tracking-wide text-black">
               PIXEL LEDGER
             </p>
-            <p className="font-pixel text-label tracking-normal text-[var(--theme-text-muted)]">
+            <p className="font-retro text-label font-bold tracking-[0.1em] text-[var(--theme-gold-text)]">
               RETRO FINANCE
             </p>
           </div>

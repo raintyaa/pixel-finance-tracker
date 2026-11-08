@@ -59,7 +59,7 @@ export default function BalanceCards({
 
           <p
             key={`income-${incomeKey}`}
-            className={`break-words font-retro text-data font-bold tabular-nums text-[var(--theme-income)] sm:text-display ${
+            className={`break-words font-mono text-data font-bold tabular-nums text-[var(--theme-income)] sm:text-display ${
               incomeKey > 0 ? 'motion-pop' : ''
             }`}
           >
@@ -103,7 +103,7 @@ export default function BalanceCards({
 
           <p
             key={`balance-${balanceKey}`}
-            className={`relative break-words font-retro text-display-lg font-bold tabular-nums text-black sm:text-display-xl ${
+            className={`relative break-words font-mono text-display-lg font-bold tabular-nums text-black sm:text-display-xl ${
               balanceKey > 0 ? 'motion-pop' : ''
             }`}
           >
@@ -119,7 +119,7 @@ export default function BalanceCards({
 
           <p
             key={`expense-${expenseKey}`}
-            className={`break-words font-retro text-data font-bold tabular-nums text-[var(--theme-expense-text)] sm:text-display ${
+            className={`break-words font-mono text-data font-bold tabular-nums text-[var(--theme-expense-text)] sm:text-display ${
               expenseKey > 0 ? 'motion-pop' : ''
             }`}
           >
