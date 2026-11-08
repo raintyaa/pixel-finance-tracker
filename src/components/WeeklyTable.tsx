@@ -195,38 +195,32 @@ export default function WeeklyTable({
                                 )}
                             </div>
 
-                            {/* Footer Subtotal Harian */}
-                            <div className="mt-2 flex flex-col gap-1 border-t-2 border-[var(--theme-border)] pt-2 font-sans text-meta">
-                                {isHighestExpense && (
-                                    <span className="mb-0.5 self-start border border-[var(--theme-border)] bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
-                                        🔥 TERTINGGI
-                                    </span>
-                                )}
-                                <div className="flex items-baseline justify-between gap-1">
-                                    <span className="text-[var(--theme-text-muted)]">Keluar</span>
-                                    <span
-                                        className={`truncate font-mono font-bold tabular-nums ${
-                                            day.dayExpense > 0
-                                                ? 'text-[var(--theme-expense-text)]'
-                                                : 'text-[var(--theme-text-muted)]'
-                                        }`}
-                                    >
-                                        {formatRupiah(day.dayExpense)}
-                                    </span>
+                            {/* Footer Subtotal Harian — hanya tampil jika ada transaksi di hari ini */}
+                            {hasTransactions && (
+                                <div className="mt-2 flex flex-col gap-1 border-t-2 border-[var(--theme-border)] pt-2 font-sans text-meta">
+                                    {isHighestExpense && (
+                                        <span className="mb-0.5 self-start border border-[var(--theme-border)] bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
+                                            🔥 TERTINGGI
+                                        </span>
+                                    )}
+                                    {day.dayExpense > 0 && (
+                                        <div className="flex items-baseline justify-between gap-1 text-[var(--theme-expense-text)]">
+                                            <span className="text-[var(--theme-text-muted)]">Keluar</span>
+                                            <span className="truncate font-mono font-bold tabular-nums">
+                                                {formatRupiah(day.dayExpense)}
+                                            </span>
+                                        </div>
+                                    )}
+                                    {day.dayIncome > 0 && (
+                                        <div className="flex items-baseline justify-between gap-1 text-[var(--theme-income)]">
+                                            <span className="text-[var(--theme-text-muted)]">Masuk</span>
+                                            <span className="truncate font-mono font-bold tabular-nums">
+                                                +{formatRupiah(day.dayIncome)}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="flex items-baseline justify-between gap-1">
-                                    <span className="text-[var(--theme-text-muted)]">Masuk</span>
-                                    <span
-                                        className={`truncate font-mono font-bold tabular-nums ${
-                                            day.dayIncome > 0
-                                                ? 'text-[var(--theme-income)]'
-                                                : 'text-[var(--theme-text-muted)]'
-                                        }`}
-                                    >
-                                        {formatRupiah(day.dayIncome)}
-                                    </span>
-                                </div>
-                            </div>
+                            )}
                         </div>
                     )
                 })}
