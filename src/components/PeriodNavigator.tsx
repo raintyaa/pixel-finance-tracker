@@ -143,7 +143,7 @@ export default function PeriodNavigator({
                                 MGG <span className="font-mono tabular-nums">{w.weekNumber}</span>
                             </span>
                             <span
-                                className={`max-w-full truncate font-mono text-meta tabular-nums ${
+                                className={`max-w-full break-words text-center font-mono text-meta leading-tight tabular-nums ${
                                     isActive ? 'font-bold text-black' : 'text-[#71717a]'
                                 }`}
                             >

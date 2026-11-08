@@ -153,11 +153,11 @@ export default function WeeklyTable({
                                             }`}
                                         >
                                             {/* Baris Judul + Tombol Aksi Mini (Ubah / Hapus) */}
-                                            <div className="flex items-start justify-between gap-1">
-                                                <span className="min-w-0 flex-1 truncate text-meta font-bold text-[var(--theme-text)]">
+                                            <div className="flex items-start justify-between gap-1.5">
+                                                <span className="min-w-0 flex-1 break-words font-sans text-meta font-bold leading-snug text-[var(--theme-text)]">
                                                     {tx.description || 'Tanpa keterangan'}
                                                 </span>
-                                                <div className="flex shrink-0 items-center gap-1">
+                                                <div className="flex shrink-0 items-center gap-1 pt-0.5">
                                                     <button
                                                         type="button"
                                                         onClick={() => onEditTransaction(tx)}
@@ -178,7 +178,7 @@ export default function WeeklyTable({
                                                     </button>
                                                 </div>
                                             </div>
-                                            <span className="truncate font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
+                                            <span className="break-words font-sans text-label leading-tight tracking-normal text-[var(--theme-text-muted)]">
                                                 {tx.category}
                                             </span>
                                             <span
@@ -206,7 +206,7 @@ export default function WeeklyTable({
                                     {day.dayExpense > 0 && (
                                         <div className="flex items-baseline justify-between gap-1 text-[var(--theme-expense-text)]">
                                             <span className="text-[var(--theme-text-muted)]">Keluar</span>
-                                            <span className="truncate font-mono font-bold tabular-nums">
+                                            <span className="break-words font-mono font-bold tabular-nums text-right">
                                                 {formatRupiah(day.dayExpense)}
                                             </span>
                                         </div>
@@ -214,7 +214,7 @@ export default function WeeklyTable({
                                     {day.dayIncome > 0 && (
                                         <div className="flex items-baseline justify-between gap-1 text-[var(--theme-income)]">
                                             <span className="text-[var(--theme-text-muted)]">Masuk</span>
-                                            <span className="truncate font-mono font-bold tabular-nums">
+                                            <span className="break-words font-mono font-bold tabular-nums text-right">
                                                 +{formatRupiah(day.dayIncome)}
                                             </span>
                                         </div>
