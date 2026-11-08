@@ -68,9 +68,9 @@ export default function WeeklyTable({
     const weeklyTransactionCount = daysData.reduce((acc, d) => acc + d.transactions.length, 0)
 
     return (
-        <section className="pixel-box flex min-w-0 flex-col gap-5 bg-[var(--theme-card)] p-4 sm:p-5">
+        <section className="pixel-box flex min-w-0 flex-col overflow-hidden bg-[var(--theme-card)]">
             {/* Header Tabel Mingguan */}
-            <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-4 sm:flex-row sm:items-baseline sm:justify-between">
+            <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border)] p-4 sm:flex-row sm:items-baseline sm:justify-between sm:p-5">
                 <div>
                     <h2 className="font-retro text-data font-bold text-[var(--theme-text)] sm:text-display">
                         <span
@@ -92,7 +92,7 @@ export default function WeeklyTable({
             </div>
 
             {/* Grid 7 Kolom Hari (Minggu s/d Sabtu) */}
-            <div className="grid grid-cols-1 divide-y-2 divide-[var(--theme-border)] overflow-hidden border-2 border-[var(--theme-border)] md:grid-cols-7 md:divide-x-2 md:divide-y-0">
+            <div className="grid grid-cols-1 divide-y-2 divide-[var(--theme-border)] border-b-2 border-[var(--theme-border)] md:grid-cols-7 md:divide-x-2 md:divide-y-0">
                 {daysData.map((day) => {
                     const hasTransactions = day.transactions.length > 0
                     const isWeekend = day.dayIndex === 0 || day.dayIndex === 6
@@ -105,11 +105,11 @@ export default function WeeklyTable({
                         <div
                             key={day.dayIndex}
                             style={{ animationDelay: `${day.dayIndex * 28}ms` }}
-                            className={`motion-rise-in flex min-w-0 flex-col justify-between p-3 ${
+                            className={`motion-rise-in flex min-w-0 flex-col justify-between p-3.5 transition-colors ${
                                 isTinted
                                     ? 'tinted-surface bg-[var(--theme-gold-surface)]'
                                     : 'bg-[var(--theme-card)]'
-                            } ${isToday ? 'shadow-[inset_0_0_0_2px_var(--theme-gold)]' : ''}`}
+                            }`}
                         >
                             {/* Header Kolom Hari */}
                             <div className="mb-2 flex items-center justify-between gap-2 border-b border-[var(--theme-border-subtle)] pb-2 md:block">
@@ -202,16 +202,28 @@ export default function WeeklyTable({
                                         🔥 TERTINGGI
                                     </span>
                                 )}
-                                <div className="flex items-baseline justify-between gap-1 text-[var(--theme-expense-text)]">
+                                <div className="flex items-baseline justify-between gap-1">
                                     <span className="text-[var(--theme-text-muted)]">Keluar</span>
-                                    <span className="truncate font-mono font-bold tabular-nums">
-                                        {day.dayExpense > 0 ? formatRupiah(day.dayExpense) : '—'}
+                                    <span
+                                        className={`truncate font-mono font-bold tabular-nums ${
+                                            day.dayExpense > 0
+                                                ? 'text-[var(--theme-expense-text)]'
+                                                : 'text-[var(--theme-text-muted)]'
+                                        }`}
+                                    >
+                                        {formatRupiah(day.dayExpense)}
                                     </span>
                                 </div>
-                                <div className="flex items-baseline justify-between gap-1 text-[var(--theme-income)]">
+                                <div className="flex items-baseline justify-between gap-1">
                                     <span className="text-[var(--theme-text-muted)]">Masuk</span>
-                                    <span className="truncate font-mono font-bold tabular-nums">
-                                        {day.dayIncome > 0 ? formatRupiah(day.dayIncome) : '—'}
+                                    <span
+                                        className={`truncate font-mono font-bold tabular-nums ${
+                                            day.dayIncome > 0
+                                                ? 'text-[var(--theme-income)]'
+                                                : 'text-[var(--theme-text-muted)]'
+                                        }`}
+                                    >
+                                        {formatRupiah(day.dayIncome)}
                                     </span>
                                 </div>
                             </div>
@@ -222,7 +234,7 @@ export default function WeeklyTable({
 
             {/* Akumulasi Total Mingguan */}
             <div
-                className="motion-rise-in border-t-2 border-[var(--theme-border-subtle)] pt-4"
+                className="motion-rise-in p-4 sm:p-5"
                 style={{ animationDelay: '196ms' }}
             >
                 <p className="font-sans text-meta text-[var(--theme-text-muted)]">

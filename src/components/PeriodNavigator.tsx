@@ -48,15 +48,15 @@ export default function PeriodNavigator({
         >
             {/* 1. Filter scope saldo & kembali ke hari ini */}
             <div className="flex min-w-0 flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-1 border-2 border-black bg-[var(--theme-card-subtle)] p-1">
+                <div className="inline-flex border-2 border-black divide-x-2 divide-black" role="group" aria-label="Filter scope saldo">
                     <button
                         type="button"
                         onClick={() => onToggleViewScope('month')}
                         aria-pressed={viewScope === 'month'}
-                        className={`px-2.5 py-1 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
                             viewScope === 'month'
-                                ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
-                                : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                                ? 'bg-[var(--theme-gold)] text-black'
+                                : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-black'
                         }`}
                     >
                         📅 BULAN INI
@@ -65,10 +65,10 @@ export default function PeriodNavigator({
                         type="button"
                         onClick={() => onToggleViewScope('all')}
                         aria-pressed={viewScope === 'all'}
-                        className={`px-2.5 py-1 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
+                        className={`px-3 py-1.5 font-sans text-label font-bold tracking-wide transition-all cursor-pointer ${
                             viewScope === 'all'
-                                ? 'bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_#000]'
-                                : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                                ? 'bg-[var(--theme-gold)] text-black'
+                                : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-black'
                         }`}
                     >
                         🌐 SEMUA WAKTU

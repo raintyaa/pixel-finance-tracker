@@ -69,9 +69,10 @@ export default function BalanceCards({
 
         {/* Card 2: Sisa Saldo Kas — HERO CARD dengan aksen emas */}
         <article className="pixel-box relative order-1 flex flex-col justify-between gap-5 overflow-hidden bg-[var(--theme-gold)] p-5 sm:p-6 lg:order-2">
+          {/* Decorative Coin — diposisikan di kanan bawah agar tidak menutupi tombol ATUR SALDO di kanan atas */}
           <span
             key={`coin-${balanceKey}`}
-            className={`pointer-events-none absolute -right-3 -top-5 select-none text-8xl opacity-20 ${
+            className={`pointer-events-none absolute -bottom-4 -right-2 select-none text-7xl opacity-15 z-0 ${
               balanceKey > 0 ? 'motion-coin' : ''
             }`}
             aria-hidden="true"
@@ -79,7 +80,7 @@ export default function BalanceCards({
             🪙
           </span>
 
-          <div className="relative flex items-start justify-between gap-2">
+          <div className="relative z-10 flex items-start justify-between gap-2">
             <div>
               <p className="font-retro text-label font-bold tracking-[0.12em] text-black/70">
                 SISA SALDO KAS
@@ -103,7 +104,7 @@ export default function BalanceCards({
 
           <p
             key={`balance-${balanceKey}`}
-            className={`relative break-words font-mono text-display-lg font-bold tabular-nums text-black sm:text-display-xl ${
+            className={`relative z-10 break-words font-mono text-display-lg font-bold tabular-nums text-black sm:text-display-xl ${
               balanceKey > 0 ? 'motion-pop' : ''
             }`}
           >

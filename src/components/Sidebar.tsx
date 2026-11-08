@@ -105,24 +105,22 @@ function NavGroup({
 
 function SidebarFooter() {
   return (
-    <div className="shrink-0 border-t-2 border-black p-4">
-      <div className="pixel-box-sm tinted-surface bg-[var(--theme-gold-surface)] p-3.5">
-        <div className="flex items-center gap-2">
-          <span className="text-base" aria-hidden="true">
-            💾
-          </span>
-          <p className="font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)]">
-            OFFLINE-FIRST
-          </p>
-        </div>
-        <p className="mt-1.5 text-body leading-relaxed text-[var(--theme-text-muted)]">
-          Tersimpan otomatis di browser ini.{' '}
-          <span className="whitespace-nowrap font-bold text-black">Zero data loss.</span>
+    <div className="shrink-0 border-t-2 border-black bg-[var(--theme-card-subtle)] p-4">
+      <div className="flex items-center gap-2">
+        <span className="text-base" aria-hidden="true">
+          💾
+        </span>
+        <p className="font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)]">
+          OFFLINE-FIRST
         </p>
-        <div className="mt-2 flex items-center gap-1.5 border-t border-[var(--theme-border-subtle)] pt-2 font-sans text-meta text-[var(--theme-text-muted)]">
-          <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
-          LocalStorage aktif
-        </div>
+      </div>
+      <p className="mt-1.5 text-body leading-relaxed text-[var(--theme-text-muted)]">
+        Tersimpan otomatis di browser ini.{' '}
+        <span className="whitespace-nowrap font-bold text-black">Zero data loss.</span>
+      </p>
+      <div className="mt-2.5 flex items-center gap-1.5 border-t border-[var(--theme-border-subtle)] pt-2 font-sans text-meta text-[var(--theme-text-muted)]">
+        <span className="h-2 w-2 border border-black bg-[var(--theme-income)]" />
+        LocalStorage aktif
       </div>
     </div>
   )
