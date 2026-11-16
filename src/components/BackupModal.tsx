@@ -138,7 +138,7 @@ export default function BackupModal({
 
         {/* Notifikasi Banner Sukses / Galat */}
         {successMessage && (
-          <div className="flex items-center gap-2 border-y border-emerald-300 bg-emerald-50 px-3 py-2.5 text-emerald-900">
+          <div className="flex items-center gap-2 border-b-2 border-emerald-400 pb-2.5 text-emerald-800">
             <span className="text-base" aria-hidden="true">
               ✅
             </span>
@@ -147,7 +147,7 @@ export default function BackupModal({
         )}
 
         {errorMessage && (
-          <div className="flex items-center gap-2 border-y border-red-300 bg-red-50 px-3 py-2.5 text-red-900">
+          <div className="flex items-center gap-2 border-b-2 border-red-400 pb-2.5 text-red-700">
             <span className="text-base" aria-hidden="true">
               ⚠️
             </span>
@@ -156,7 +156,7 @@ export default function BackupModal({
         )}
 
         {/* Ringkasan Data Saat Ini */}
-        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3.5 py-3">
+        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
           <div>
             <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
               DATA AKTIF DI BROWSER
@@ -181,9 +181,9 @@ export default function BackupModal({
             UNDUH CADANGAN DATA (EKSPOR)
           </h3>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {/* Opsi JSON */}
-            <div className="flex flex-col justify-between gap-3 border-y border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] p-3">
+            <div className="flex flex-col justify-between gap-2.5">
               <div>
                 <div className="flex items-center gap-1.5 font-retro text-label font-bold tracking-normal text-black">
                   <span>💾</span>
@@ -203,7 +203,7 @@ export default function BackupModal({
             </div>
 
             {/* Opsi CSV */}
-            <div className="flex flex-col justify-between gap-3 border-y border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] p-3">
+            <div className="flex flex-col justify-between gap-2.5">
               <div>
                 <div className="flex items-center gap-1.5 font-retro text-label font-bold tracking-normal text-black">
                   <span>📊</span>
@@ -264,7 +264,7 @@ export default function BackupModal({
               )}
             </div>
           ) : (
-            <div className="flex flex-col gap-2.5 border-y-2 border-emerald-300 bg-emerald-50 px-3.5 py-3 text-emerald-950">
+            <div className="flex flex-col gap-2.5 border-t border-emerald-400 pt-2.5 text-emerald-950">
               <div className="flex items-center justify-between border-b border-emerald-300 pb-2">
                 <span className="font-retro text-label font-bold tracking-normal text-emerald-900">
                   PRATINJAU BERKAS CADANGAN
@@ -336,7 +336,7 @@ export default function BackupModal({
               </button>
             </div>
           ) : (
-            <div className="flex flex-col gap-2 border-y-2 border-red-300 bg-red-50 px-3.5 py-3 text-red-950">
+            <div className="flex flex-col gap-2 border-t border-red-400 pt-2.5 text-red-900">
               <p className="font-sans text-meta font-bold leading-normal">
                 ⚠️ PERINGATAN: Seluruh data transaksi di browser akan dihapus dan dikembalikan ke data
                 awal bawaan. Tindakan ini tidak dapat dibatalkan kecuali kamu memiliki file cadangan.

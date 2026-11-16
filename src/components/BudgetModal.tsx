@@ -84,8 +84,8 @@ export default function BudgetModal({
           anggaran dan menampilkan peringatan jika pengeluaran mulai kritis.
         </p>
 
-        {/* Ringkasan Realita Bulan Ini — strip datar tanpa nested card */}
-        <div className="flex flex-col gap-2 border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3.5 py-3">
+        {/* Ringkasan Realita Bulan Ini — baris pemisah datar tanpa background box */}
+        <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-3">
           <div className="flex justify-between items-center text-meta">
             <span className="font-sans text-[var(--theme-text-muted)]">Pengeluaran Bulan Ini:</span>
             <span className="font-mono font-bold text-[var(--theme-expense-text)]">
@@ -149,12 +149,12 @@ export default function BudgetModal({
           {/* Real-time Preview Kalkulasi */}
           {isValidNumber && (
             <div
-              className={`border-y-2 px-3.5 py-3 ${
+              className={`border-t-2 pt-3 ${
                 previewRatio >= 100
-                  ? 'border-red-300 bg-red-50 text-red-900'
+                  ? 'border-red-300 text-red-900'
                   : previewRatio >= 80
-                  ? 'border-amber-300 bg-amber-50 text-amber-900'
-                  : 'border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] text-[var(--theme-text)]'
+                  ? 'border-amber-300 text-amber-900'
+                  : 'border-[var(--theme-border-subtle)] text-[var(--theme-text)]'
               }`}
             >
               <div className="flex justify-between items-center text-meta">

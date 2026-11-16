@@ -82,8 +82,8 @@ export default function ResetExpenseModal({
           </button>
         </div>
 
-        {/* Ringkasan Pengeluaran Bulan Ini — strip datar tanpa nested card */}
-        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-expense-surface)] px-3.5 py-3">
+        {/* Ringkasan Pengeluaran Bulan Ini — baris pemisah datar tanpa background box */}
+        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3.5">
           <div>
             <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
               TOTAL PENGELUARAN BULAN INI
@@ -93,14 +93,14 @@ export default function ResetExpenseModal({
             </p>
           </div>
           <div className="shrink-0 text-right">
-            <span className="inline-block whitespace-nowrap border border-black bg-white px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black">
+            <span className="inline-block whitespace-nowrap border border-black bg-[var(--theme-card-subtle)] px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black">
               {expenses.length} Transaksi Aktif
             </span>
           </div>
         </div>
 
         {/* Opsi 1 (Fitur Utama): Reset Pengeluaran ke Rp 0 & Kunci Saldo (Poin 2) */}
-        <div className="border-y-2 border-emerald-300 bg-emerald-50 px-3.5 py-3 text-emerald-950">
+        <div className="border-b-2 border-[var(--theme-border-subtle)] pb-3.5 text-emerald-950">
           {!confirmKeepBalance ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 flex-1">
@@ -108,11 +108,11 @@ export default function ResetExpenseModal({
                   <span className="text-base" aria-hidden="true">
                     🔒
                   </span>
-                  <h3 className="font-retro text-label font-bold tracking-normal text-emerald-900">
+                  <h3 className="font-retro text-label font-bold tracking-normal text-emerald-800">
                     RESET KE RP 0 (SALDO TETAP)
                   </h3>
                 </div>
-                <p className="mt-1 font-sans text-meta leading-normal text-emerald-800">
+                <p className="mt-1 font-sans text-meta leading-normal text-[var(--theme-text-muted)]">
                   Pengeluaran bulan ini direset ke <strong>Rp 0</strong>. Saldo kas riilmu{' '}
                   <strong>tetap utuh dan tidak bertambah</strong>.
                 </p>
@@ -157,14 +157,14 @@ export default function ResetExpenseModal({
         </div>
 
         {/* Opsi 2: Hapus Seluruh Transaksi Pengeluaran (Kembalikan Saldo) */}
-        <div className="border-y-2 border-[var(--theme-border-subtle)] bg-zinc-50 px-3.5 py-3 text-zinc-900">
+        <div className="border-b-2 border-[var(--theme-border-subtle)] pb-3.5 text-zinc-900">
           {!confirmDeleteAll ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <h3 className="font-retro text-label font-bold tracking-normal text-zinc-800">
                   HAPUS SELURUH TRANSAKSI (SALDO BERTAMBAH)
                 </h3>
-                <p className="mt-1 font-sans text-meta leading-normal text-zinc-600">
+                <p className="mt-1 font-sans text-meta leading-normal text-[var(--theme-text-muted)]">
                   Membatalkan seluruh transaksi pengeluaran. Uang kas akan bertambah kembali sebesar{' '}
                   {formatRupiah(totalExpense)}.
                 </p>
@@ -218,7 +218,7 @@ export default function ResetExpenseModal({
             </span>
           </div>
 
-          <div className="max-h-48 divide-y divide-[var(--theme-border-subtle)] overflow-y-auto border-y-2 border-[var(--theme-border-subtle)] bg-white">
+          <div className="max-h-48 divide-y divide-[var(--theme-border-subtle)] overflow-y-auto">
             {expenses.length === 0 ? (
               <p className="p-4 text-center font-sans text-meta text-[var(--theme-text-muted)]">
                 Tidak ada transaksi pengeluaran tercatat di bulan ini.

@@ -184,8 +184,8 @@ export default function AdjustBalanceModal({
           setelah transfer antar-rekening atau koreksi uang riil).
         </p>
 
-        {/* Info Saldo Tercatat Saat Ini — strip pembatas datar, tanpa kartu bersarang */}
-        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3 py-2.5">
+        {/* Info Saldo Tercatat Saat Ini — baris pembatas datar tanpa background box */}
+        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
           <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
             Saldo Tercatat di Aplikasi:
           </span>
@@ -218,12 +218,12 @@ export default function AdjustBalanceModal({
           {/* Pratinjau Selisih Otomatis */}
           {difference !== null && (
             <div
-              className={`flex flex-col gap-1 border-y-2 border-[var(--theme-border-subtle)] px-3 py-2.5 ${
+              className={`flex flex-col gap-1 border-b-2 border-[var(--theme-border-subtle)] pb-3 ${
                 difference < 0
-                  ? 'bg-[var(--theme-expense-surface)] text-[var(--theme-expense-text)]'
+                  ? 'text-[var(--theme-expense-text)]'
                   : difference > 0
-                  ? 'bg-[var(--theme-income-surface)] text-[var(--theme-income)]'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)]'
+                  ? 'text-[var(--theme-income)]'
+                  : 'text-[var(--theme-text-muted)]'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -255,7 +255,7 @@ export default function AdjustBalanceModal({
 
           {/* Pengaturan Khusus jika Selisih Berkurang (Poin 1) */}
           {difference !== null && difference < 0 && (
-            <div className="flex flex-col gap-3 border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3 py-3">
+            <div className="flex flex-col gap-3 border-b-2 border-[var(--theme-border-subtle)] pb-3.5">
               <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
                 PENGATURAN STATUS BEBAN & BIAYA ADMIN
               </h3>

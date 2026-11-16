@@ -223,7 +223,7 @@ export default function BalanceCards({
         {isOverBudget && (
           <div
             role="alert"
-            className="flex items-center gap-2.5 border-y border-red-300 bg-red-50 px-3 py-2.5 text-meta text-red-900"
+            className="flex items-center gap-2.5 border-t border-red-300 pt-2.5 text-meta text-red-900"
           >
             <span className="shrink-0 text-lg leading-none" aria-hidden="true">
               💀
@@ -241,7 +241,7 @@ export default function BalanceCards({
         {isNearLimit && (
           <div
             role="alert"
-            className="flex items-center gap-2.5 border-y border-amber-300 bg-amber-50 px-3 py-2.5 text-meta text-amber-900"
+            className="flex items-center gap-2.5 border-t border-amber-300 pt-2.5 text-meta text-amber-900"
           >
             <span className="shrink-0 text-lg leading-none" aria-hidden="true">
               ⚠️
