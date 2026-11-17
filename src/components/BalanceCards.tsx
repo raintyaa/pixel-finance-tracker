@@ -5,14 +5,18 @@ interface BalanceCardsProps {
   totalIncome: number   // Sesuai filter scope (Bulan ini / Semua)
   totalExpense: number  // Sesuai filter scope (Bulan ini / Semua)
   realBalance: number   // FIX: Total sisa uang kas riil di dompet saat ini
+  budgetLimit?: number  // Batas anggaran bulanan (Hari 11)
   onAdjustBalance?: () => void
+  onOpenBudget?: () => void // Buka modal pengaturan budget (Hari 11)
 }
 
 export default function BalanceCards({
   totalIncome,
   totalExpense,
   realBalance,
+  budgetLimit = 2500000,
   onAdjustBalance,
+  onOpenBudget,
 }: BalanceCardsProps) {
   // Papan skor: nilai bergulir dari angka lama, animasi hanya saat berubah
   const shownIncome = useCountUp(totalIncome, 480)
@@ -23,23 +27,26 @@ export default function BalanceCards({
   const expenseKey = useChangeKey(totalExpense)
   const balanceKey = useChangeKey(realBalance)
 
-  // Kalkulasi Rasio HP / Daya Tahan Keuangan periode ini
-  const expensePercentage =
-    totalIncome > 0
-      ? Math.min(100, Math.round((totalExpense / totalIncome) * 100))
-      : totalExpense > 0
-      ? 100
-      : 0
+  // Kalkulasi Rasio HP / Pemakaian Anggaran Bulanan (Hari 11)
+  const activeBudget = budgetLimit > 0 ? budgetLimit : 2500000
+  const expensePercentage = Math.round((totalExpense / activeBudget) * 100)
+  const remainingBudget = activeBudget - totalExpense
+  const isOverBudget = remainingBudget < 0
+  const isNearLimit = expensePercentage >= 80 && !isOverBudget
 
-  // Status RPG Berdasarkan Persentase Pengeluaran
+  // Status RPG Berdasarkan Persentase Pemakaian Anggaran
   let statusText = 'DOMPET SEHAT 💚'
   let barColor = 'bg-[var(--theme-income-fill)]'
   let statusColor = 'text-[var(--theme-income)]'
 
-  if (expensePercentage >= 80) {
-    statusText = 'STATUS KRITIS! 🚨'
-    barColor = 'bg-[var(--theme-expense)]'
-    statusColor = 'text-[var(--theme-expense-text)]'
+  if (isOverBudget) {
+    statusText = 'OVER BUDGET! 💀'
+    barColor = 'bg-red-600'
+    statusColor = 'text-red-600'
+  } else if (expensePercentage >= 80) {
+    statusText = 'HAMPIR HABIS 🚨'
+    barColor = 'bg-orange-500'
+    statusColor = 'text-orange-600'
   } else if (expensePercentage >= 50) {
     statusText = 'MULAI MENIPIS ⚠️'
     barColor = 'bg-[var(--theme-gold)]'
@@ -129,35 +136,94 @@ export default function BalanceCards({
         </article>
       </div>
 
-      {/* Indikator RPG Health Bar Keuangan — menyatu dengan ringkasan saldo */}
-      <div className="pixel-box bg-[var(--theme-card)] p-4 sm:p-5">
+      {/* Indikator RPG Health Bar Keuangan vs Batas Anggaran (Hari 11) */}
+      <div className="pixel-box flex flex-col gap-3 bg-[var(--theme-card)] p-4 sm:p-5">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-sm leading-none" aria-hidden="true">
+          <div className="flex items-center gap-2.5">
+            <span className="text-xl leading-none" aria-hidden="true">
               ❤️
             </span>
             <div>
-              <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
-                DAYA TAHAN KAS
-              </p>
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
+                  DAYA TAHAN KAS (EXP / HP BAR)
+                </p>
+                {onOpenBudget && (
+                  <button
+                    type="button"
+                    onClick={onOpenBudget}
+                    className="pixel-button cursor-pointer border border-black bg-[var(--theme-gold)] px-2 py-0.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-[var(--theme-gold-hover)]"
+                    title="Ubah Batas Anggaran Bulanan"
+                  >
+                    🎯 ATUR BUDGET
+                  </button>
+                )}
+              </div>
               <p className={`mt-0.5 font-retro text-body font-bold ${statusColor}`}>
                 {statusText}
               </p>
             </div>
           </div>
 
-          <span className="font-mono text-meta tabular-nums text-[var(--theme-text-muted)]">
-            {expensePercentage}% terpakai
-          </span>
+          <div className="flex flex-col items-start gap-0.5 sm:items-end">
+            <span className="font-mono text-meta font-bold tabular-nums text-[var(--theme-text)]">
+              {formatRupiah(shownExpense)} / {formatRupiah(activeBudget)}
+            </span>
+            <span className="font-mono text-label tabular-nums text-[var(--theme-text-muted)]">
+              {expensePercentage}% terpakai •{' '}
+              {isOverBudget
+                ? `Kelebihan ${formatRupiah(Math.abs(remainingBudget))}`
+                : `Sisa ${formatRupiah(remainingBudget)}`}
+            </span>
+          </div>
         </div>
 
         {/* HP Bar Pixel */}
-        <div className="mt-3 h-4 w-full border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5">
+        <div className="h-4 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5">
           <div
             className={`h-full ${barColor} motion-health-fill`}
-            style={{ transform: `scaleX(${expensePercentage / 100})` }}
+            style={{ transform: `scaleX(${Math.min(1, expensePercentage / 100)})` }}
           />
         </div>
+
+        {/* Alert Banner Retro jika Over Budget atau Mendekati Batas */}
+        {isOverBudget && (
+          <div
+            role="alert"
+            className="flex items-center gap-2.5 border-2 border-red-600 bg-red-50 p-2.5 text-meta text-red-900"
+          >
+            <span className="shrink-0 text-lg leading-none" aria-hidden="true">
+              💀
+            </span>
+            <p className="font-sans font-medium leading-tight">
+              <strong>STATUS KRITIS:</strong> Pengeluaran telah melampaui batas anggaran bulanan sebesar{' '}
+              <span className="font-mono font-bold text-red-700">
+                {formatRupiah(Math.abs(remainingBudget))}
+              </span>
+              . Segera tinjau pos pengeluaran atau sesuaikan batas anggaranmu.
+            </p>
+          </div>
+        )}
+
+        {isNearLimit && (
+          <div
+            role="alert"
+            className="flex items-center gap-2.5 border-2 border-amber-500 bg-amber-50 p-2.5 text-meta text-amber-900"
+          >
+            <span className="shrink-0 text-lg leading-none" aria-hidden="true">
+              ⚠️
+            </span>
+            <p className="font-sans font-medium leading-tight">
+              <strong>PERINGATAN ANGGARAN:</strong> Pengeluaran bulan ini sudah mencapai{' '}
+              <span className="font-mono font-bold">{expensePercentage}%</span> dari batas. Sisa
+              anggaran aman:{' '}
+              <span className="font-mono font-bold text-amber-800">
+                {formatRupiah(remainingBudget)}
+              </span>
+              .
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

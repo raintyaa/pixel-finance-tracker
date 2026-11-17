@@ -1,12 +1,17 @@
 import { INITIAL_TRANSACTIONS } from '../data/initialData'
-import type { Transaction } from '../types/finance'
+import type { BudgetConfig, Transaction } from '../types/finance'
 
 /**
- * Utilitas persistensi data transaksi di LocalStorage.
+ * Utilitas persistensi data transaksi dan batas budget di LocalStorage.
  * Menggunakan Web Storage API bawaan browser tanpa dependensi tambahan.
  */
 export const STORAGE_KEY = 'pixel_ledger_transactions_v2'
 export const STORAGE_BACKUP_KEY = 'pixel_ledger_transactions_backup'
+export const STORAGE_BUDGET_KEY = 'pixel_ledger_budget_v1'
+
+export const DEFAULT_BUDGET: BudgetConfig = {
+  monthlyLimit: 2500000,
+}
 
 /** Cek ketersediaan LocalStorage (mis. private browsing / SSR) tanpa melempar error. */
 function getStorage(): Storage | null {
@@ -86,5 +91,50 @@ export function resetTransactionsToDefault(): void {
     storage.removeItem('pixel_ledger_transactions_v1')
   } catch (error) {
     console.warn('Gagal mereset transaksi di LocalStorage:', error)
+  }
+}
+
+/**
+ * Membaca batas budget dari LocalStorage.
+ * Mengembalikan konfigurasi default jika belum pernah disetel atau terjadi kegagalan parse.
+ */
+export function loadBudget(): BudgetConfig {
+  const storage = getStorage()
+  if (!storage) return DEFAULT_BUDGET
+
+  try {
+    const raw = storage.getItem(STORAGE_BUDGET_KEY)
+    if (!raw) return DEFAULT_BUDGET
+
+    const parsed: unknown = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object') return DEFAULT_BUDGET
+
+    const candidate = parsed as Partial<BudgetConfig>
+    const monthlyLimit =
+      typeof candidate.monthlyLimit === 'number' && candidate.monthlyLimit >= 0
+        ? candidate.monthlyLimit
+        : DEFAULT_BUDGET.monthlyLimit
+
+    return {
+      monthlyLimit,
+      categoryLimits: candidate.categoryLimits,
+    }
+  } catch (error) {
+    console.warn('Gagal membaca batas budget dari LocalStorage:', error)
+    return DEFAULT_BUDGET
+  }
+}
+
+/**
+ * Menyimpan batas budget ke LocalStorage.
+ */
+export function saveBudget(budget: BudgetConfig): void {
+  const storage = getStorage()
+  if (!storage) return
+
+  try {
+    storage.setItem(STORAGE_BUDGET_KEY, JSON.stringify(budget))
+  } catch (error) {
+    console.warn('Gagal menyimpan batas budget ke LocalStorage:', error)
   }
 }

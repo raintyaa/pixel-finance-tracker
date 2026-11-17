@@ -35,3 +35,9 @@ export interface WeeklySummary {
     totalExpense: number
     netBalance: number // Saldo bersih (Pemasukan - Pengeluaran)
 }
+
+// 6. Model Batas Budget Bulanan (Hari 11)
+export interface BudgetConfig {
+    monthlyLimit: number // Batas pengeluaran bulanan dalam Rupiah (contoh: 2500000)
+    categoryLimits?: Record<string, number> // Batas opsional per kategori
+}

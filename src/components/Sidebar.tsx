@@ -11,7 +11,7 @@ const MAIN_MENU: MenuItem[] = [
   { icon: '📊', label: 'Dashboard', active: true },
   { icon: '📈', label: 'Analisis' },
   { icon: '💳', label: 'Riwayat Transaksi' },
-  { icon: '🎯', label: 'Batas Budget', badge: 'Segera' },
+  { icon: '🎯', label: 'Batas Budget' },
 ]
 
 const SYSTEM_MENU: MenuItem[] = [
@@ -81,10 +81,12 @@ function NavGroup({
   label,
   items,
   onNavigate,
+  onOpenBudget,
 }: {
   label: string
   items: MenuItem[]
   onNavigate?: () => void
+  onOpenBudget?: () => void
 }) {
   return (
     <div>
@@ -96,20 +98,40 @@ function NavGroup({
       </div>
       <div className="flex flex-col gap-1.5">
         {items.map((item) => (
-          <NavItem key={item.label} item={item} onNavigate={onNavigate} />
+          <NavItem
+            key={item.label}
+            item={item}
+            onNavigate={() => {
+              if (item.label === 'Batas Budget' && onOpenBudget) {
+                onOpenBudget()
+              }
+              onNavigate?.()
+            }}
+          />
         ))}
       </div>
     </div>
   )
 }
 
-function SidebarNavigation({ onNavigate }: { onNavigate?: () => void }) {
+function SidebarNavigation({
+  onNavigate,
+  onOpenBudget,
+}: {
+  onNavigate?: () => void
+  onOpenBudget?: () => void
+}) {
   return (
     <nav
       aria-label="Navigasi utama"
       className="flex-1 overflow-y-auto p-4"
     >
-      <NavGroup label="MENU UTAMA" items={MAIN_MENU} onNavigate={onNavigate} />
+      <NavGroup
+        label="MENU UTAMA"
+        items={MAIN_MENU}
+        onNavigate={onNavigate}
+        onOpenBudget={onOpenBudget}
+      />
       <div className="mt-6">
         <NavGroup label="SISTEM" items={SYSTEM_MENU} onNavigate={onNavigate} />
       </div>
@@ -117,7 +139,7 @@ function SidebarNavigation({ onNavigate }: { onNavigate?: () => void }) {
   )
 }
 
-export default function Sidebar() {
+export default function Sidebar({ onOpenBudget }: { onOpenBudget?: () => void }) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
@@ -174,7 +196,7 @@ export default function Sidebar() {
         <div className="shrink-0 border-b-2 border-black p-4">
           <BrandMark />
         </div>
-        <SidebarNavigation />
+        <SidebarNavigation onOpenBudget={onOpenBudget} />
       </aside>
 
       {/* Drawer mobile */}
@@ -203,7 +225,7 @@ export default function Sidebar() {
                 <span aria-hidden="true">✕</span>
               </button>
             </div>
-            <SidebarNavigation onNavigate={closeMobile} />
+            <SidebarNavigation onNavigate={closeMobile} onOpenBudget={onOpenBudget} />
           </div>
         </div>
       )}
