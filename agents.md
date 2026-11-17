@@ -103,6 +103,7 @@ Empat *skills* lokal berikut berada di `agents/skills/` dan siap dipanggil:
 1. **`run_command`**: Menjalankan perintah terminal lokal PowerShell untuk mengelola dependency (`npm`), menjalankan linter, compiler, build, serta perintah Git.
 2. **File Tools (`read_file`, `write_file`, `edit_file`)**: Membaca dan memodifikasi file proyek secara aman, presisi, dan terisolasi.
 3. **GitHub MCP (`@modelcontextprotocol/server-github`)**: Mengelola repository, issue, pull request, dan integrasi GitHub secara terprogram.
+4. **Flashmind MCP (`flashmind`)**: Manajemen memori persisten jangka panjang (*long-term memory*) untuk mencatat keputusan arsitektur, histori perbaikan bug, preferensi desain, dan konteks penting proyek antarsesi (`memory_save`, `memory_get`, `memory_search`, `memory_context`).
 
 ---
 
