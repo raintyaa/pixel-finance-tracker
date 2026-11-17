@@ -4,6 +4,7 @@ import BalanceCards from './components/BalanceCards'
 import BudgetModal from './components/BudgetModal'
 import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
+import ResetExpenseModal from './components/ResetExpenseModal'
 import Sidebar from './components/Sidebar'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
@@ -18,6 +19,7 @@ export default function App() {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState<boolean>(false)
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState<boolean>(false)
+  const [isResetExpenseModalOpen, setIsResetExpenseModalOpen] = useState<boolean>(false)
 
   // Persistensi otomatis (Hari 10): simpan setiap kali daftar transaksi berubah
   useEffect(() => {
@@ -124,6 +126,8 @@ export default function App() {
     setIsAdjustModalOpen(false)
   }
 
+  const monthPrefix = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`
+
   // 3F. Handler Simpan Batas Budget Bulanan (Hari 11)
   const handleSaveBudget = (newLimit: number) => {
     const updated: BudgetConfig = {
@@ -133,6 +137,29 @@ export default function App() {
     setBudget(updated)
     saveBudget(updated)
     setSaveTick((tick) => tick + 1)
+  }
+
+  // 3G. Handler Kelola & Reset Pengeluaran Bulan Ini
+  const handleToggleExcludeAdjustments = (enabled: boolean) => {
+    const updated: BudgetConfig = {
+      ...budget,
+      excludeAdjustmentsFromBudget: enabled,
+    }
+    setBudget(updated)
+    saveBudget(updated)
+    setSaveTick((t) => t + 1)
+  }
+
+  const handleDeleteSingleExpense = (id: string) => {
+    setTransactions((prev) => prev.filter((tx) => tx.id !== id))
+    setSaveTick((t) => t + 1)
+  }
+
+  const handleResetAllMonthExpenses = () => {
+    setTransactions((prev) =>
+      prev.filter((tx) => !(tx.type === 'expense' && tx.date.startsWith(monthPrefix)))
+    )
+    setSaveTick((t) => t + 1)
   }
 
   // 4A. Sisa Saldo Riil Keseluruhan (FIX: Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
@@ -147,7 +174,6 @@ export default function App() {
   const realBalance = allTimeIncome - allTimeExpense
 
   // 4B. Filter Uang Masuk & Pengeluaran Sesuai Scope (Bulan Ini vs Semua Waktu)
-  const monthPrefix = `${selectedYear}-${String(selectedMonth).padStart(2, '0')}`
   const scopedTransactions =
     viewScope === 'month'
       ? transactions.filter((tx) => tx.date.startsWith(monthPrefix))
@@ -160,6 +186,22 @@ export default function App() {
   const totalExpense = scopedTransactions
     .filter((tx) => tx.type === 'expense')
     .reduce((acc, tx) => acc + tx.amount, 0)
+
+  // Seluruh daftar pengeluaran bulan aktif untuk modal kelola & reset pengeluaran
+  const monthlyExpenses = useMemo(
+    () => transactions.filter((tx) => tx.type === 'expense' && tx.date.startsWith(monthPrefix)),
+    [transactions, monthPrefix]
+  )
+
+  // Pengeluaran yang dibebankan ke batas budget (dapat mengecualikan kategori Penyesuaian Saldo)
+  const budgetExpense = useMemo(() => {
+    if (budget.excludeAdjustmentsFromBudget === false) {
+      return totalExpense
+    }
+    return scopedTransactions
+      .filter((tx) => tx.type === 'expense' && tx.category !== 'Penyesuaian Saldo')
+      .reduce((acc, tx) => acc + tx.amount, 0)
+  }, [scopedTransactions, budget.excludeAdjustmentsFromBudget, totalExpense])
 
   return (
     <div
@@ -231,10 +273,12 @@ export default function App() {
               <BalanceCards
                 totalIncome={totalIncome}
                 totalExpense={totalExpense}
+                budgetExpense={budgetExpense}
                 realBalance={realBalance}
                 budgetLimit={budget.monthlyLimit}
                 onAdjustBalance={() => setIsAdjustModalOpen(true)}
                 onOpenBudget={() => setIsBudgetModalOpen(true)}
+                onResetExpense={() => setIsResetExpenseModalOpen(true)}
               />
             </section>
 
@@ -285,6 +329,20 @@ export default function App() {
           currentMonthExpense={totalExpense}
           onSubmit={handleSaveBudget}
           onClose={() => setIsBudgetModalOpen(false)}
+        />
+      )}
+
+      {/* Modal Kelola & Reset Pengeluaran Bulan Ini */}
+      {isResetExpenseModalOpen && (
+        <ResetExpenseModal
+          monthName={`${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`}
+          expenses={monthlyExpenses}
+          totalExpense={totalExpense}
+          excludeAdjustments={budget.excludeAdjustmentsFromBudget ?? true}
+          onToggleExcludeAdjustments={handleToggleExcludeAdjustments}
+          onDeleteSingleExpense={handleDeleteSingleExpense}
+          onResetAllMonthExpenses={handleResetAllMonthExpenses}
+          onClose={() => setIsResetExpenseModalOpen(false)}
         />
       )}
 

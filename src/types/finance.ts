@@ -40,4 +40,5 @@ export interface WeeklySummary {
 export interface BudgetConfig {
     monthlyLimit: number // Batas pengeluaran bulanan dalam Rupiah (contoh: 2500000)
     categoryLimits?: Record<string, number> // Batas opsional per kategori
+    excludeAdjustmentsFromBudget?: boolean // Abaikan Penyesuaian Saldo dari perhitungan HP Bar Budget
 }

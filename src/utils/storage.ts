@@ -11,6 +11,7 @@ export const STORAGE_BUDGET_KEY = 'pixel_ledger_budget_v1'
 
 export const DEFAULT_BUDGET: BudgetConfig = {
   monthlyLimit: 2500000,
+  excludeAdjustmentsFromBudget: true,
 }
 
 /** Cek ketersediaan LocalStorage (mis. private browsing / SSR) tanpa melempar error. */
@@ -115,9 +116,15 @@ export function loadBudget(): BudgetConfig {
         ? candidate.monthlyLimit
         : DEFAULT_BUDGET.monthlyLimit
 
+    const excludeAdjustmentsFromBudget =
+      typeof candidate.excludeAdjustmentsFromBudget === 'boolean'
+        ? candidate.excludeAdjustmentsFromBudget
+        : DEFAULT_BUDGET.excludeAdjustmentsFromBudget
+
     return {
       monthlyLimit,
       categoryLimits: candidate.categoryLimits,
+      excludeAdjustmentsFromBudget,
     }
   } catch (error) {
     console.warn('Gagal membaca batas budget dari LocalStorage:', error)

@@ -4,19 +4,23 @@ import { useChangeKey, useCountUp } from '../utils/motion'
 interface BalanceCardsProps {
   totalIncome: number   // Sesuai filter scope (Bulan ini / Semua)
   totalExpense: number  // Sesuai filter scope (Bulan ini / Semua)
+  budgetExpense?: number // Pengeluaran yang dihitung untuk batas budget (setelah pengecualian jika aktif)
   realBalance: number   // FIX: Total sisa uang kas riil di dompet saat ini
   budgetLimit?: number  // Batas anggaran bulanan (Hari 11)
   onAdjustBalance?: () => void
   onOpenBudget?: () => void // Buka modal pengaturan budget (Hari 11)
+  onResetExpense?: () => void // Buka modal reset/kelola pengeluaran bulan ini
 }
 
 export default function BalanceCards({
   totalIncome,
   totalExpense,
+  budgetExpense,
   realBalance,
   budgetLimit = 2500000,
   onAdjustBalance,
   onOpenBudget,
+  onResetExpense,
 }: BalanceCardsProps) {
   // Papan skor: nilai bergulir dari angka lama, animasi hanya saat berubah
   const shownIncome = useCountUp(totalIncome, 480)
@@ -29,8 +33,9 @@ export default function BalanceCards({
 
   // Kalkulasi Rasio HP / Pemakaian Anggaran Bulanan (Hari 11)
   const activeBudget = budgetLimit > 0 ? budgetLimit : 2500000
-  const expensePercentage = Math.round((totalExpense / activeBudget) * 100)
-  const remainingBudget = activeBudget - totalExpense
+  const effectiveExpense = budgetExpense !== undefined ? budgetExpense : totalExpense
+  const expensePercentage = Math.round((effectiveExpense / activeBudget) * 100)
+  const remainingBudget = activeBudget - effectiveExpense
   const isOverBudget = remainingBudget < 0
   const isNearLimit = expensePercentage >= 80 && !isOverBudget
 
@@ -121,9 +126,27 @@ export default function BalanceCards({
 
         {/* Card 3: Total Pengeluaran */}
         <article className="pixel-box order-3 flex flex-col justify-between gap-5 bg-[var(--theme-expense-surface)] p-4 sm:p-5 lg:order-3">
-          <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
-            PENGELUARAN
-          </p>
+          <div className="flex items-start justify-between gap-2">
+            <div>
+              <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
+                PENGELUARAN
+              </p>
+              <p className="mt-1 text-meta text-[var(--theme-text-muted)]">
+                Total beban periode ini
+              </p>
+            </div>
+            {onResetExpense && (
+              <button
+                type="button"
+                onClick={onResetExpense}
+                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
+                title="Kelola atau Reset Pengeluaran Bulan Ini"
+              >
+                <span aria-hidden="true">🔄</span>
+                <span>RESET</span>
+              </button>
+            )}
+          </div>
 
           <p
             key={`expense-${expenseKey}`}
@@ -166,9 +189,19 @@ export default function BalanceCards({
           </div>
 
           <div className="flex flex-col items-start gap-0.5 sm:items-end">
-            <span className="font-mono text-meta font-bold tabular-nums text-[var(--theme-text)]">
-              {formatRupiah(shownExpense)} / {formatRupiah(activeBudget)}
-            </span>
+            <div className="flex flex-wrap items-center gap-1.5">
+              <span className="font-mono text-meta font-bold tabular-nums text-[var(--theme-text)]">
+                {formatRupiah(effectiveExpense)} / {formatRupiah(activeBudget)}
+              </span>
+              {budgetExpense !== undefined && budgetExpense !== totalExpense && (
+                <span
+                  className="border border-black bg-emerald-100 px-1 py-0.2 font-retro text-label text-emerald-800"
+                  title="Pengeluaran penyesuaian/koreksi saldo dikecualikan dari batas anggaran"
+                >
+                  Koreksi Dikecualikan
+                </span>
+              )}
+            </div>
             <span className="font-mono text-label tabular-nums text-[var(--theme-text-muted)]">
               {expensePercentage}% terpakai •{' '}
               {isOverBudget
