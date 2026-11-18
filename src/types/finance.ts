@@ -44,3 +44,12 @@ export interface BudgetConfig {
     categoryLimits?: Record<string, number> // Batas opsional per kategori
     excludeAdjustmentsFromBudget?: boolean // Abaikan Penyesuaian Saldo dari perhitungan HP Bar Budget
 }
+
+// 7. Model Cadangan Data Eksternal (Hari 12)
+export interface BackupData {
+    version: string
+    exportedAt: string
+    appName: string
+    transactions: Transaction[]
+    budget?: BudgetConfig
+}
