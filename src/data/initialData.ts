@@ -8,6 +8,7 @@ export const DEFAULT_CATEGORIES: Category[] = [
     { id: 'cat-shopping', name: 'Belanja', icon: '🛍️', type: 'expense' },
     { id: 'cat-entertainment', name: 'Hiburan', icon: '🎮', type: 'expense' },
     { id: 'cat-bills', name: 'Tagihan & Utilitas', icon: '⚡', type: 'expense' },
+    { id: 'cat-admin-fee', name: 'Biaya Admin', icon: '🏦', type: 'expense' },
     { id: 'cat-adjust-exp', name: 'Penyesuaian Saldo', icon: '⚖️', type: 'expense' },
     { id: 'cat-other-exp', name: 'Lain-lain', icon: '📦', type: 'expense' },
     // Kategori Pemasukan

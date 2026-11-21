@@ -45,7 +45,7 @@ export default function WeeklyTable({
             .reduce((sum, t) => sum + t.amount, 0)
 
         const dayExpense = dayTransactions
-            .filter((t) => t.type === 'expense')
+            .filter((t) => t.type === 'expense' && !t.isClosedToBalance && t.isAdjustmentExpense !== false)
             .reduce((sum, t) => sum + t.amount, 0)
 
         return {
@@ -178,13 +178,29 @@ export default function WeeklyTable({
                                                     </button>
                                                 </div>
                                             </div>
-                                            <span className="break-words font-sans text-label leading-tight tracking-normal text-[var(--theme-text-muted)]">
-                                                {tx.category}
-                                            </span>
+                                            <div className="flex flex-wrap items-center gap-1">
+                                                <span className="break-words font-sans text-label leading-tight tracking-normal text-[var(--theme-text-muted)]">
+                                                    {tx.category}
+                                                </span>
+                                                {tx.isClosedToBalance && (
+                                                    <span className="border border-[var(--theme-border)] bg-zinc-200 px-1 py-0.5 font-retro text-[9px] font-bold text-zinc-700">
+                                                        DIBUKUKAN
+                                                    </span>
+                                                )}
+                                                {tx.isAdjustmentExpense === false && (
+                                                    <span className="border border-[var(--theme-border)] bg-amber-100 px-1 py-0.5 font-retro text-[9px] font-bold text-amber-800">
+                                                        TRANSFER/SALDO
+                                                    </span>
+                                                )}
+                                            </div>
                                             <span
                                                 className={`mt-0.5 break-words font-mono text-meta font-bold tabular-nums ${
                                                     tx.type === 'income'
                                                         ? 'text-[var(--theme-income)]'
+                                                        : tx.isClosedToBalance
+                                                        ? 'text-[var(--theme-text-muted)] line-through'
+                                                        : tx.isAdjustmentExpense === false
+                                                        ? 'text-zinc-600'
                                                         : 'text-[var(--theme-expense-text)]'
                                                 }`}
                                             >

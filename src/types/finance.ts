@@ -18,6 +18,8 @@ export interface Transaction {
     category: string // Nama atau ID kategori
     date: string // Format ISO "YYYY-MM-DD"
     dayOfWeek: number // 0 = Minggu, 1 = Senin, 2 = Selasa, ..., 6 = Sabtu
+    isClosedToBalance?: boolean // Ditutup buku / di-reset dari pengeluaran bulanan tanpa mengubah saldo kas riil
+    isAdjustmentExpense?: boolean // Apakah penyesuaian saldo dihitung sebagai beban pengeluaran bulanan
 }
 
 // 4. Model Navigasi Periode Mingguan (Bulan & Minggu ke-N)

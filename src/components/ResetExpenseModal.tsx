@@ -7,8 +7,7 @@ interface ResetExpenseModalProps {
   monthName: string
   expenses: Transaction[]
   totalExpense: number
-  excludeAdjustments: boolean
-  onToggleExcludeAdjustments: (enabled: boolean) => void
+  onResetExpenseKeepBalance: () => void
   onDeleteSingleExpense: (id: string) => void
   onResetAllMonthExpenses: () => void
   onClose: () => void
@@ -18,18 +17,24 @@ export default function ResetExpenseModal({
   monthName,
   expenses,
   totalExpense,
-  excludeAdjustments,
-  onToggleExcludeAdjustments,
+  onResetExpenseKeepBalance,
   onDeleteSingleExpense,
   onResetAllMonthExpenses,
   onClose,
 }: ResetExpenseModalProps) {
   const { closing, requestClose } = useExitAnimation(onClose)
-  const [confirmResetAll, setConfirmResetAll] = useState(false)
+  const [confirmKeepBalance, setConfirmKeepBalance] = useState(false)
+  const [confirmDeleteAll, setConfirmDeleteAll] = useState(false)
 
-  const handleExecuteResetAll = () => {
+  const handleExecuteKeepBalance = () => {
+    onResetExpenseKeepBalance()
+    setConfirmKeepBalance(false)
+    requestClose()
+  }
+
+  const handleExecuteDeleteAll = () => {
     onResetAllMonthExpenses()
-    setConfirmResetAll(false)
+    setConfirmDeleteAll(false)
     requestClose()
   }
 
@@ -89,71 +94,110 @@ export default function ResetExpenseModal({
           </div>
           <div className="text-right">
             <span className="border border-black bg-white px-2 py-1 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000]">
-              {expenses.length} Transaksi
+              {expenses.length} Transaksi Aktif
             </span>
           </div>
         </div>
 
-        {/* Sakelar Pintar: Abaikan Penyesuaian Saldo / Darurat dari Budget */}
-        <div className="pixel-box border-2 border-black bg-[var(--theme-card-subtle)] p-3.5">
-          <label className="flex cursor-pointer items-start gap-3">
-            <input
-              type="checkbox"
-              checked={excludeAdjustments}
-              onChange={(e) => onToggleExcludeAdjustments(e.target.checked)}
-              className="mt-0.5 h-4 w-4 cursor-pointer accent-[var(--theme-gold)]"
-            />
-            <div className="min-w-0">
-              <span className="font-retro text-label font-bold text-[var(--theme-text)]">
-                Abaikan Penyesuaian Saldo dari Batas Budget
-              </span>
-              <p className="mt-0.5 font-sans text-meta text-[var(--theme-text-muted)] leading-relaxed">
-                Jika diaktifkan, pengeluaran akibat koreksi saldo fisik/bank tidak akan dihitung ke
-                dalam HP Bar anggaran bulanan sehingga status dompet tidak langsung jebol.
-              </p>
-            </div>
-          </label>
-        </div>
-
-        {/* Opsi Aksi Cepat: Reset Total ke Rp 0 */}
-        <div className="pixel-box border-2 border-red-500 bg-red-50 p-3.5 text-red-900">
-          {!confirmResetAll ? (
+        {/* Opsi 1 (Fitur Utama): Reset Pengeluaran ke Rp 0 & Kunci Saldo (Poin 2) */}
+        <div className="pixel-box border-2 border-emerald-600 bg-emerald-50 p-3.5 text-emerald-950">
+          {!confirmKeepBalance ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <p className="font-retro text-label font-bold text-red-800">
-                  RESET SEMUA PENGELUARAN KE RP 0
-                </p>
-                <p className="font-sans text-meta text-red-700">
-                  Hapus seluruh {expenses.length} catatan pengeluaran bulan {monthName}.
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-base" aria-hidden="true">
+                    🔒
+                  </span>
+                  <p className="font-retro text-label font-bold text-emerald-900">
+                    RESET KE RP 0 (SALDO TETAP)
+                  </p>
+                </div>
+                <p className="mt-0.5 font-sans text-meta text-emerald-800 leading-relaxed">
+                  Pengeluaran bulan ini direset ke <strong>Rp 0</strong>. Saldo kas riilmu{' '}
+                  <strong>tetap utuh dan tidak bertambah</strong>.
                 </p>
               </div>
               <button
                 type="button"
                 disabled={expenses.length === 0}
-                onClick={() => setConfirmResetAll(true)}
-                className="pixel-button shrink-0 cursor-pointer border border-black bg-red-600 px-3 py-2 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                onClick={() => {
+                  setConfirmKeepBalance(true)
+                  setConfirmDeleteAll(false)
+                }}
+                className="pixel-button shrink-0 cursor-pointer border-2 border-black bg-[var(--theme-gold)] px-3 py-2 font-retro text-label font-bold text-black shadow-[2px_2px_0px_#000] hover:bg-[var(--theme-gold-hover)] disabled:cursor-not-allowed disabled:opacity-50"
               >
-                🗑️ RESET KE RP 0
+                🔒 RESET (SALDO TETAP)
               </button>
             </div>
           ) : (
             <div className="flex flex-col gap-2.5">
-              <p className="font-sans text-meta font-bold text-red-900">
-                ⚠️ PERHATIAN: Seluruh {expenses.length} transaksi pengeluaran bulan ini akan
-                dihapus permanen. Saldo kas riilmu akan bertambah kembali sebesar{' '}
-                <span className="font-mono">{formatRupiah(totalExpense)}</span>. Lanjutkan?
+              <p className="font-sans text-meta font-bold text-emerald-900 leading-tight">
+                🔒 Konfirmasi: Seluruh pengeluaran bulan ini ({formatRupiah(totalExpense)}) akan
+                dibukukan/diarsipkan. Angka pengeluaran menjadi Rp 0, sementara sisa saldo kas tidak
+                akan berubah. Lanjutkan?
               </p>
               <div className="flex gap-2">
                 <button
                   type="button"
-                  onClick={handleExecuteResetAll}
-                  className="pixel-button cursor-pointer border border-black bg-red-700 px-3 py-1.5 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-red-800"
+                  onClick={handleExecuteKeepBalance}
+                  className="pixel-button cursor-pointer border-2 border-black bg-emerald-600 px-3 py-1.5 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-emerald-700"
                 >
-                  YA, RESET KE 0 SEKARANG
+                  YA, RESET KE 0 (SALDO TETAP)
                 </button>
                 <button
                   type="button"
-                  onClick={() => setConfirmResetAll(false)}
+                  onClick={() => setConfirmKeepBalance(false)}
+                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
+                >
+                  BATAL
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Opsi 2: Hapus Seluruh Transaksi Pengeluaran (Kembalikan Saldo) */}
+        <div className="pixel-box border-2 border-zinc-300 bg-zinc-50 p-3 text-zinc-900">
+          {!confirmDeleteAll ? (
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <p className="font-retro text-label font-bold text-zinc-800">
+                  HAPUS SELURUH TRANSAKSI (SALDO BERTAMBAH)
+                </p>
+                <p className="font-sans text-meta text-zinc-600 leading-tight">
+                  Membatalkan seluruh transaksi pengeluaran. Uang kas akan bertambah kembali sebesar{' '}
+                  {formatRupiah(totalExpense)}.
+                </p>
+              </div>
+              <button
+                type="button"
+                disabled={expenses.length === 0}
+                onClick={() => {
+                  setConfirmDeleteAll(true)
+                  setConfirmKeepBalance(false)
+                }}
+                className="pixel-button shrink-0 cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-red-600 shadow-[1px_1px_0px_#000] hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+              >
+                🗑️ HAPUS SEMUA
+              </button>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-2.5">
+              <p className="font-sans text-meta font-bold text-red-900 leading-tight">
+                ⚠️ PERHATIAN: Transaksi pengeluaran akan dihapus permanen dan saldo kasmu akan
+                bertambah kembali sebesar {formatRupiah(totalExpense)}. Lanjutkan?
+              </p>
+              <div className="flex gap-2">
+                <button
+                  type="button"
+                  onClick={handleExecuteDeleteAll}
+                  className="pixel-button cursor-pointer border border-black bg-red-600 px-3 py-1.5 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-red-700"
+                >
+                  YA, HAPUS & KEMBALIKAN SALDO
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDeleteAll(false)}
                   className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
                 >
                   BATAL
@@ -167,14 +211,14 @@ export default function ResetExpenseModal({
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
             <p className="font-retro text-label font-bold tracking-wide text-[var(--theme-text-muted)]">
-              DAFTAR PENGELUARAN BULAN INI
+              DAFTAR TRANSAKSI BULAN INI
             </p>
             <span className="font-sans text-meta text-[var(--theme-text-muted)]">
-              (Hapus transaksi penyebab over budget di bawah)
+              (Bisa hapus item tertentu saja)
             </span>
           </div>
 
-          <div className="pixel-box max-h-56 divide-y-2 divide-[var(--theme-border-subtle)] overflow-y-auto border-2 border-black bg-white">
+          <div className="pixel-box max-h-48 divide-y-2 divide-[var(--theme-border-subtle)] overflow-y-auto border-2 border-black bg-white">
             {expenses.length === 0 ? (
               <p className="p-4 text-center font-sans text-meta text-[var(--theme-text-muted)]">
                 Tidak ada transaksi pengeluaran tercatat di bulan ini.

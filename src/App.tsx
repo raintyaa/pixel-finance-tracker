@@ -119,9 +119,11 @@ export default function App() {
   }
 
   // 3E. Handler Atur / Rekonsiliasi Saldo Riil
-  const handleAdjustBalance = (newTx: Transaction) => {
-    setTransactions((prev) => [newTx, ...prev])
-    setHighlight({ id: newTx.id, tick: Date.now() })
+  const handleAdjustBalance = (newTxs: Transaction[]) => {
+    setTransactions((prev) => [...newTxs, ...prev])
+    if (newTxs.length > 0) {
+      setHighlight({ id: newTxs[0].id, tick: Date.now() })
+    }
     setSaveTick((tick) => tick + 1)
     setIsAdjustModalOpen(false)
   }
@@ -140,13 +142,14 @@ export default function App() {
   }
 
   // 3G. Handler Kelola & Reset Pengeluaran Bulan Ini
-  const handleToggleExcludeAdjustments = (enabled: boolean) => {
-    const updated: BudgetConfig = {
-      ...budget,
-      excludeAdjustmentsFromBudget: enabled,
-    }
-    setBudget(updated)
-    saveBudget(updated)
+  const handleResetExpenseKeepBalance = () => {
+    setTransactions((prev) =>
+      prev.map((tx) =>
+        tx.type === 'expense' && tx.date.startsWith(monthPrefix)
+          ? { ...tx, isClosedToBalance: true }
+          : tx
+      )
+    )
     setSaveTick((t) => t + 1)
   }
 
@@ -162,7 +165,7 @@ export default function App() {
     setSaveTick((t) => t + 1)
   }
 
-  // 4A. Sisa Saldo Riil Keseluruhan (FIX: Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
+  // 4A. Sisa Saldo Riil Keseluruhan (Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
   const allTimeIncome = transactions
     .filter((tx) => tx.type === 'income')
     .reduce((acc, tx) => acc + tx.amount, 0)
@@ -184,24 +187,36 @@ export default function App() {
     .reduce((acc, tx) => acc + tx.amount, 0)
 
   const totalExpense = scopedTransactions
-    .filter((tx) => tx.type === 'expense')
+    .filter(
+      (tx) => tx.type === 'expense' && !tx.isClosedToBalance && tx.isAdjustmentExpense !== false
+    )
     .reduce((acc, tx) => acc + tx.amount, 0)
 
-  // Seluruh daftar pengeluaran bulan aktif untuk modal kelola & reset pengeluaran
+  // Seluruh daftar pengeluaran aktif bulan aktif untuk modal kelola & reset pengeluaran
   const monthlyExpenses = useMemo(
-    () => transactions.filter((tx) => tx.type === 'expense' && tx.date.startsWith(monthPrefix)),
+    () =>
+      transactions.filter(
+        (tx) =>
+          tx.type === 'expense' &&
+          tx.date.startsWith(monthPrefix) &&
+          !tx.isClosedToBalance &&
+          tx.isAdjustmentExpense !== false
+      ),
     [transactions, monthPrefix]
   )
 
   // Pengeluaran yang dibebankan ke batas budget (dapat mengecualikan kategori Penyesuaian Saldo)
   const budgetExpense = useMemo(() => {
-    if (budget.excludeAdjustmentsFromBudget === false) {
-      return totalExpense
-    }
     return scopedTransactions
-      .filter((tx) => tx.type === 'expense' && tx.category !== 'Penyesuaian Saldo')
+      .filter(
+        (tx) =>
+          tx.type === 'expense' &&
+          !tx.isClosedToBalance &&
+          tx.isAdjustmentExpense !== false &&
+          (!budget.excludeAdjustmentsFromBudget || tx.category !== 'Penyesuaian Saldo')
+      )
       .reduce((acc, tx) => acc + tx.amount, 0)
-  }, [scopedTransactions, budget.excludeAdjustmentsFromBudget, totalExpense])
+  }, [scopedTransactions, budget.excludeAdjustmentsFromBudget])
 
   return (
     <div
@@ -338,8 +353,7 @@ export default function App() {
           monthName={`${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`}
           expenses={monthlyExpenses}
           totalExpense={totalExpense}
-          excludeAdjustments={budget.excludeAdjustmentsFromBudget ?? true}
-          onToggleExcludeAdjustments={handleToggleExcludeAdjustments}
+          onResetExpenseKeepBalance={handleResetExpenseKeepBalance}
           onDeleteSingleExpense={handleDeleteSingleExpense}
           onResetAllMonthExpenses={handleResetAllMonthExpenses}
           onClose={() => setIsResetExpenseModalOpen(false)}
