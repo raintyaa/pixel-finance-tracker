@@ -5,12 +5,12 @@ import type { BudgetConfig, Transaction } from '../types/finance'
  * Utilitas persistensi data transaksi dan batas budget di LocalStorage.
  * Menggunakan Web Storage API bawaan browser tanpa dependensi tambahan.
  */
-export const STORAGE_KEY = 'pixel_ledger_transactions_v2'
-export const STORAGE_BACKUP_KEY = 'pixel_ledger_transactions_backup'
+export const STORAGE_KEY = 'pixel_ledger_transactions_v3'
+export const STORAGE_BACKUP_KEY = 'pixel_ledger_transactions_backup_v3'
 export const STORAGE_BUDGET_KEY = 'pixel_ledger_budget_v1'
 
 export const DEFAULT_BUDGET: BudgetConfig = {
-  monthlyLimit: 2500000,
+  monthlyLimit: 1500000,
   excludeAdjustmentsFromBudget: true,
 }
 
@@ -32,9 +32,15 @@ export function loadTransactions(): Transaction[] {
   if (!storage) return INITIAL_TRANSACTIONS
 
   try {
-    // Bersihkan data contoh versi lama jika ada
+    // Bersihkan data contoh atau transaksi uji coba versi lama jika ada
     if (storage.getItem('pixel_ledger_transactions_v1')) {
       storage.removeItem('pixel_ledger_transactions_v1')
+    }
+    if (storage.getItem('pixel_ledger_transactions_v2')) {
+      storage.removeItem('pixel_ledger_transactions_v2')
+    }
+    if (storage.getItem('pixel_ledger_transactions_backup')) {
+      storage.removeItem('pixel_ledger_transactions_backup')
     }
 
     const raw = storage.getItem(STORAGE_KEY)
@@ -90,6 +96,8 @@ export function resetTransactionsToDefault(): void {
   try {
     storage.removeItem(STORAGE_KEY)
     storage.removeItem('pixel_ledger_transactions_v1')
+    storage.removeItem('pixel_ledger_transactions_v2')
+    storage.removeItem('pixel_ledger_transactions_backup')
   } catch (error) {
     console.warn('Gagal mereset transaksi di LocalStorage:', error)
   }
