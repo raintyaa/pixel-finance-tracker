@@ -17,13 +17,13 @@ export const DEFAULT_CATEGORIES: Category[] = [
     { id: 'cat-other-inc', name: 'Pemasukan Lain / Hadiah', icon: '🎁', type: 'income' },
 ]
 
-// 2. Data Transaksi Awal Terkalibrasi Bersih
+// 2. Data Transaksi Awal Terkalibrasi Bersih (Histori November Asli)
 export const INITIAL_TRANSACTIONS: Transaction[] = [
     {
         id: 'tx-initial-balance',
         type: 'income',
-        amount: 1167855,
-        description: 'Saldo Awal Kas',
+        amount: 1308855,
+        description: 'Saldo Awal Akumulasi Kas',
         category: 'Saldo Awal',
         date: '2026-10-31',
         dayOfWeek: 6,
@@ -36,5 +36,50 @@ export const INITIAL_TRANSACTIONS: Transaction[] = [
         category: 'Uang Saku',
         date: '2026-11-01',
         dayOfWeek: 0,
+    },
+    {
+        id: 'tx-nov-geprek',
+        type: 'expense',
+        amount: 10000,
+        description: 'Beli Ayam Geprek',
+        category: 'Makanan & Minuman',
+        date: '2026-11-01',
+        dayOfWeek: 0,
+    },
+    {
+        id: 'tx-nov-beras',
+        type: 'expense',
+        amount: 57500,
+        description: 'Beli Beras',
+        category: 'Makanan & Minuman',
+        date: '2026-11-01',
+        dayOfWeek: 0,
+    },
+    {
+        id: 'tx-nov-listrik',
+        type: 'expense',
+        amount: 36500,
+        description: 'Beli Token Listrik',
+        category: 'Tagihan & Utilitas',
+        date: '2026-11-02',
+        dayOfWeek: 1,
+    },
+    {
+        id: 'tx-nov-bensin',
+        type: 'expense',
+        amount: 20000,
+        description: 'bensin',
+        category: 'Transportasi',
+        date: '2026-11-02',
+        dayOfWeek: 1,
+    },
+    {
+        id: 'tx-nov-kopi',
+        type: 'expense',
+        amount: 17000,
+        description: 'Beli Kopi',
+        category: 'Makanan & Minuman',
+        date: '2026-11-03',
+        dayOfWeek: 2,
     },
 ]
