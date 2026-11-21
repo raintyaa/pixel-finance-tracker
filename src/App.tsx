@@ -326,7 +326,7 @@ export default function App() {
       {isBudgetModalOpen && (
         <BudgetModal
           currentBudget={budget.monthlyLimit}
-          currentMonthExpense={totalExpense}
+          currentMonthExpense={budgetExpense}
           onSubmit={handleSaveBudget}
           onClose={() => setIsBudgetModalOpen(false)}
         />
