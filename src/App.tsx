@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import AdjustBalanceModal from './components/AdjustBalanceModal'
 import BalanceCards from './components/BalanceCards'
+import BackupModal from './components/BackupModal'
 import BudgetModal from './components/BudgetModal'
 import ConfirmDialog from './components/ConfirmDialog'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
@@ -10,7 +11,13 @@ import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import type { BudgetConfig, Transaction } from './types/finance'
 import { getTodayDateString, getWeeksInMonth, MONTH_NAMES } from './utils/date'
-import { loadBudget, loadTransactions, saveBudget, saveTransactions } from './utils/storage'
+import {
+  loadBudget,
+  loadTransactions,
+  resetTransactionsToDefault,
+  saveBudget,
+  saveTransactions,
+} from './utils/storage'
 
 export default function App() {
   // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
@@ -20,6 +27,7 @@ export default function App() {
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState<boolean>(false)
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState<boolean>(false)
   const [isResetExpenseModalOpen, setIsResetExpenseModalOpen] = useState<boolean>(false)
+  const [isBackupModalOpen, setIsBackupModalOpen] = useState<boolean>(false)
 
   // Persistensi otomatis (Hari 10): simpan setiap kali daftar transaksi berubah
   useEffect(() => {
@@ -165,6 +173,28 @@ export default function App() {
     setSaveTick((t) => t + 1)
   }
 
+  // 3H. Handler Pulihkan Data & Reset Pabrik (Hari 12)
+  const handleRestoreData = (
+    restoredTransactions: Transaction[],
+    restoredBudget?: BudgetConfig
+  ) => {
+    setTransactions(restoredTransactions)
+    if (restoredBudget) {
+      setBudget(restoredBudget)
+      saveBudget(restoredBudget)
+    }
+    setSaveTick((t) => t + 1)
+  }
+
+  const handleResetToDefault = () => {
+    resetTransactionsToDefault()
+    setTransactions(loadTransactions())
+    const defaultBudget = { monthlyLimit: 1500000, excludeAdjustmentsFromBudget: true }
+    setBudget(defaultBudget)
+    saveBudget(defaultBudget)
+    setSaveTick((t) => t + 1)
+  }
+
   // 4A. Sisa Saldo Riil Keseluruhan (Total Kas Nyata, Tidak Berubah Saat Navigasi Bulan)
   const allTimeIncome = transactions
     .filter((tx) => tx.type === 'income')
@@ -224,7 +254,10 @@ export default function App() {
       className="min-h-screen bg-[var(--theme-bg)] text-[var(--theme-text)] selection:bg-[var(--theme-gold)] selection:text-black"
     >
       <div className="flex min-h-screen flex-col lg:flex-row">
-        <Sidebar onOpenBudget={() => setIsBudgetModalOpen(true)} />
+        <Sidebar
+          onOpenBudget={() => setIsBudgetModalOpen(true)}
+          onOpenBackup={() => setIsBackupModalOpen(true)}
+        />
 
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Top Header: breadcrumb, status penyimpanan, aksi utama */}
@@ -344,6 +377,17 @@ export default function App() {
           currentMonthExpense={budgetExpense}
           onSubmit={handleSaveBudget}
           onClose={() => setIsBudgetModalOpen(false)}
+        />
+      )}
+
+      {/* Modal Pencadangan & Pemulihan Data (Hari 12) */}
+      {isBackupModalOpen && (
+        <BackupModal
+          transactions={transactions}
+          budget={budget}
+          onRestoreData={handleRestoreData}
+          onResetToDefault={handleResetToDefault}
+          onClose={() => setIsBackupModalOpen(false)}
         />
       )}
 

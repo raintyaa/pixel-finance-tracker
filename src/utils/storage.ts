@@ -91,10 +91,12 @@ export function resetTransactionsToDefault(): void {
 
   try {
     storage.removeItem(STORAGE_KEY)
+    storage.removeItem(STORAGE_BACKUP_KEY)
     storage.removeItem('pixel_ledger_transactions_v1')
     storage.removeItem('pixel_ledger_transactions_v2')
     storage.removeItem('pixel_ledger_transactions_v3')
     storage.removeItem('pixel_ledger_transactions_backup')
+    storage.removeItem('pixel_ledger_transactions_backup_v3')
   } catch (error) {
     console.warn('Gagal mereset transaksi di LocalStorage:', error)
   }

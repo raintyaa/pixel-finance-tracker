@@ -16,7 +16,7 @@ const MAIN_MENU: MenuItem[] = [
 
 const SYSTEM_MENU: MenuItem[] = [
   { icon: '⚙️', label: 'Pengaturan' },
-  { icon: '💾', label: 'Backup Data', badge: 'Hari 12' },
+  { icon: '💾', label: 'Backup Data' },
 ]
 
 function BrandMark() {
@@ -82,11 +82,13 @@ function NavGroup({
   items,
   onNavigate,
   onOpenBudget,
+  onOpenBackup,
 }: {
   label: string
   items: MenuItem[]
   onNavigate?: () => void
   onOpenBudget?: () => void
+  onOpenBackup?: () => void
 }) {
   return (
     <div>
@@ -104,6 +106,8 @@ function NavGroup({
             onNavigate={() => {
               if (item.label === 'Batas Budget' && onOpenBudget) {
                 onOpenBudget()
+              } else if (item.label === 'Backup Data' && onOpenBackup) {
+                onOpenBackup()
               }
               onNavigate?.()
             }}
@@ -117,9 +121,11 @@ function NavGroup({
 function SidebarNavigation({
   onNavigate,
   onOpenBudget,
+  onOpenBackup,
 }: {
   onNavigate?: () => void
   onOpenBudget?: () => void
+  onOpenBackup?: () => void
 }) {
   return (
     <nav
@@ -133,13 +139,24 @@ function SidebarNavigation({
         onOpenBudget={onOpenBudget}
       />
       <div className="mt-6">
-        <NavGroup label="SISTEM" items={SYSTEM_MENU} onNavigate={onNavigate} />
+        <NavGroup
+          label="SISTEM"
+          items={SYSTEM_MENU}
+          onNavigate={onNavigate}
+          onOpenBackup={onOpenBackup}
+        />
       </div>
     </nav>
   )
 }
 
-export default function Sidebar({ onOpenBudget }: { onOpenBudget?: () => void }) {
+export default function Sidebar({
+  onOpenBudget,
+  onOpenBackup,
+}: {
+  onOpenBudget?: () => void
+  onOpenBackup?: () => void
+}) {
   const [mobileOpen, setMobileOpen] = useState(false)
 
   useEffect(() => {
@@ -196,7 +213,7 @@ export default function Sidebar({ onOpenBudget }: { onOpenBudget?: () => void })
         <div className="shrink-0 border-b-2 border-black p-4">
           <BrandMark />
         </div>
-        <SidebarNavigation onOpenBudget={onOpenBudget} />
+        <SidebarNavigation onOpenBudget={onOpenBudget} onOpenBackup={onOpenBackup} />
       </aside>
 
       {/* Drawer mobile */}
@@ -225,7 +242,11 @@ export default function Sidebar({ onOpenBudget }: { onOpenBudget?: () => void })
                 <span aria-hidden="true">✕</span>
               </button>
             </div>
-            <SidebarNavigation onNavigate={closeMobile} onOpenBudget={onOpenBudget} />
+            <SidebarNavigation
+              onNavigate={closeMobile}
+              onOpenBudget={onOpenBudget}
+              onOpenBackup={onOpenBackup}
+            />
           </div>
         </div>
       )}
