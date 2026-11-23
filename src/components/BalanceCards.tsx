@@ -65,9 +65,9 @@ export default function BalanceCards({
 
         {/* Card 1: Total Uang Masuk */}
         <article className="pixel-box order-2 flex flex-col justify-between gap-5 bg-[var(--theme-income-surface)] p-4 sm:p-5 lg:order-1">
-          <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
+          <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
             UANG MASUK
-          </p>
+          </h3>
 
           <p
             key={`income-${incomeKey}`}
@@ -94,9 +94,9 @@ export default function BalanceCards({
 
           <div className="relative z-10 flex items-start justify-between gap-2">
             <div>
-              <p className="font-retro text-label font-bold tracking-[0.12em] text-black/70">
+              <h3 className="font-retro text-label font-bold tracking-normal text-black/70">
                 SISA SALDO KAS
-              </p>
+              </h3>
               <p className="mt-1 text-meta text-black/70">
                 Total kas riil seluruh riwayat
               </p>
@@ -105,7 +105,7 @@ export default function BalanceCards({
               <button
                 type="button"
                 onClick={onAdjustBalance}
-                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
+                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
                 title="Atur / Sesuaikan Saldo Riil di Dompet"
               >
                 <span aria-hidden="true">⚖️</span>
@@ -128,9 +128,9 @@ export default function BalanceCards({
         <article className="pixel-box order-3 flex flex-col justify-between gap-5 bg-[var(--theme-expense-surface)] p-4 sm:p-5 lg:order-3">
           <div className="flex items-start justify-between gap-2">
             <div>
-              <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text)]">
+              <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
                 PENGELUARAN
-              </p>
+              </h3>
               <p className="mt-1 text-meta text-[var(--theme-text-muted)]">
                 Total beban periode ini
               </p>
@@ -139,7 +139,7 @@ export default function BalanceCards({
               <button
                 type="button"
                 onClick={onResetExpense}
-                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
+                className="pixel-button shrink-0 flex items-center gap-1.5 border-2 border-black bg-white px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-card-subtle)] cursor-pointer shadow-[2px_2px_0px_#000]"
                 title="Kelola atau Reset Pengeluaran Bulan Ini"
               >
                 <span aria-hidden="true">🔄</span>
@@ -168,21 +168,21 @@ export default function BalanceCards({
             </span>
             <div>
               <div className="flex flex-wrap items-center gap-2">
-                <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
+                <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
                   DAYA TAHAN KAS (EXP / HP BAR)
-                </p>
+                </h3>
                 {onOpenBudget && (
                   <button
                     type="button"
                     onClick={onOpenBudget}
-                    className="pixel-button cursor-pointer border border-black bg-[var(--theme-gold)] px-2 py-0.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-[var(--theme-gold-hover)]"
+                    className="pixel-button cursor-pointer border border-black bg-[var(--theme-gold)] px-2 py-0.5 font-retro text-label font-bold tracking-normal text-black shadow-[1px_1px_0px_#000] hover:bg-[var(--theme-gold-hover)]"
                     title="Ubah Batas Anggaran Bulanan"
                   >
                     🎯 ATUR BUDGET
                   </button>
                 )}
               </div>
-              <p className={`mt-0.5 font-retro text-body font-bold ${statusColor}`}>
+              <p className={`mt-0.5 font-retro text-body font-bold tracking-normal ${statusColor}`}>
                 {statusText}
               </p>
             </div>
@@ -190,19 +190,19 @@ export default function BalanceCards({
 
           <div className="flex flex-col items-start gap-0.5 sm:items-end">
             <div className="flex flex-wrap items-center gap-1.5">
-              <span className="font-mono text-meta font-bold tabular-nums text-[var(--theme-text)]">
+              <span className="font-mono text-meta font-bold tracking-normal tabular-nums text-[var(--theme-text)]">
                 {formatRupiah(effectiveExpense)} / {formatRupiah(activeBudget)}
               </span>
               {budgetExpense !== undefined && budgetExpense !== totalExpense && (
                 <span
-                  className="border border-black bg-emerald-100 px-1 py-0.2 font-retro text-label text-emerald-800"
+                  className="border border-black bg-emerald-100 px-1 py-0.5 font-retro text-label tracking-normal text-emerald-800"
                   title="Pengeluaran penyesuaian/koreksi saldo dikecualikan dari batas anggaran"
                 >
                   Koreksi Dikecualikan
                 </span>
               )}
             </div>
-            <span className="font-mono text-label tabular-nums text-[var(--theme-text-muted)]">
+            <span className="font-mono text-label tracking-normal tabular-nums text-[var(--theme-text-muted)]">
               {expensePercentage}% terpakai •{' '}
               {isOverBudget
                 ? `Kelebihan ${formatRupiah(Math.abs(remainingBudget))}`
@@ -223,12 +223,12 @@ export default function BalanceCards({
         {isOverBudget && (
           <div
             role="alert"
-            className="flex items-center gap-2.5 border-2 border-red-600 bg-red-50 p-2.5 text-meta text-red-900"
+            className="flex items-center gap-2.5 border-y border-red-300 bg-red-50 px-3 py-2.5 text-meta text-red-900"
           >
             <span className="shrink-0 text-lg leading-none" aria-hidden="true">
               💀
             </span>
-            <p className="font-sans font-medium leading-tight">
+            <p className="font-sans font-medium leading-normal">
               <strong>STATUS KRITIS:</strong> Pengeluaran telah melampaui batas anggaran bulanan sebesar{' '}
               <span className="font-mono font-bold text-red-700">
                 {formatRupiah(Math.abs(remainingBudget))}
@@ -241,12 +241,12 @@ export default function BalanceCards({
         {isNearLimit && (
           <div
             role="alert"
-            className="flex items-center gap-2.5 border-2 border-amber-500 bg-amber-50 p-2.5 text-meta text-amber-900"
+            className="flex items-center gap-2.5 border-y border-amber-300 bg-amber-50 px-3 py-2.5 text-meta text-amber-900"
           >
             <span className="shrink-0 text-lg leading-none" aria-hidden="true">
               ⚠️
             </span>
-            <p className="font-sans font-medium leading-tight">
+            <p className="font-sans font-medium leading-normal">
               <strong>PERINGATAN ANGGARAN:</strong> Pengeluaran bulan ini sudah mencapai{' '}
               <span className="font-mono font-bold">{expensePercentage}%</span> dari batas. Sisa
               anggaran aman:{' '}

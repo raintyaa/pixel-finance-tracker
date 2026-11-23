@@ -179,7 +179,7 @@ export default function WeeklyTable({
                                                 </div>
                                             </div>
                                             <div className="flex flex-wrap items-center gap-1">
-                                                <span className="break-words font-sans text-label leading-tight tracking-normal text-[var(--theme-text-muted)]">
+                                                <span className="break-words font-sans text-label leading-normal tracking-normal text-[var(--theme-text-muted)]">
                                                     {tx.category}
                                                 </span>
                                                 {tx.isClosedToBalance && (

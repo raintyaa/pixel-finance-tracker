@@ -9,7 +9,7 @@
   /* Role-based type scale: purpose first, value second */
   --text-label: 0.6875rem;   /* 11px */
   --text-label--line-height: 1rem;
-  --text-label--letter-spacing: 0.12em;
+  --text-label--letter-spacing: 0em;
 
   --text-meta: 0.75rem;      /* 12px */
   --text-meta--line-height: 1.15rem;

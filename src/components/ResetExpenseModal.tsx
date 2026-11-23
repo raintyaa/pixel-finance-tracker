@@ -67,7 +67,7 @@ export default function ResetExpenseModal({
               >
                 KELOLA & RESET PENGELUARAN
               </h2>
-              <p className="font-sans text-label text-[var(--theme-text-muted)]">
+              <p className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                 Periode Aktif: {monthName}
               </p>
             </div>
@@ -82,25 +82,25 @@ export default function ResetExpenseModal({
           </button>
         </div>
 
-        {/* Ringkasan Pengeluaran Bulan Ini */}
-        <div className="pixel-box flex items-center justify-between border border-black bg-[var(--theme-expense-surface)] p-3">
+        {/* Ringkasan Pengeluaran Bulan Ini — strip datar tanpa nested card */}
+        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-expense-surface)] px-3.5 py-3">
           <div>
-            <p className="font-retro text-label font-bold tracking-wider text-[var(--theme-text-muted)]">
+            <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
               TOTAL PENGELUARAN BULAN INI
-            </p>
+            </h3>
             <p className="mt-0.5 font-mono text-display font-bold tabular-nums text-[var(--theme-expense-text)]">
               {formatRupiah(totalExpense)}
             </p>
           </div>
-          <div className="text-right">
-            <span className="border border-black bg-white px-2 py-1 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000]">
+          <div className="shrink-0 text-right">
+            <span className="inline-block whitespace-nowrap border border-black bg-white px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black">
               {expenses.length} Transaksi Aktif
             </span>
           </div>
         </div>
 
         {/* Opsi 1 (Fitur Utama): Reset Pengeluaran ke Rp 0 & Kunci Saldo (Poin 2) */}
-        <div className="pixel-box border-2 border-emerald-600 bg-emerald-50 p-3.5 text-emerald-950">
+        <div className="border-y-2 border-emerald-300 bg-emerald-50 px-3.5 py-3 text-emerald-950">
           {!confirmKeepBalance ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div className="min-w-0 flex-1">
@@ -108,11 +108,11 @@ export default function ResetExpenseModal({
                   <span className="text-base" aria-hidden="true">
                     🔒
                   </span>
-                  <p className="font-retro text-label font-bold text-emerald-900">
+                  <h3 className="font-retro text-label font-bold tracking-normal text-emerald-900">
                     RESET KE RP 0 (SALDO TETAP)
-                  </p>
+                  </h3>
                 </div>
-                <p className="mt-0.5 font-sans text-meta text-emerald-800 leading-relaxed">
+                <p className="mt-1 font-sans text-meta leading-normal text-emerald-800">
                   Pengeluaran bulan ini direset ke <strong>Rp 0</strong>. Saldo kas riilmu{' '}
                   <strong>tetap utuh dan tidak bertambah</strong>.
                 </p>
@@ -124,14 +124,14 @@ export default function ResetExpenseModal({
                   setConfirmKeepBalance(true)
                   setConfirmDeleteAll(false)
                 }}
-                className="pixel-button shrink-0 cursor-pointer border-2 border-black bg-[var(--theme-gold)] px-3 py-2 font-retro text-label font-bold text-black shadow-[2px_2px_0px_#000] hover:bg-[var(--theme-gold-hover)] disabled:cursor-not-allowed disabled:opacity-50"
+                className="pixel-button shrink-0 cursor-pointer border-2 border-black bg-[var(--theme-gold)] px-3 py-2 font-retro text-label font-bold tracking-normal text-black shadow-[2px_2px_0px_#000] hover:bg-[var(--theme-gold-hover)] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 🔒 RESET (SALDO TETAP)
               </button>
             </div>
           ) : (
             <div className="flex flex-col gap-2.5">
-              <p className="font-sans text-meta font-bold text-emerald-900 leading-tight">
+              <p className="font-sans text-meta font-bold leading-normal text-emerald-900">
                 🔒 Konfirmasi: Seluruh pengeluaran bulan ini ({formatRupiah(totalExpense)}) akan
                 dibukukan/diarsipkan. Angka pengeluaran menjadi Rp 0, sementara sisa saldo kas tidak
                 akan berubah. Lanjutkan?
@@ -140,14 +140,14 @@ export default function ResetExpenseModal({
                 <button
                   type="button"
                   onClick={handleExecuteKeepBalance}
-                  className="pixel-button cursor-pointer border-2 border-black bg-emerald-600 px-3 py-1.5 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-emerald-700"
+                  className="pixel-button cursor-pointer border-2 border-black bg-emerald-600 px-3 py-1.5 font-retro text-label font-bold tracking-normal text-white shadow-[2px_2px_0px_#000] hover:bg-emerald-700"
                 >
                   YA, RESET KE 0 (SALDO TETAP)
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmKeepBalance(false)}
-                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
+                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold tracking-normal text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
                 >
                   BATAL
                 </button>
@@ -157,14 +157,14 @@ export default function ResetExpenseModal({
         </div>
 
         {/* Opsi 2: Hapus Seluruh Transaksi Pengeluaran (Kembalikan Saldo) */}
-        <div className="pixel-box border-2 border-zinc-300 bg-zinc-50 p-3 text-zinc-900">
+        <div className="border-y-2 border-[var(--theme-border-subtle)] bg-zinc-50 px-3.5 py-3 text-zinc-900">
           {!confirmDeleteAll ? (
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <p className="font-retro text-label font-bold text-zinc-800">
+                <h3 className="font-retro text-label font-bold tracking-normal text-zinc-800">
                   HAPUS SELURUH TRANSAKSI (SALDO BERTAMBAH)
-                </p>
-                <p className="font-sans text-meta text-zinc-600 leading-tight">
+                </h3>
+                <p className="mt-1 font-sans text-meta leading-normal text-zinc-600">
                   Membatalkan seluruh transaksi pengeluaran. Uang kas akan bertambah kembali sebesar{' '}
                   {formatRupiah(totalExpense)}.
                 </p>
@@ -176,14 +176,14 @@ export default function ResetExpenseModal({
                   setConfirmDeleteAll(true)
                   setConfirmKeepBalance(false)
                 }}
-                className="pixel-button shrink-0 cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-red-600 shadow-[1px_1px_0px_#000] hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
+                className="pixel-button shrink-0 cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold tracking-normal text-red-600 shadow-[1px_1px_0px_#000] hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 🗑️ HAPUS SEMUA
               </button>
             </div>
           ) : (
             <div className="flex flex-col gap-2.5">
-              <p className="font-sans text-meta font-bold text-red-900 leading-tight">
+              <p className="font-sans text-meta font-bold leading-normal text-red-900">
                 ⚠️ PERHATIAN: Transaksi pengeluaran akan dihapus permanen dan saldo kasmu akan
                 bertambah kembali sebesar {formatRupiah(totalExpense)}. Lanjutkan?
               </p>
@@ -191,14 +191,14 @@ export default function ResetExpenseModal({
                 <button
                   type="button"
                   onClick={handleExecuteDeleteAll}
-                  className="pixel-button cursor-pointer border border-black bg-red-600 px-3 py-1.5 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-red-700"
+                  className="pixel-button cursor-pointer border border-black bg-red-600 px-3 py-1.5 font-retro text-label font-bold tracking-normal text-white shadow-[2px_2px_0px_#000] hover:bg-red-700"
                 >
                   YA, HAPUS & KEMBALIKAN SALDO
                 </button>
                 <button
                   type="button"
                   onClick={() => setConfirmDeleteAll(false)}
-                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
+                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold tracking-normal text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
                 >
                   BATAL
                 </button>
@@ -210,15 +210,15 @@ export default function ResetExpenseModal({
         {/* Daftar Transaksi Pengeluaran Bulan Ini (Hapus Spesifik / Parsial) */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">
-            <p className="font-retro text-label font-bold tracking-wide text-[var(--theme-text-muted)]">
+            <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
               DAFTAR TRANSAKSI BULAN INI
-            </p>
+            </h3>
             <span className="font-sans text-meta text-[var(--theme-text-muted)]">
               (Bisa hapus item tertentu saja)
             </span>
           </div>
 
-          <div className="pixel-box max-h-48 divide-y-2 divide-[var(--theme-border-subtle)] overflow-y-auto border-2 border-black bg-white">
+          <div className="max-h-48 divide-y divide-[var(--theme-border-subtle)] overflow-y-auto border-y-2 border-[var(--theme-border-subtle)] bg-white">
             {expenses.length === 0 ? (
               <p className="p-4 text-center font-sans text-meta text-[var(--theme-text-muted)]">
                 Tidak ada transaksi pengeluaran tercatat di bulan ini.
@@ -227,19 +227,19 @@ export default function ResetExpenseModal({
               expenses.map((tx) => (
                 <div
                   key={tx.id}
-                  className="flex items-center justify-between gap-3 p-2.5 hover:bg-[var(--theme-card-subtle)]"
+                  className="flex items-center justify-between gap-3 px-2 py-2.5 hover:bg-[var(--theme-card-subtle)]"
                 >
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-1.5">
-                      <span className="font-mono text-label text-[var(--theme-text-muted)]">
+                      <span className="font-mono text-label tracking-normal text-[var(--theme-text-muted)]">
                         {tx.date}
                       </span>
-                      <span className="border border-black bg-zinc-100 px-1 py-0.2 font-retro text-label text-zinc-700">
+                      <span className="border border-zinc-400 bg-zinc-100 px-1.5 py-0.5 font-retro text-label tracking-normal text-zinc-700">
                         {tx.category}
                       </span>
                     </div>
-                    <p className="truncate font-sans text-body font-medium text-black">
-                      {tx.description}
+                    <p className="mt-0.5 truncate font-sans text-body font-medium text-black">
+                      {tx.description || 'Tanpa keterangan'}
                     </p>
                   </div>
 

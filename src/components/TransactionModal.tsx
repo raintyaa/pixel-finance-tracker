@@ -96,25 +96,31 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           {/* Toggle Tipe Transaksi */}
-          <div className="grid grid-cols-2 gap-2 bg-[var(--theme-card-subtle)] p-1 border-2 border-[var(--theme-border)]">
+          <div
+            role="group"
+            aria-label="Tipe transaksi"
+            className="grid grid-cols-2 gap-2.5"
+          >
             <button
               type="button"
+              aria-pressed={type === 'expense'}
               onClick={() => handleSelectType('expense')}
-              className={`px-3 py-2 text-label font-retro tracking-normal transition-all cursor-pointer font-bold ${
+              className={`pixel-button px-3 py-2 text-label font-retro tracking-normal transition-colors cursor-pointer font-bold ${
                 type === 'expense'
-                  ? 'bg-[var(--theme-expense)] text-white pixel-box-sm shadow-none'
-                  : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                  ? 'bg-[var(--theme-expense)] text-white'
+                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
               💸 Pengeluaran
             </button>
             <button
               type="button"
+              aria-pressed={type === 'income'}
               onClick={() => handleSelectType('income')}
-              className={`px-3 py-2 text-label font-retro tracking-normal transition-all cursor-pointer font-bold ${
+              className={`pixel-button px-3 py-2 text-label font-retro tracking-normal transition-colors cursor-pointer font-bold ${
                 type === 'income'
-                  ? 'bg-[var(--theme-income)] text-white pixel-box-sm shadow-none'
-                  : 'text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                  ? 'bg-[var(--theme-income)] text-white'
+                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
               💰 Pemasukan

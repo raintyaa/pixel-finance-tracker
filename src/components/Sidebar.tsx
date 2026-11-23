@@ -26,10 +26,10 @@ function BrandMark() {
         <span aria-hidden="true">🪙</span>
       </div>
       <div className="min-w-0">
-        <p className="font-retro text-brand font-bold tracking-wide text-black">
+        <p className="font-retro text-brand font-bold tracking-normal text-black">
           PIXEL LEDGER
         </p>
-        <span className="mt-1 inline-block border border-black bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-[0.1em] text-[var(--theme-gold-text)]">
+        <span className="mt-1 inline-block border border-black bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
           RETRO FINANCE
         </span>
       </div>
@@ -93,7 +93,7 @@ function NavGroup({
   return (
     <div>
       <div className="mb-2 flex items-center gap-2 px-1">
-        <p className="font-retro text-label font-bold tracking-[0.12em] text-[var(--theme-text-muted)]">
+        <p className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
           {label}
         </p>
         <span className="h-px flex-1 bg-[#e4e4e7]" />
@@ -187,10 +187,10 @@ export default function Sidebar({
             <span aria-hidden="true">🪙</span>
           </div>
           <div>
-            <p className="font-retro text-brand font-bold tracking-wide text-black">
+            <p className="font-retro text-brand font-bold tracking-normal text-black">
               PIXEL LEDGER
             </p>
-            <p className="font-retro text-label font-bold tracking-[0.1em] text-[var(--theme-gold-text)]">
+            <p className="font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)]">
               RETRO FINANCE
             </p>
           </div>

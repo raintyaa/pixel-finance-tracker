@@ -121,7 +121,7 @@ export default function BackupModal({
               >
                 PENCADANGAN & PEMULIHAN
               </h2>
-              <p className="font-sans text-label text-[var(--theme-text-muted)]">
+              <p className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
                 Manajemen Cadangan Data & Ekspor Riwayat (Hari 12)
               </p>
             </div>
@@ -138,35 +138,35 @@ export default function BackupModal({
 
         {/* Notifikasi Banner Sukses / Galat */}
         {successMessage && (
-          <div className="pixel-box flex items-center gap-2 border border-black bg-emerald-100 p-3 text-emerald-900">
+          <div className="flex items-center gap-2 border-y border-emerald-300 bg-emerald-50 px-3 py-2.5 text-emerald-900">
             <span className="text-base" aria-hidden="true">
               ✅
             </span>
-            <p className="font-sans text-meta font-medium leading-tight">{successMessage}</p>
+            <p className="font-sans text-meta font-medium leading-normal">{successMessage}</p>
           </div>
         )}
 
         {errorMessage && (
-          <div className="pixel-box flex items-center gap-2 border border-black bg-red-100 p-3 text-red-900">
+          <div className="flex items-center gap-2 border-y border-red-300 bg-red-50 px-3 py-2.5 text-red-900">
             <span className="text-base" aria-hidden="true">
               ⚠️
             </span>
-            <p className="font-sans text-meta font-bold leading-tight">{errorMessage}</p>
+            <p className="font-sans text-meta font-bold leading-normal">{errorMessage}</p>
           </div>
         )}
 
         {/* Ringkasan Data Saat Ini */}
-        <div className="pixel-box flex items-center justify-between border border-black bg-[var(--theme-card-subtle)] p-3">
+        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3.5 py-3">
           <div>
-            <p className="font-retro text-label font-bold tracking-wider text-[var(--theme-text-muted)]">
+            <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
               DATA AKTIF DI BROWSER
-            </p>
+            </h3>
             <p className="mt-0.5 font-mono text-data font-bold tabular-nums text-[var(--theme-text)]">
               {transactions.length} Transaksi Tercatat
             </p>
           </div>
           <div className="text-right">
-            <span className="font-sans text-label text-[var(--theme-text-muted)] block">
+            <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)] block">
               Batas Anggaran:
             </span>
             <span className="font-mono text-meta font-bold text-[var(--theme-gold-text)]">
@@ -175,48 +175,48 @@ export default function BackupModal({
           </div>
         </div>
 
-        {/* Bagian 1: Ekspor Data (Download) */}
+        {/* Bagian Ekspor Data (Download) */}
         <div className="flex flex-col gap-2.5">
-          <p className="font-retro text-label font-bold tracking-wide text-[var(--theme-text)]">
-            1. UNDUH CADANGAN DATA (EKSPOR)
-          </p>
+          <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+            UNDUH CADANGAN DATA (EKSPOR)
+          </h3>
 
-          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {/* Opsi JSON */}
-            <div className="pixel-box flex flex-col justify-between gap-3 border-2 border-black bg-white p-3">
+            <div className="flex flex-col justify-between gap-3 border-y border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] p-3">
               <div>
-                <div className="flex items-center gap-1.5 font-retro text-label font-bold text-black">
+                <div className="flex items-center gap-1.5 font-retro text-label font-bold tracking-normal text-black">
                   <span>💾</span>
                   <span>FORMAT JSON</span>
                 </div>
-                <p className="mt-1 font-sans text-label text-[var(--theme-text-muted)] leading-relaxed">
+                <p className="mt-1 font-sans text-label tracking-normal text-[var(--theme-text-muted)] leading-normal">
                   Cadangan penuh (transaksi + batas budget) untuk diimpor kembali kapan saja.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleExportJson}
-                className="pixel-button cursor-pointer border border-black bg-[var(--theme-gold)] px-3 py-2 font-retro text-label font-bold text-black shadow-[2px_2px_0px_#000] hover:bg-[var(--theme-gold-hover)]"
+                className="pixel-button cursor-pointer border border-black bg-[var(--theme-gold)] px-3 py-2 font-retro text-label font-bold tracking-normal text-black shadow-[2px_2px_0px_#000] hover:bg-[var(--theme-gold-hover)]"
               >
                 UNDUH (.JSON)
               </button>
             </div>
 
             {/* Opsi CSV */}
-            <div className="pixel-box flex flex-col justify-between gap-3 border-2 border-black bg-white p-3">
+            <div className="flex flex-col justify-between gap-3 border-y border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] p-3">
               <div>
-                <div className="flex items-center gap-1.5 font-retro text-label font-bold text-black">
+                <div className="flex items-center gap-1.5 font-retro text-label font-bold tracking-normal text-black">
                   <span>📊</span>
                   <span>FORMAT CSV (EXCEL)</span>
                 </div>
-                <p className="mt-1 font-sans text-label text-[var(--theme-text-muted)] leading-relaxed">
+                <p className="mt-1 font-sans text-label tracking-normal text-[var(--theme-text-muted)] leading-normal">
                   Tabel data dengan kolom rapi. Cocok dibuka di Microsoft Excel atau Google Sheets.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={handleExportCsv}
-                className="pixel-button cursor-pointer border border-black bg-white px-3 py-2 font-retro text-label font-bold text-black shadow-[2px_2px_0px_#000] hover:bg-zinc-100"
+                className="pixel-button cursor-pointer border border-black bg-white px-3 py-2 font-retro text-label font-bold tracking-normal text-black shadow-[2px_2px_0px_#000] hover:bg-zinc-100"
               >
                 UNDUH (.CSV)
               </button>
@@ -224,11 +224,11 @@ export default function BackupModal({
           </div>
         </div>
 
-        {/* Bagian 2: Pulihkan Data (Impor JSON) */}
+        {/* Bagian Pulihkan Data (Impor JSON) */}
         <div className="flex flex-col gap-2.5 border-t-2 border-[var(--theme-border-subtle)] pt-3">
-          <p className="font-retro text-label font-bold tracking-wide text-[var(--theme-text)]">
-            2. PULIHKAN DARI CADANGAN (IMPOR)
-          </p>
+          <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+            PULIHKAN DARI CADANGAN (IMPOR)
+          </h3>
 
           <input
             type="file"
@@ -243,51 +243,51 @@ export default function BackupModal({
             <div className="flex flex-col gap-2">
               <label
                 htmlFor="backup-file-input"
-                className="pixel-button flex cursor-pointer items-center justify-center gap-2 border-2 border-dashed border-black bg-[var(--theme-card-subtle)] p-4 text-center hover:bg-zinc-100"
+                className="flex cursor-pointer items-center justify-center gap-2 border-2 border-dashed border-zinc-400 bg-[var(--theme-card-subtle)] p-4 text-center transition-colors hover:border-black hover:bg-zinc-100"
               >
                 <span className="text-xl" aria-hidden="true">
                   📂
                 </span>
                 <div>
-                  <p className="font-retro text-label font-bold text-black">
+                  <p className="font-retro text-label font-bold tracking-normal text-black">
                     PILIH BERKAS CADANGAN (.JSON)
                   </p>
-                  <p className="font-sans text-label text-[var(--theme-text-muted)]">
+                  <p className="font-sans text-label tracking-normal leading-normal text-[var(--theme-text-muted)]">
                     Klik untuk memilih file cadangan JSON dari komputermu
                   </p>
                 </div>
               </label>
               {selectedFile && !errorMessage && (
-                <p className="font-mono text-label text-[var(--theme-text-muted)]">
+                <p className="font-mono text-label tracking-normal text-[var(--theme-text-muted)]">
                   Memproses: {selectedFile.name}...
                 </p>
               )}
             </div>
           ) : (
-            <div className="pixel-box flex flex-col gap-2.5 border-2 border-emerald-700 bg-emerald-50 p-3.5 text-emerald-950">
+            <div className="flex flex-col gap-2.5 border-y-2 border-emerald-300 bg-emerald-50 px-3.5 py-3 text-emerald-950">
               <div className="flex items-center justify-between border-b border-emerald-300 pb-2">
-                <span className="font-retro text-label font-bold text-emerald-900">
+                <span className="font-retro text-label font-bold tracking-normal text-emerald-900">
                   PRATINJAU BERKAS CADANGAN
                 </span>
-                <span className="font-mono text-label text-emerald-700">
+                <span className="font-mono text-label tracking-normal text-emerald-700">
                   {selectedFile?.name}
                 </span>
               </div>
 
               <div className="grid grid-cols-2 gap-2 font-sans text-meta">
                 <div>
-                  <span className="text-emerald-700 block text-label">Jumlah Transaksi:</span>
+                  <span className="text-emerald-700 block text-label tracking-normal">Jumlah Transaksi:</span>
                   <strong className="font-mono text-body text-emerald-950">
                     {previewData.transactions.length} item
                   </strong>
                 </div>
                 <div>
-                  <span className="text-emerald-700 block text-label">Batas Anggaran:</span>
+                  <span className="text-emerald-700 block text-label tracking-normal">Batas Anggaran:</span>
                   <strong className="font-mono text-body text-emerald-950">
                     {previewData.budget ? formatRupiah(previewData.budget.monthlyLimit) : 'Sesuai Asal'}
                   </strong>
                 </div>
-                <div className="col-span-2 text-label text-emerald-800">
+                <div className="col-span-2 text-label tracking-normal text-emerald-800">
                   Tanggal Ekspor: {new Date(previewData.exportedAt).toLocaleString('id-ID')}
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function BackupModal({
                 <button
                   type="button"
                   onClick={handleExecuteRestore}
-                  className="pixel-button cursor-pointer border-2 border-black bg-emerald-600 px-3 py-2 font-retro text-label font-bold text-white shadow-[2px_2px_0px_#000] hover:bg-emerald-700"
+                  className="pixel-button cursor-pointer border-2 border-black bg-emerald-600 px-3 py-2 font-retro text-label font-bold tracking-normal text-white shadow-[2px_2px_0px_#000] hover:bg-emerald-700"
                 >
                   📥 PULIHKAN DATA SEKARANG
                 </button>
@@ -307,7 +307,7 @@ export default function BackupModal({
                     setSelectedFile(null)
                     if (fileInputRef.current) fileInputRef.current.value = ''
                   }}
-                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-2 font-retro text-label font-bold text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
+                  className="pixel-button cursor-pointer border border-black bg-white px-3 py-2 font-retro text-label font-bold tracking-normal text-black shadow-[1px_1px_0px_#000] hover:bg-zinc-100"
                 >
                   BATAL
                 </button>
@@ -316,28 +316,28 @@ export default function BackupModal({
           )}
         </div>
 
-        {/* Bagian 3: Opsi Reset ke Setelan Awal */}
+        {/* Bagian Opsi Reset ke Setelan Awal */}
         <div className="flex flex-col gap-2 border-t-2 border-[var(--theme-border-subtle)] pt-3">
-          <p className="font-retro text-label font-bold tracking-wide text-zinc-600">
-            3. OPSI DARURAT (RESET KE DATA AWAL)
-          </p>
+          <h3 className="font-retro text-label font-bold tracking-normal text-zinc-600">
+            OPSI DARURAT (RESET KE DATA AWAL)
+          </h3>
 
           {!confirmReset ? (
             <div className="flex items-center justify-between gap-3">
-              <p className="font-sans text-label text-[var(--theme-text-muted)] leading-tight">
+              <p className="font-sans text-label tracking-normal text-[var(--theme-text-muted)] leading-normal">
                 Kembalikan data ke setelan bawaan pabrik jika kamu ingin memulai kembali dari awal.
               </p>
               <button
                 type="button"
                 onClick={() => setConfirmReset(true)}
-                className="pixel-button shrink-0 cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold text-red-600 shadow-[1px_1px_0px_#000] hover:bg-red-50"
+                className="pixel-button shrink-0 cursor-pointer border border-black bg-white px-3 py-1.5 font-retro text-label font-bold tracking-normal text-red-600 shadow-[1px_1px_0px_#000] hover:bg-red-50"
               >
                 RESET PABRIK
               </button>
             </div>
           ) : (
-            <div className="pixel-box flex flex-col gap-2 border-2 border-red-600 bg-red-50 p-3 text-red-950">
-              <p className="font-sans text-meta font-bold leading-tight">
+            <div className="flex flex-col gap-2 border-y-2 border-red-300 bg-red-50 px-3.5 py-3 text-red-950">
+              <p className="font-sans text-meta font-bold leading-normal">
                 ⚠️ PERINGATAN: Seluruh data transaksi di browser akan dihapus dan dikembalikan ke data
                 awal bawaan. Tindakan ini tidak dapat dibatalkan kecuali kamu memiliki file cadangan.
               </p>

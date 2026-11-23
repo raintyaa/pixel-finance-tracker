@@ -184,8 +184,8 @@ export default function AdjustBalanceModal({
           setelah transfer antar-rekening atau koreksi uang riil).
         </p>
 
-        {/* Info Saldo Tercatat Saat Ini */}
-        <div className="flex items-center justify-between border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-3">
+        {/* Info Saldo Tercatat Saat Ini — strip pembatas datar, tanpa kartu bersarang */}
+        <div className="flex items-center justify-between border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3 py-2.5">
           <span className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
             Saldo Tercatat di Aplikasi:
           </span>
@@ -218,7 +218,7 @@ export default function AdjustBalanceModal({
           {/* Pratinjau Selisih Otomatis */}
           {difference !== null && (
             <div
-              className={`flex flex-col gap-1 border-2 border-[var(--theme-border)] p-3 ${
+              className={`flex flex-col gap-1 border-y-2 border-[var(--theme-border-subtle)] px-3 py-2.5 ${
                 difference < 0
                   ? 'bg-[var(--theme-expense-surface)] text-[var(--theme-expense-text)]'
                   : difference > 0
@@ -239,7 +239,7 @@ export default function AdjustBalanceModal({
                   {formatRupiah(difference)}
                 </span>
               </div>
-              <p className="mt-0.5 font-sans text-meta leading-tight opacity-90">
+              <p className="mt-0.5 font-sans text-meta leading-normal opacity-90">
                 {difference < 0
                   ? `Saldo aplikasi akan disesuaikan berkurang sebesar ${formatRupiah(
                       Math.abs(difference)
@@ -255,10 +255,10 @@ export default function AdjustBalanceModal({
 
           {/* Pengaturan Khusus jika Selisih Berkurang (Poin 1) */}
           {difference !== null && difference < 0 && (
-            <div className="flex flex-col gap-3 rounded-none border-2 border-black bg-[var(--theme-card-subtle)] p-3">
-              <p className="font-retro text-label font-bold text-[var(--theme-text)]">
+            <div className="flex flex-col gap-3 border-y-2 border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-3 py-3">
+              <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
                 PENGATURAN STATUS BEBAN & BIAYA ADMIN
-              </p>
+              </h3>
 
               {/* 1. Opsi Apakah Ditetapkan sebagai Pengeluaran Bulanan */}
               <label className="flex cursor-pointer items-start gap-2.5">
@@ -272,7 +272,7 @@ export default function AdjustBalanceModal({
                   <span className="font-sans text-meta font-bold text-black">
                     Tetapkan selisih saldo sebagai Pengeluaran Bulanan
                   </span>
-                  <p className="mt-0.5 font-sans text-label text-[var(--theme-text-muted)]">
+                  <p className="mt-0.5 font-sans text-label tracking-normal leading-normal text-[var(--theme-text-muted)]">
                     {treatAsExpense
                       ? 'Selisih akan memotong batas budget bulanan.'
                       : 'Hanya koreksi kas (TIDAK membebani kartu Pengeluaran & HP Bar budget).'}
@@ -293,16 +293,16 @@ export default function AdjustBalanceModal({
                     <span className="font-sans text-meta font-bold text-black">
                       Ada Biaya Admin / Transfer Bank
                     </span>
-                    <p className="mt-0.5 font-sans text-label text-[var(--theme-text-muted)]">
+                    <p className="mt-0.5 font-sans text-label tracking-normal leading-normal text-[var(--theme-text-muted)]">
                       Misal saat transfer ke DANA atau bank lain terkena biaya admin.
                     </p>
                   </div>
                 </label>
 
                 {hasAdminFee && (
-                  <div className="mt-3 flex flex-col gap-2 rounded-none border border-black bg-white p-2.5">
+                  <div className="mt-3 flex flex-col gap-2 border-t border-zinc-300 pt-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-retro text-label font-bold text-zinc-800">
+                      <span className="font-retro text-label font-bold tracking-normal text-zinc-800">
                         NOMINAL BIAYA ADMIN (RP)
                       </span>
                       <input
@@ -312,22 +312,22 @@ export default function AdjustBalanceModal({
                         value={adminFeeAmount}
                         onChange={(e) => setAdminFeeAmount(e.target.value)}
                         placeholder="cth: 6500"
-                        className="w-28 border border-black px-2 py-1 font-mono text-body font-bold text-black text-right outline-none"
+                        className="w-28 border border-black bg-white px-2 py-1 font-mono text-body font-bold text-black text-right outline-none"
                       />
                     </div>
 
                     {/* Preset Biaya Admin Cepat */}
                     <div className="flex items-center gap-1.5">
-                      <span className="font-sans text-label text-zinc-500">Preset:</span>
+                      <span className="font-sans text-label tracking-normal text-zinc-500">Preset:</span>
                       {ADMIN_FEE_PRESETS.map((fee) => (
                         <button
                           key={fee}
                           type="button"
                           onClick={() => setAdminFeeAmount(String(fee))}
-                          className={`pixel-button cursor-pointer border border-black px-1.5 py-0.5 font-retro text-label font-bold ${
+                          className={`pixel-button cursor-pointer border border-black px-1.5 py-0.5 font-retro text-label font-bold tracking-normal ${
                             Number(adminFeeAmount) === fee
                               ? 'bg-[var(--theme-gold)] text-black'
-                              : 'bg-zinc-100 text-zinc-700 hover:bg-zinc-200'
+                              : 'bg-white text-zinc-700 hover:bg-zinc-100'
                           }`}
                         >
                           {formatRupiah(fee)}
@@ -340,10 +340,10 @@ export default function AdjustBalanceModal({
                       value={adminFeeNote}
                       onChange={(e) => setAdminFeeNote(e.target.value)}
                       placeholder="Keterangan biaya admin"
-                      className="border border-zinc-300 px-2 py-1 font-sans text-meta text-black outline-none focus:border-black"
+                      className="border border-zinc-400 bg-white px-2 py-1 font-sans text-meta text-black outline-none focus:border-black"
                     />
 
-                    <p className="font-sans text-[11px] text-emerald-800 leading-tight">
+                    <p className="font-sans text-label tracking-normal leading-normal text-emerald-800">
                       ✓ Biaya admin {formatRupiah(parsedAdminFee || 0)} akan otomatis dicatat
                       sebagai pengeluaran riil di kartu Pengeluaran.
                     </p>
