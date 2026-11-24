@@ -1,12 +1,14 @@
 import { useEffect, useMemo, useState } from 'react'
 import AdjustBalanceModal from './components/AdjustBalanceModal'
+import AnalyticsView from './components/AnalyticsView'
 import BalanceCards from './components/BalanceCards'
 import BackupModal from './components/BackupModal'
 import BudgetModal from './components/BudgetModal'
 import ConfirmDialog from './components/ConfirmDialog'
+import HistoryView from './components/HistoryView'
 import PeriodNavigator, { type ViewScope } from './components/PeriodNavigator'
 import ResetExpenseModal from './components/ResetExpenseModal'
-import Sidebar from './components/Sidebar'
+import Sidebar, { type ActiveTab } from './components/Sidebar'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import type { BudgetConfig, Transaction } from './types/finance'
@@ -19,10 +21,17 @@ import {
   saveTransactions,
 } from './utils/storage'
 
+const TAB_LABELS: Record<ActiveTab, string> = {
+  dashboard: 'Dashboard',
+  analytics: 'Analisis',
+  history: 'Riwayat Transaksi',
+}
+
 export default function App() {
   // Lazy initial state: muat data tersimpan (atau data awal jika belum ada)
   const [transactions, setTransactions] = useState<Transaction[]>(() => loadTransactions())
   const [budget, setBudget] = useState<BudgetConfig>(() => loadBudget())
+  const [activeTab, setActiveTab] = useState<ActiveTab>('dashboard')
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isAdjustModalOpen, setIsAdjustModalOpen] = useState<boolean>(false)
   const [isBudgetModalOpen, setIsBudgetModalOpen] = useState<boolean>(false)
@@ -255,6 +264,8 @@ export default function App() {
     >
       <div className="flex min-h-screen flex-col lg:flex-row">
         <Sidebar
+          activeTab={activeTab}
+          onSelectTab={setActiveTab}
           onOpenBudget={() => setIsBudgetModalOpen(true)}
           onOpenBackup={() => setIsBackupModalOpen(true)}
         />
@@ -262,7 +273,7 @@ export default function App() {
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Top Header: breadcrumb, status penyimpanan, aksi utama */}
           <header className="z-30 border-b-2 border-black bg-white lg:sticky lg:top-0">
-            <h1 className="sr-only">Dashboard Pixel Ledger</h1>
+            <h1 className="sr-only">{TAB_LABELS[activeTab]} Pixel Ledger</h1>
             <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
               <nav aria-label="Breadcrumb" className="font-sans text-meta text-[var(--theme-text-muted)]">
                 <ol className="flex items-center gap-1.5">
@@ -270,7 +281,7 @@ export default function App() {
                   <li aria-hidden="true" className="text-[#d4d4d8]">
                     &gt;
                   </li>
-                  <li className="font-bold text-[var(--theme-text)]">Dashboard</li>
+                  <li className="font-bold text-[var(--theme-text)]">{TAB_LABELS[activeTab]}</li>
                 </ol>
               </nav>
 
@@ -298,63 +309,89 @@ export default function App() {
           </header>
 
           <main className="mx-auto flex w-full min-w-0 max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
-            {/* Section Overview: 3 kartu saldo + health bar */}
-            <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
-              <div className="flex flex-wrap items-baseline justify-between gap-2">
-                <h2
-                  id="overview-heading"
-                  className="font-retro text-display font-bold text-black sm:text-2xl"
-                >
-                  <span
-                    className="mr-2 inline-block h-2.5 w-2.5 border-2 border-black bg-[var(--theme-gold)] align-middle"
-                    aria-hidden="true"
+            {activeTab === 'dashboard' && (
+              <>
+                {/* Section Overview: 3 kartu saldo + health bar */}
+                <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
+                  <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <h2
+                      id="overview-heading"
+                      className="font-retro text-display font-bold text-black sm:text-2xl"
+                    >
+                      <span
+                        className="mr-2 inline-block h-2.5 w-2.5 border-2 border-black bg-[var(--theme-gold)] align-middle"
+                        aria-hidden="true"
+                      />
+                      Ringkasan Saldo
+                    </h2>
+                    <p className="font-sans text-meta text-[var(--theme-text-muted)]">
+                      {viewScope === 'month'
+                        ? `${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`
+                        : 'Semua riwayat'}
+                    </p>
+                  </div>
+
+                  <BalanceCards
+                    totalIncome={totalIncome}
+                    totalExpense={totalExpense}
+                    budgetExpense={budgetExpense}
+                    realBalance={realBalance}
+                    budgetLimit={budget.monthlyLimit}
+                    onAdjustBalance={() => setIsAdjustModalOpen(true)}
+                    onOpenBudget={() => setIsBudgetModalOpen(true)}
+                    onResetExpense={() => setIsResetExpenseModalOpen(true)}
                   />
-                  Ringkasan Saldo
-                </h2>
-                <p className="font-sans text-meta text-[var(--theme-text-muted)]">
-                  {viewScope === 'month'
-                    ? `${MONTH_NAMES[selectedMonth - 1]} ${selectedYear}`
-                    : 'Semua riwayat'}
-                </p>
-              </div>
+                </section>
 
-              <BalanceCards
-                totalIncome={totalIncome}
-                totalExpense={totalExpense}
-                budgetExpense={budgetExpense}
-                realBalance={realBalance}
-                budgetLimit={budget.monthlyLimit}
-                onAdjustBalance={() => setIsAdjustModalOpen(true)}
-                onOpenBudget={() => setIsBudgetModalOpen(true)}
-                onResetExpense={() => setIsResetExpenseModalOpen(true)}
-              />
-            </section>
+                {/* Section Navigator Periode */}
+                <PeriodNavigator
+                  currentYear={selectedYear}
+                  currentMonth={selectedMonth}
+                  selectedWeek={selectedWeek}
+                  weeks={weeks}
+                  viewScope={viewScope}
+                  monthDirection={monthDirection}
+                  onPrevMonth={handlePrevMonth}
+                  onNextMonth={handleNextMonth}
+                  onSelectWeek={(w) => setSelectedWeek(w)}
+                  onToggleViewScope={(s) => setViewScope(s)}
+                  onResetToday={handleResetToday}
+                />
 
-            {/* Section Navigator Periode */}
-            <PeriodNavigator
-              currentYear={selectedYear}
-              currentMonth={selectedMonth}
-              selectedWeek={selectedWeek}
-              weeks={weeks}
-              viewScope={viewScope}
-              monthDirection={monthDirection}
-              onPrevMonth={handlePrevMonth}
-              onNextMonth={handleNextMonth}
-              onSelectWeek={(w) => setSelectedWeek(w)}
-              onToggleViewScope={(s) => setViewScope(s)}
-              onResetToday={handleResetToday}
-            />
+                {/* Section Tabel Mingguan (7 Kolom Hari: Minggu s/d Sabtu) */}
+                {activeWeekInfo && (
+                  <WeeklyTable
+                    key={activeWeekInfo.startDate}
+                    weekInfo={activeWeekInfo}
+                    transactions={transactions}
+                    highlightId={highlight?.id ?? null}
+                    highlightTick={highlight?.tick}
+                    onEditTransaction={(tx) => setEditingTransaction(tx)}
+                    onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
+                  />
+                )}
+              </>
+            )}
 
-            {/* Section Tabel Mingguan (7 Kolom Hari: Minggu s/d Sabtu) */}
-            {activeWeekInfo && (
-              <WeeklyTable
-                key={activeWeekInfo.startDate}
-                weekInfo={activeWeekInfo}
+            {activeTab === 'analytics' && (
+              <AnalyticsView
                 transactions={transactions}
-                highlightId={highlight?.id ?? null}
-                highlightTick={highlight?.tick}
+                budgetLimit={budget.monthlyLimit}
+                selectedYear={selectedYear}
+                selectedMonth={selectedMonth}
+                viewScope={viewScope}
+                onPrevMonth={handlePrevMonth}
+                onNextMonth={handleNextMonth}
+                onToggleViewScope={(s) => setViewScope(s)}
+              />
+            )}
+
+            {activeTab === 'history' && (
+              <HistoryView
+                transactions={transactions}
                 onEditTransaction={(tx) => setEditingTransaction(tx)}
                 onDeleteTransaction={(tx) => setDeletingTransaction(tx)}
+                onOpenNewTransaction={() => setIsModalOpen(true)}
               />
             )}
           </main>

@@ -1,21 +1,23 @@
 import { useEffect, useState } from 'react'
 
+export type ActiveTab = 'dashboard' | 'analytics' | 'history'
+
 interface MenuItem {
   icon: string
   label: string
-  active?: boolean
+  tab?: ActiveTab
   badge?: string
 }
 
 const MAIN_MENU: MenuItem[] = [
-  { icon: '📊', label: 'Dashboard', active: true },
-  { icon: '📈', label: 'Analisis' },
-  { icon: '💳', label: 'Riwayat Transaksi' },
+  { icon: '📊', label: 'Dashboard', tab: 'dashboard' },
+  { icon: '📈', label: 'Analisis', tab: 'analytics' },
+  { icon: '💳', label: 'Riwayat Transaksi', tab: 'history' },
   { icon: '🎯', label: 'Batas Budget' },
 ]
 
 const SYSTEM_MENU: MenuItem[] = [
-  { icon: '⚙️', label: 'Pengaturan' },
+  { icon: '⚙️', label: 'Pengaturan', badge: 'Segera' },
   { icon: '💾', label: 'Backup Data' },
 ]
 
@@ -39,18 +41,20 @@ function BrandMark() {
 
 function NavItem({
   item,
+  isActive,
   onNavigate,
 }: {
   item: MenuItem
+  isActive: boolean
   onNavigate?: () => void
 }) {
   return (
     <button
       type="button"
       onClick={onNavigate}
-      aria-current={item.active ? 'page' : undefined}
-      className={`group flex w-full items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body font-sans font-medium transition-all hover:translate-x-0.5 ${
-        item.active
+      aria-current={isActive ? 'page' : undefined}
+      className={`group flex w-full cursor-pointer items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body font-sans font-medium transition-all hover:translate-x-0.5 ${
+        isActive
           ? 'border-black bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_#000]'
           : 'border-transparent text-[#3f3f46] hover:border-black hover:bg-[var(--theme-gold-surface)] hover:shadow-[2px_2px_0px_#000]'
       }`}
@@ -65,7 +69,7 @@ function NavItem({
       {item.badge ? (
         <span
           className={`shrink-0 border border-black px-1 py-0.5 font-retro text-label leading-none tracking-normal ${
-            item.active
+            isActive
               ? 'bg-black text-[var(--theme-gold)]'
               : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)]'
           }`}
@@ -80,12 +84,16 @@ function NavItem({
 function NavGroup({
   label,
   items,
+  activeTab,
+  onSelectTab,
   onNavigate,
   onOpenBudget,
   onOpenBackup,
 }: {
   label: string
   items: MenuItem[]
+  activeTab: ActiveTab
+  onSelectTab: (tab: ActiveTab) => void
   onNavigate?: () => void
   onOpenBudget?: () => void
   onOpenBackup?: () => void
@@ -103,8 +111,11 @@ function NavGroup({
           <NavItem
             key={item.label}
             item={item}
+            isActive={item.tab !== undefined && item.tab === activeTab}
             onNavigate={() => {
-              if (item.label === 'Batas Budget' && onOpenBudget) {
+              if (item.tab) {
+                onSelectTab(item.tab)
+              } else if (item.label === 'Batas Budget' && onOpenBudget) {
                 onOpenBudget()
               } else if (item.label === 'Backup Data' && onOpenBackup) {
                 onOpenBackup()
@@ -119,10 +130,14 @@ function NavGroup({
 }
 
 function SidebarNavigation({
+  activeTab,
+  onSelectTab,
   onNavigate,
   onOpenBudget,
   onOpenBackup,
 }: {
+  activeTab: ActiveTab
+  onSelectTab: (tab: ActiveTab) => void
   onNavigate?: () => void
   onOpenBudget?: () => void
   onOpenBackup?: () => void
@@ -135,6 +150,8 @@ function SidebarNavigation({
       <NavGroup
         label="MENU UTAMA"
         items={MAIN_MENU}
+        activeTab={activeTab}
+        onSelectTab={onSelectTab}
         onNavigate={onNavigate}
         onOpenBudget={onOpenBudget}
       />
@@ -142,6 +159,8 @@ function SidebarNavigation({
         <NavGroup
           label="SISTEM"
           items={SYSTEM_MENU}
+          activeTab={activeTab}
+          onSelectTab={onSelectTab}
           onNavigate={onNavigate}
           onOpenBackup={onOpenBackup}
         />
@@ -151,9 +170,13 @@ function SidebarNavigation({
 }
 
 export default function Sidebar({
+  activeTab,
+  onSelectTab,
   onOpenBudget,
   onOpenBackup,
 }: {
+  activeTab: ActiveTab
+  onSelectTab: (tab: ActiveTab) => void
   onOpenBudget?: () => void
   onOpenBackup?: () => void
 }) {
@@ -213,7 +236,12 @@ export default function Sidebar({
         <div className="shrink-0 border-b-2 border-black p-4">
           <BrandMark />
         </div>
-        <SidebarNavigation onOpenBudget={onOpenBudget} onOpenBackup={onOpenBackup} />
+        <SidebarNavigation
+          activeTab={activeTab}
+          onSelectTab={onSelectTab}
+          onOpenBudget={onOpenBudget}
+          onOpenBackup={onOpenBackup}
+        />
       </aside>
 
       {/* Drawer mobile */}
@@ -243,6 +271,8 @@ export default function Sidebar({
               </button>
             </div>
             <SidebarNavigation
+              activeTab={activeTab}
+              onSelectTab={onSelectTab}
               onNavigate={closeMobile}
               onOpenBudget={onOpenBudget}
               onOpenBackup={onOpenBackup}
