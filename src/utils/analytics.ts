@@ -35,6 +35,22 @@ export function isActiveExpense(tx: Transaction): boolean {
 }
 
 /**
+ * Menentukan apakah sebuah transaksi memotong batas budget bulanan.
+ * - Transaksi penyesuaian yang secara eksplisit dicentang sebagai pengeluaran (isAdjustmentExpense === true)
+ *   wajib masuk perhitungan budget.
+ * - Transaksi 'Penyesuaian Saldo' lama (isAdjustmentExpense === undefined) mengikuti flag legacy excludeLegacyAdjustments.
+ */
+export function isBudgetExpense(
+  tx: Transaction,
+  excludeLegacyAdjustments = true
+): boolean {
+  if (!isActiveExpense(tx)) return false
+  if (tx.isAdjustmentExpense === true) return true
+  if (excludeLegacyAdjustments && tx.category === 'Penyesuaian Saldo') return false
+  return true
+}
+
+/**
  * Mencari ikon kategori berdasarkan nama kategori dari daftar baku.
  */
 export function getCategoryIcon(categoryName: string): string {

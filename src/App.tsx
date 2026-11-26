@@ -12,6 +12,7 @@ import Sidebar, { type ActiveTab } from './components/Sidebar'
 import TransactionModal from './components/TransactionModal'
 import WeeklyTable from './components/WeeklyTable'
 import type { BudgetConfig, Transaction } from './types/finance'
+import { isActiveExpense, isBudgetExpense } from './utils/analytics'
 import { getTodayDateString, getWeeksInMonth, MONTH_NAMES } from './utils/date'
 import {
   loadBudget,
@@ -226,34 +227,20 @@ export default function App() {
     .reduce((acc, tx) => acc + tx.amount, 0)
 
   const totalExpense = scopedTransactions
-    .filter(
-      (tx) => tx.type === 'expense' && !tx.isClosedToBalance && tx.isAdjustmentExpense !== false
-    )
+    .filter(isActiveExpense)
     .reduce((acc, tx) => acc + tx.amount, 0)
 
   // Seluruh daftar pengeluaran aktif bulan aktif untuk modal kelola & reset pengeluaran
   const monthlyExpenses = useMemo(
-    () =>
-      transactions.filter(
-        (tx) =>
-          tx.type === 'expense' &&
-          tx.date.startsWith(monthPrefix) &&
-          !tx.isClosedToBalance &&
-          tx.isAdjustmentExpense !== false
-      ),
+    () => transactions.filter((tx) => tx.date.startsWith(monthPrefix) && isActiveExpense(tx)),
     [transactions, monthPrefix]
   )
 
-  // Pengeluaran yang dibebankan ke batas budget (dapat mengecualikan kategori Penyesuaian Saldo)
+  // Pengeluaran yang dibebankan ke batas budget (menghormati opsi eksplisit isAdjustmentExpense === true)
   const budgetExpense = useMemo(() => {
+    const excludeLegacy = budget.excludeAdjustmentsFromBudget ?? true
     return scopedTransactions
-      .filter(
-        (tx) =>
-          tx.type === 'expense' &&
-          !tx.isClosedToBalance &&
-          tx.isAdjustmentExpense !== false &&
-          (!budget.excludeAdjustmentsFromBudget || tx.category !== 'Penyesuaian Saldo')
-      )
+      .filter((tx) => isBudgetExpense(tx, excludeLegacy))
       .reduce((acc, tx) => acc + tx.amount, 0)
   }, [scopedTransactions, budget.excludeAdjustmentsFromBudget])
 

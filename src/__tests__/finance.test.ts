@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { BudgetConfig, Transaction } from '../types/finance'
+import { isActiveExpense, isBudgetExpense } from '../utils/analytics'
 
 describe('finance logic & accounting rules', () => {
   // Mock data transaksi autentik November
@@ -87,13 +88,7 @@ describe('finance logic & accounting rules', () => {
 
   const calculateMonthlyExpense = (txs: Transaction[], monthPrefix: string) => {
     return txs
-      .filter(
-        (tx) =>
-          tx.date.startsWith(monthPrefix) &&
-          tx.type === 'expense' &&
-          !tx.isClosedToBalance &&
-          tx.isAdjustmentExpense !== false
-      )
+      .filter((tx) => tx.date.startsWith(monthPrefix) && isActiveExpense(tx))
       .reduce((acc, tx) => acc + tx.amount, 0)
   }
 
@@ -102,15 +97,9 @@ describe('finance logic & accounting rules', () => {
     monthPrefix: string,
     budget: BudgetConfig
   ) => {
+    const excludeLegacy = budget.excludeAdjustmentsFromBudget ?? true
     return txs
-      .filter(
-        (tx) =>
-          tx.date.startsWith(monthPrefix) &&
-          tx.type === 'expense' &&
-          !tx.isClosedToBalance &&
-          tx.isAdjustmentExpense !== false &&
-          (!budget.excludeAdjustmentsFromBudget || tx.category !== 'Penyesuaian Saldo')
-      )
+      .filter((tx) => tx.date.startsWith(monthPrefix) && isBudgetExpense(tx, excludeLegacy))
       .reduce((acc, tx) => acc + tx.amount, 0)
   }
 
@@ -188,6 +177,56 @@ describe('finance logic & accounting rules', () => {
       // Pengeluaran bulanan hanya bertambah 6.500 (dari 141.000 menjadi 147.500)
       const monthlyExpense = calculateMonthlyExpense(updatedTxs, '2026-11')
       expect(monthlyExpense).toBe(141000 + 6500) // 147.500
+
+      // Budget bulanan juga hanya bertambah 6.500 (transfer non-beban tetap dikecualikan)
+      const budgetExpense = calculateBudgetExpense(updatedTxs, '2026-11', {
+        monthlyLimit: 1500000,
+        excludeAdjustmentsFromBudget: true,
+      })
+      expect(budgetExpense).toBe(141000 + 6500)
+    })
+
+    it('includes balance adjustment in BOTH monthly expense and budget when explicitly checked (isAdjustmentExpense: true)', () => {
+      const explicitExpenseAdjustTx: Transaction = {
+        id: 'tx-explicit-adjust-expense',
+        type: 'expense',
+        amount: 111400,
+        description: 'Penyesuaian Saldo (Pengeluaran tak tercatat)',
+        category: 'Penyesuaian Saldo',
+        date: '2026-11-26',
+        dayOfWeek: 4,
+        isAdjustmentExpense: true,
+      }
+
+      const updatedTxs = [explicitExpenseAdjustTx, ...sampleTransactions]
+      const monthlyExpense = calculateMonthlyExpense(updatedTxs, '2026-11')
+      const budgetExpense = calculateBudgetExpense(updatedTxs, '2026-11', {
+        monthlyLimit: 1500000,
+        excludeAdjustmentsFromBudget: true,
+      })
+
+      expect(monthlyExpense).toBe(141000 + 111400) // 252.400
+      expect(budgetExpense).toBe(141000 + 111400) // 252.400 (wajib memotong budget)
+    })
+
+    it('excludes legacy Penyesuaian Saldo without isAdjustmentExpense flag from budget when excludeAdjustmentsFromBudget is true', () => {
+      const legacyAdjustTx: Transaction = {
+        id: 'tx-legacy-adjust',
+        type: 'expense',
+        amount: 200000,
+        description: 'Koreksi Saldo Lama',
+        category: 'Penyesuaian Saldo',
+        date: '2026-11-10',
+        dayOfWeek: 2,
+      }
+
+      const updatedTxs = [legacyAdjustTx, ...sampleTransactions]
+      const budgetExpense = calculateBudgetExpense(updatedTxs, '2026-11', {
+        monthlyLimit: 1500000,
+        excludeAdjustmentsFromBudget: true,
+      })
+
+      expect(budgetExpense).toBe(141000)
     })
   })
 
