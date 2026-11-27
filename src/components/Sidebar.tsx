@@ -2,6 +2,7 @@ import { type ComponentType, useEffect, useState } from 'react'
 import type { ThemeId } from '../utils/storage'
 import {
   PixelChartIcon,
+  PixelCloseIcon,
   PixelCoinIcon,
   PixelDashboardIcon,
   PixelHistoryIcon,
@@ -42,14 +43,14 @@ const THEME_OPTIONS: ReadonlyArray<{
 function BrandMark() {
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-10 w-10 shrink-0 items-center justify-center border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_var(--theme-shadow)]">
+      <div className="pixel-notch flex h-10 w-10 shrink-0 items-center justify-center bg-[var(--theme-gold)] text-black">
         <PixelCoinIcon className="h-5 w-5" />
       </div>
       <div className="min-w-0">
         <p className="font-retro text-brand font-bold tracking-normal text-[var(--theme-text)]">
           PIXEL LEDGER
         </p>
-        <span className="mt-1 inline-block border border-[var(--theme-border)] bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
+        <span className="pixel-badge mt-1 inline-block bg-[var(--theme-gold-badge)] px-2 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
           RETRO FINANCE
         </span>
       </div>
@@ -72,10 +73,10 @@ function NavItem({
       type="button"
       onClick={onNavigate}
       aria-current={isActive ? 'page' : undefined}
-      className={`group flex w-full cursor-pointer items-center justify-between gap-2 border-2 px-3 py-2.5 text-left text-body font-sans font-medium transition-[transform,background-color,border-color,box-shadow] duration-150 hover:translate-x-0.5 ${
+      className={`group flex w-full cursor-pointer items-center justify-between gap-2 px-3 py-2.5 text-left font-sans text-body font-medium ${
         isActive
-          ? 'border-[var(--theme-border)] bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_var(--theme-shadow)]'
-          : 'border-transparent text-[var(--theme-text)] hover:border-[var(--theme-border)] hover:bg-[var(--theme-gold-surface)] hover:shadow-[2px_2px_0px_var(--theme-shadow)]'
+          ? 'pixel-pill-active bg-[var(--theme-gold)] font-bold text-black'
+          : 'pixel-nav-idle text-[var(--theme-text)] hover:bg-[var(--theme-gold-surface)]'
       }`}
     >
       <span className="flex min-w-0 items-center gap-2.5">
@@ -85,7 +86,7 @@ function NavItem({
 
       {item.badge ? (
         <span
-          className={`shrink-0 border border-[var(--theme-border)] px-1 py-0.5 font-retro text-label leading-none tracking-normal ${
+          className={`pixel-badge shrink-0 px-1.5 py-0.5 font-retro text-label leading-none tracking-normal ${
             isActive
               ? 'bg-[var(--theme-border)] text-[var(--theme-gold)]'
               : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)]'
@@ -159,7 +160,7 @@ function ThemeCartridgeSwitcher({
         <PixelPaletteIcon className="h-3.5 w-3.5" />
         <span>TEMA KARTRID</span>
       </p>
-      <div className="grid grid-cols-3 gap-1.5" role="group" aria-label="Pilih tema warna">
+      <div className="grid grid-cols-3 gap-2" role="group" aria-label="Pilih tema warna">
         {THEME_OPTIONS.map((opt) => {
           const isSelected = theme === opt.id
           return (
@@ -169,20 +170,24 @@ function ThemeCartridgeSwitcher({
               aria-pressed={isSelected}
               onClick={() => onChangeTheme(opt.id)}
               title={`Tema ${opt.label}`}
-              className={`flex cursor-pointer flex-col items-center gap-1.5 border-2 px-1.5 py-2 font-sans text-label leading-none tracking-normal transition-[transform,background-color,border-color,box-shadow] duration-100 ${
+              className={`relative flex cursor-pointer flex-col items-center gap-1.5 px-1.5 py-2.5 font-sans text-label leading-none tracking-normal ${
                 isSelected
-                  ? 'border-[var(--theme-border)] bg-[var(--theme-gold-surface)] font-bold text-[var(--theme-text)] shadow-[2px_2px_0px_var(--theme-shadow)]'
-                  : 'border-[var(--theme-border-subtle)] bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:border-[var(--theme-border)] hover:text-[var(--theme-text)]'
+                  ? 'pixel-pill-active bg-[var(--theme-gold-surface)] font-bold text-[var(--theme-text)]'
+                  : 'pixel-pill bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
               <span
                 aria-hidden="true"
-                className="flex h-3.5 w-6 overflow-hidden border border-[var(--theme-border)]"
+                className="absolute right-1 top-1 h-1 w-1 bg-[var(--theme-border)]/40"
+              />
+              <span
+                aria-hidden="true"
+                className="pixel-badge flex h-3.5 w-7 overflow-hidden"
               >
                 <span className="h-full w-1/2" style={{ backgroundColor: opt.paper }} />
                 <span className="h-full w-1/2" style={{ backgroundColor: opt.accent }} />
               </span>
-              <span className="truncate">{opt.label}</span>
+              <span className="max-w-full truncate">{opt.label}</span>
             </button>
           )
         })}
@@ -267,9 +272,9 @@ export default function Sidebar({
   return (
     <>
       {/* Header ringkas untuk mobile */}
-      <div className="sticky top-0 z-40 flex items-center justify-between border-b-2 border-[var(--theme-border)] bg-[var(--theme-card)] px-4 py-3 lg:hidden">
+      <div className="sticky top-0 z-40 flex items-center justify-between border-b-2 border-[var(--theme-border)] bg-[var(--theme-card)] px-4 py-3 shadow-[0_4px_12px_-4px_var(--theme-ambient-shadow-sm)] lg:hidden">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 shrink-0 items-center justify-center border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] text-black shadow-[2px_2px_0px_var(--theme-shadow)]">
+          <div className="pixel-notch flex h-8 w-8 shrink-0 items-center justify-center bg-[var(--theme-gold)] text-black">
             <PixelCoinIcon className="h-4 w-4" />
           </div>
           <div>
@@ -295,7 +300,7 @@ export default function Sidebar({
       </div>
 
       {/* Sidebar desktop */}
-      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r-2 border-[var(--theme-border)] bg-[var(--theme-card)] lg:flex">
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 flex-col border-r-2 border-[var(--theme-border)] bg-[var(--theme-card)] shadow-[4px_0_16px_-4px_var(--theme-ambient-shadow-sm)] lg:flex">
         <div className="shrink-0 border-b-2 border-[var(--theme-border)] p-4">
           <BrandMark />
         </div>
@@ -321,7 +326,7 @@ export default function Sidebar({
             role="dialog"
             aria-modal="true"
             aria-label="Menu navigasi utama"
-            className="motion-drawer absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r-2 border-[var(--theme-border)] bg-[var(--theme-card)] shadow-[6px_0_0_var(--theme-shadow)]"
+            className="motion-drawer absolute inset-y-0 left-0 flex w-72 max-w-[85vw] flex-col border-r-2 border-[var(--theme-border)] bg-[var(--theme-card)] shadow-[6px_0_0_var(--theme-shadow),12px_0_28px_-6px_var(--theme-ambient-shadow)]"
           >
             <div className="flex shrink-0 items-center justify-between border-b-2 border-[var(--theme-border)] p-4">
               <BrandMark />
@@ -329,9 +334,9 @@ export default function Sidebar({
                 type="button"
                 onClick={closeMobile}
                 aria-label="Tutup menu navigasi"
-                className="pixel-button ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card-subtle)] text-sm text-[var(--theme-text)] hover:bg-[var(--theme-card-gold)]"
+                className="pixel-button ml-2 flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center bg-[var(--theme-card-subtle)] text-[var(--theme-text)] hover:bg-[var(--theme-card-gold)]"
               >
-                <span aria-hidden="true">✕</span>
+                <PixelCloseIcon className="h-4 w-4" />
               </button>
             </div>
             <SidebarNavigation

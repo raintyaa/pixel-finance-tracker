@@ -77,7 +77,7 @@ export default function HistoryView({
   }
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-7">
       {/* Header Riwayat */}
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <div>
@@ -86,7 +86,7 @@ export default function HistoryView({
             className="font-retro text-display font-bold text-[var(--theme-text)] sm:text-2xl"
           >
             <span
-              className="mr-2 inline-block h-2.5 w-2.5 border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
+              className="mr-2 inline-block h-2.5 w-2.5 border border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
               aria-hidden="true"
             />
             Riwayat Transaksi
@@ -103,11 +103,11 @@ export default function HistoryView({
       {/* Panel Filter & Pencarian */}
       <section
         aria-label="Filter riwayat transaksi"
-        className="pixel-box flex flex-col gap-4 bg-[var(--theme-card)] p-4 sm:p-5"
+        className="pixel-curve flex flex-col gap-4 bg-[var(--theme-card)] p-4 sm:p-5"
       >
-        <div className="grid grid-cols-1 gap-3 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)]">
           {/* Kolom Pencarian */}
-          <label className="flex flex-col gap-1">
+          <label className="flex flex-col gap-1.5">
             <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
               CARI KETERANGAN / KATEGORI
             </span>
@@ -116,19 +116,19 @@ export default function HistoryView({
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="cth: kopi, beras, bensin, biaya admin..."
-              className="w-full border-2 border-[var(--theme-border)] bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)] outline-none placeholder:text-[var(--theme-text-muted)] focus:border-[var(--theme-gold)]"
+              className="pixel-input w-full bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)] placeholder:text-[var(--theme-text-muted)]"
             />
           </label>
 
           {/* Dropdown Kategori */}
-          <label className="flex flex-col gap-1">
+          <label className="flex flex-col gap-1.5">
             <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
               KATEGORI
             </span>
             <select
               value={categoryFilter}
               onChange={(e) => setCategoryFilter(e.target.value)}
-              className="w-full cursor-pointer border-2 border-[var(--theme-border)] bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)] outline-none focus:border-[var(--theme-gold)]"
+              className="pixel-input w-full cursor-pointer bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)]"
             >
               <option value="all">Semua Kategori</option>
               {categoryOptions.map((cat) => (
@@ -143,7 +143,7 @@ export default function HistoryView({
         {/* Filter Tipe & Toggle Arsip */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div
-            className="inline-flex divide-x-2 divide-[var(--theme-border)] border-2 border-[var(--theme-border)]"
+            className="pixel-segment inline-flex divide-x-2 divide-[var(--theme-border)]"
             role="group"
             aria-label="Filter tipe transaksi"
           >
@@ -151,7 +151,7 @@ export default function HistoryView({
               type="button"
               aria-pressed={typeFilter === 'all'}
               onClick={() => setTypeFilter('all')}
-              className={`cursor-pointer px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+              className={`cursor-pointer px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                 typeFilter === 'all'
                   ? 'bg-[var(--theme-gold)] text-black'
                   : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -163,7 +163,7 @@ export default function HistoryView({
               type="button"
               aria-pressed={typeFilter === 'expense'}
               onClick={() => setTypeFilter('expense')}
-              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                 typeFilter === 'expense'
                   ? 'bg-[var(--theme-gold)] text-black'
                   : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -176,7 +176,7 @@ export default function HistoryView({
               type="button"
               aria-pressed={typeFilter === 'income'}
               onClick={() => setTypeFilter('income')}
-              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                 typeFilter === 'income'
                   ? 'bg-[var(--theme-gold)] text-black'
                   : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -231,7 +231,7 @@ export default function HistoryView({
       {/* Daftar Transaksi */}
       <section
         aria-labelledby="history-heading"
-        className="pixel-box flex flex-col overflow-hidden bg-[var(--theme-card)]"
+        className="pixel-curve flex flex-col overflow-hidden bg-[var(--theme-card)]"
       >
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
@@ -284,19 +284,19 @@ export default function HistoryView({
                   {/* Kiri: Tanggal, Keterangan, Kategori & Status */}
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-mono text-label tracking-normal tabular-nums text-[var(--theme-text-muted)]">
+                      <span className="font-mono text-meta tracking-normal tabular-nums text-[var(--theme-text-muted)]">
                         {getDayName(tx.dayOfWeek)}, {formatDateIndo(tx.date)}
                       </span>
-                      <span className="border border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-sans text-label tracking-normal text-[var(--theme-text)]">
+                      <span className="bg-[var(--theme-card-subtle)] px-2 py-0.5 font-sans text-label tracking-normal text-[var(--theme-text)]">
                         {getCategoryIcon(tx.category)} {tx.category}
                       </span>
                       {isClosed && (
-                        <span className="border border-[var(--theme-border)] bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-text-muted)]">
+                        <span className="pixel-badge bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-text-muted)]">
                           DIBUKUKAN
                         </span>
                       )}
                       {isNonExpenseAdjust && (
-                        <span className="border border-[var(--theme-border)] bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
+                        <span className="pixel-badge bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
                           TRANSFER/SALDO
                         </span>
                       )}
@@ -323,13 +323,13 @@ export default function HistoryView({
                       {isIncome ? '+' : '-'} {formatRupiah(tx.amount)}
                     </span>
 
-                    <div className="flex shrink-0 items-center gap-1.5">
+                    <div className="flex shrink-0 items-center gap-2">
                       <button
                         type="button"
                         onClick={() => onEditTransaction(tx)}
                         title="Ubah transaksi"
                         aria-label={`Ubah transaksi: ${tx.description || tx.category}`}
-                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-1.5 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-gold)] hover:text-black"
+                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-2 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-gold)] hover:text-black"
                       >
                         <PixelEditIcon className="h-3.5 w-3.5" />
                       </button>
@@ -338,7 +338,7 @@ export default function HistoryView({
                         onClick={() => onDeleteTransaction(tx)}
                         title="Hapus transaksi"
                         aria-label={`Hapus transaksi: ${tx.description || tx.category}`}
-                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-1.5 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-expense)] hover:text-white"
+                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-2 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-expense)] hover:text-white"
                       >
                         <PixelTrashIcon className="h-3.5 w-3.5" />
                       </button>

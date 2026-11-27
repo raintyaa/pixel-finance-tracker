@@ -4,6 +4,7 @@ import type { Transaction, TransactionType } from '../types/finance'
 import { getDayOfWeekFromDate, getTodayDateString } from '../utils/date'
 import { useExitAnimation } from '../utils/motion'
 import {
+  PixelCloseIcon,
   PixelCoinIcon,
   PixelEditIcon,
   PixelHistoryIcon,
@@ -93,156 +94,158 @@ export default function TransactionModal({
         aria-modal="true"
         className={`${
           closing ? 'motion-crt-off' : 'motion-crt'
-        } pixel-box bg-[var(--theme-card)] border-3 border-[var(--theme-border)] shadow-[6px_6px_0px_var(--theme-shadow)] w-full max-w-md p-5 flex flex-col gap-4 max-h-[90vh] overflow-y-auto`}
+        } pixel-modal-frame flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden bg-[var(--theme-card)]`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Judul Modal */}
-        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
-          <h2 className="flex items-center gap-2 font-retro text-data font-bold tracking-normal text-[var(--theme-gold-text)]">
-            {isEditMode ? (
-              <>
-                <PixelEditIcon className="h-4 w-4" />
-                <span>UBAH TRANSAKSI</span>
-              </>
-            ) : (
-              <>
-                <PixelHistoryIcon className="h-4 w-4" />
-                <span>CATAT TRANSAKSI</span>
-              </>
-            )}
-          </h2>
-          <button
-            type="button"
-            onClick={requestClose}
-            aria-label="Tutup dialog"
-            className="pixel-button cursor-pointer bg-[var(--theme-card-subtle)] px-2 py-1 font-retro text-meta text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
-            title="Tutup"
-          >
-            ✕
-          </button>
-        </div>
-
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          {/* Toggle Tipe Transaksi */}
-          <div
-            role="group"
-            aria-label="Tipe transaksi"
-            className="grid grid-cols-2 gap-2.5"
-          >
-            <button
-              type="button"
-              aria-pressed={type === 'expense'}
-              onClick={() => handleSelectType('expense')}
-              className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
-                type === 'expense'
-                  ? 'bg-[var(--theme-expense)] text-white'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
-              }`}
-            >
-              <PixelResetIcon className="h-3.5 w-3.5" />
-              <span>Pengeluaran</span>
-            </button>
-            <button
-              type="button"
-              aria-pressed={type === 'income'}
-              onClick={() => handleSelectType('income')}
-              className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
-                type === 'income'
-                  ? 'bg-[var(--theme-income)] text-white'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
-              }`}
-            >
-              <PixelCoinIcon className="h-3.5 w-3.5" />
-              <span>Pemasukan</span>
-            </button>
-          </div>
-
-          {/* Nominal */}
-          <label className="flex flex-col gap-1">
-            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
-              NOMINAL (Rp)
-            </span>
-            <input
-              type="number"
-              min={1}
-              step="any"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
-              placeholder="cth: 25000"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-data font-bold text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
-            />
-          </label>
-
-          {/* Kategori */}
-          <label className="flex flex-col gap-1">
-            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
-              KATEGORI
-            </span>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-sans outline-none focus:border-[var(--theme-gold)] cursor-pointer"
-            >
-              {filteredCategories.map((c) => (
-                <option key={c.id} value={c.name} className="bg-[var(--theme-card)] text-[var(--theme-text)]">
-                  {c.icon} {c.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          {/* Tanggal */}
-          <label className="flex flex-col gap-1">
-            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
-              TANGGAL
-            </span>
-            <input
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-mono tabular-nums outline-none focus:border-[var(--theme-gold)] cursor-pointer"
-            />
-          </label>
-
-          {/* Keterangan */}
-          <label className="flex flex-col gap-1">
-            <span className="font-retro text-label tracking-normal text-[var(--theme-text)] font-bold">
-              KETERANGAN
-            </span>
-            <input
-              type="text"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="cth: Makan siang nasi padang"
-              className="bg-[var(--theme-card)] border-2 border-[var(--theme-border)] px-3 py-2 text-body text-[var(--theme-text)] font-sans outline-none focus:border-[var(--theme-gold)] placeholder:text-[var(--theme-text-muted)]"
-            />
-          </label>
-
-          {error && (
-            <p className="flex items-center gap-2 border-2 border-[var(--theme-expense)] bg-[var(--theme-expense-badge)] px-3 py-2 font-sans text-meta text-[var(--theme-expense-text)]">
-              <PixelWarnIcon className="h-4 w-4 shrink-0" />
-              <span>{error}</span>
-            </p>
-          )}
-
-          {/* Tombol Aksi */}
-          <div className="flex gap-2 pt-1">
-            <button
-              type="submit"
-              className="pixel-button flex flex-1 cursor-pointer items-center justify-center gap-1.5 bg-[var(--theme-gold)] px-3 py-2.5 font-retro text-meta font-bold text-black hover:bg-[var(--theme-gold-hover)]"
-            >
-              <PixelSaveIcon className="h-4 w-4" />
-              <span>{isEditMode ? 'Simpan Perubahan' : 'Simpan Transaksi'}</span>
-            </button>
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
+          {/* Judul Modal */}
+          <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
+            <h2 className="flex items-center gap-2 font-retro text-data font-bold tracking-normal text-[var(--theme-gold-text)]">
+              {isEditMode ? (
+                <>
+                  <PixelEditIcon className="h-4 w-4" />
+                  <span>UBAH TRANSAKSI</span>
+                </>
+              ) : (
+                <>
+                  <PixelHistoryIcon className="h-4 w-4" />
+                  <span>CATAT TRANSAKSI</span>
+                </>
+              )}
+            </h2>
             <button
               type="button"
               onClick={requestClose}
-              className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] font-retro text-meta px-4 py-2.5 cursor-pointer font-bold"
+              aria-label="Tutup dialog"
+              className="pixel-button flex h-8 w-8 cursor-pointer items-center justify-center bg-[var(--theme-card-subtle)] text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
+              title="Tutup"
             >
-              Batal
+              <PixelCloseIcon className="h-4 w-4" />
             </button>
           </div>
-        </form>
+
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            {/* Toggle Tipe Transaksi */}
+            <div
+              role="group"
+              aria-label="Tipe transaksi"
+              className="grid grid-cols-2 gap-3"
+            >
+              <button
+                type="button"
+                aria-pressed={type === 'expense'}
+                onClick={() => handleSelectType('expense')}
+                className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
+                  type === 'expense'
+                    ? 'bg-[var(--theme-expense)] text-white'
+                    : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                }`}
+              >
+                <PixelResetIcon className="h-3.5 w-3.5" />
+                <span>Pengeluaran</span>
+              </button>
+              <button
+                type="button"
+                aria-pressed={type === 'income'}
+                onClick={() => handleSelectType('income')}
+                className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
+                  type === 'income'
+                    ? 'bg-[var(--theme-income)] text-white'
+                    : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
+                }`}
+              >
+                <PixelCoinIcon className="h-3.5 w-3.5" />
+                <span>Pemasukan</span>
+              </button>
+            </div>
+
+            {/* Nominal */}
+            <label className="flex flex-col gap-1.5">
+              <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+                NOMINAL (Rp)
+              </span>
+              <input
+                type="number"
+                min={1}
+                step="any"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
+                placeholder="cth: 25000"
+                className="pixel-input bg-[var(--theme-card)] px-3 py-2 font-mono text-data font-bold tabular-nums text-[var(--theme-text)] placeholder:text-[var(--theme-text-muted)]"
+              />
+            </label>
+
+            {/* Kategori */}
+            <label className="flex flex-col gap-1.5">
+              <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+                KATEGORI
+              </span>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className="pixel-input cursor-pointer bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)]"
+              >
+                {filteredCategories.map((c) => (
+                  <option key={c.id} value={c.name} className="bg-[var(--theme-card)] text-[var(--theme-text)]">
+                    {c.icon} {c.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            {/* Tanggal */}
+            <label className="flex flex-col gap-1.5">
+              <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+                TANGGAL
+              </span>
+              <input
+                type="date"
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                className="pixel-input cursor-pointer bg-[var(--theme-card)] px-3 py-2 font-mono text-body tabular-nums text-[var(--theme-text)]"
+              />
+            </label>
+
+            {/* Keterangan */}
+            <label className="flex flex-col gap-1.5">
+              <span className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+                KETERANGAN
+              </span>
+              <input
+                type="text"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                placeholder="cth: Makan siang nasi padang"
+                className="pixel-input bg-[var(--theme-card)] px-3 py-2 font-sans text-body text-[var(--theme-text)] placeholder:text-[var(--theme-text-muted)]"
+              />
+            </label>
+
+            {error && (
+              <p className="flex items-center gap-2 border-y-2 border-[var(--theme-expense)] bg-[var(--theme-expense-badge)] px-3 py-2 font-sans text-meta leading-normal text-[var(--theme-expense-text)]">
+                <PixelWarnIcon className="h-4 w-4 shrink-0" />
+                <span>{error}</span>
+              </p>
+            )}
+
+            {/* Tombol Aksi */}
+            <div className="flex gap-3 pt-1">
+              <button
+                type="submit"
+                className="pixel-button flex flex-1 cursor-pointer items-center justify-center gap-1.5 bg-[var(--theme-gold)] px-3 py-2.5 font-retro text-meta font-bold text-black hover:bg-[var(--theme-gold-hover)]"
+              >
+                <PixelSaveIcon className="h-4 w-4" />
+                <span>{isEditMode ? 'Simpan Perubahan' : 'Simpan Transaksi'}</span>
+              </button>
+              <button
+                type="button"
+                onClick={requestClose}
+                className="pixel-button cursor-pointer bg-[var(--theme-card-subtle)] px-4 py-2.5 font-retro text-meta font-bold text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
+              >
+                Batal
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

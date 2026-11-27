@@ -346,7 +346,7 @@ export default function App() {
 
         <div className="flex min-w-0 flex-1 flex-col">
           {/* Top Header ringkas: tanggal hari ini, status penyimpanan, CTA utama */}
-          <header className="z-30 border-b-2 border-[var(--theme-border)] bg-[var(--theme-card)] lg:sticky lg:top-0">
+          <header className="z-30 border-b-2 border-[var(--theme-border)] bg-[var(--theme-card)] shadow-[0_4px_14px_-6px_var(--theme-ambient-shadow-sm)] lg:sticky lg:top-0">
             <h1 className="sr-only">{TAB_LABELS[activeTab]} Pixel Ledger</h1>
             <div className="mx-auto flex w-full max-w-[1440px] flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
               <div className="flex items-center gap-2 font-sans text-meta text-[var(--theme-text-muted)]">
@@ -357,9 +357,9 @@ export default function App() {
                 <span>{todayLabel}</span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
+              <div className="flex flex-wrap items-center gap-3">
                 <span
-                  className="inline-flex items-center gap-1.5 border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] px-2.5 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-text)]"
+                  className="pixel-badge inline-flex items-center gap-2 bg-[var(--theme-card-subtle)] px-3 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-text)]"
                   title="Data tersimpan otomatis di browser ini dan tetap aman saat offline"
                 >
                   <span
@@ -384,11 +384,11 @@ export default function App() {
             </div>
           </header>
 
-          <main className="main-stage mx-auto flex w-full min-w-0 max-w-[1440px] flex-1 flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          <main className="main-stage mx-auto flex w-full min-w-0 max-w-[1440px] flex-1 flex-col gap-7 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
             {activeTab === 'dashboard' && (
               <>
                 {/* Section Overview: header + scope toggle langsung di atas 3 kartu saldo */}
-                <section aria-labelledby="overview-heading" className="flex flex-col gap-3">
+                <section aria-labelledby="overview-heading" className="flex flex-col gap-4">
                   <div className="flex flex-wrap items-center justify-between gap-3">
                     <div className="flex flex-wrap items-baseline gap-2.5">
                       <h2
@@ -396,7 +396,7 @@ export default function App() {
                         className="font-retro text-display font-bold text-[var(--theme-text)] sm:text-2xl"
                       >
                         <span
-                          className="mr-2 inline-block h-2.5 w-2.5 border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
+                          className="mr-2 inline-block h-2.5 w-2.5 border border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
                           aria-hidden="true"
                         />
                         Ringkasan Saldo
@@ -409,7 +409,7 @@ export default function App() {
                     </div>
 
                     <div
-                      className="inline-flex divide-x-2 divide-[var(--theme-border)] border-2 border-[var(--theme-border)]"
+                      className="pixel-segment inline-flex divide-x-2 divide-[var(--theme-border)]"
                       role="group"
                       aria-label="Filter cakupan ringkasan saldo"
                     >
@@ -417,7 +417,7 @@ export default function App() {
                         type="button"
                         onClick={() => setViewScope('month')}
                         aria-pressed={viewScope === 'month'}
-                        className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                        className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                           viewScope === 'month'
                             ? 'bg-[var(--theme-gold)] text-black'
                             : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -430,7 +430,7 @@ export default function App() {
                         type="button"
                         onClick={() => setViewScope('all')}
                         aria-pressed={viewScope === 'all'}
-                        className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                        className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                           viewScope === 'all'
                             ? 'bg-[var(--theme-gold)] text-black'
                             : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'

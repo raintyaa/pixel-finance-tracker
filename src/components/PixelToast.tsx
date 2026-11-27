@@ -1,4 +1,4 @@
-import { PixelCheckIcon, PixelTrashIcon } from './PixelIcons'
+import { PixelCheckIcon, PixelCloseIcon, PixelTrashIcon } from './PixelIcons'
 
 export interface ToastItem {
   id: number
@@ -20,10 +20,10 @@ export default function PixelToast({ toast, onDismiss }: PixelToastProps) {
     <div
       role="status"
       aria-live="polite"
-      className="motion-toast-in pixel-box fixed bottom-4 right-4 z-40 flex max-w-sm items-center gap-3 bg-[var(--theme-card)] px-3.5 py-2.5 text-[var(--theme-text)]"
+      className="motion-toast-in pixel-toast-frame fixed bottom-5 right-5 z-40 flex max-w-sm items-center gap-3 bg-[var(--theme-card)] px-4 py-3 text-[var(--theme-text)]"
     >
       <span
-        className={`flex h-6 w-6 shrink-0 items-center justify-center border border-[var(--theme-border)] ${
+        className={`pixel-badge flex h-6 w-6 shrink-0 items-center justify-center ${
           isDelete
             ? 'bg-[var(--theme-expense-badge)] text-[var(--theme-expense-text)]'
             : 'bg-[var(--theme-income-badge)] text-[var(--theme-income)]'
@@ -45,7 +45,7 @@ export default function PixelToast({ toast, onDismiss }: PixelToastProps) {
         <button
           type="button"
           onClick={toast.onAction}
-          className="pixel-button shrink-0 cursor-pointer bg-[var(--theme-gold)] px-2 py-1 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-gold-hover)]"
+          className="pixel-button shrink-0 cursor-pointer bg-[var(--theme-gold)] px-2.5 py-1 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-gold-hover)]"
         >
           {toast.actionLabel}
         </button>
@@ -56,9 +56,9 @@ export default function PixelToast({ toast, onDismiss }: PixelToastProps) {
         onClick={onDismiss}
         aria-label="Tutup notifikasi"
         title="Tutup notifikasi"
-        className="shrink-0 cursor-pointer px-1 py-0.5 font-retro text-label text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]"
+        className="shrink-0 cursor-pointer p-1 text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]"
       >
-        ✕
+        <PixelCloseIcon className="h-3.5 w-3.5" />
       </button>
     </div>
   )

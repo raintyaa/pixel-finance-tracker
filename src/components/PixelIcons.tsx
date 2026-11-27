@@ -249,3 +249,53 @@ export function PixelPaletteIcon({ className = 'h-4 w-4 shrink-0' }: PixelIconPr
     </svg>
   )
 }
+
+export function PixelLockIcon({ className = 'h-4 w-4 shrink-0' }: PixelIconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" shapeRendering="crispEdges" aria-hidden="true" className={className}>
+      <path d="M5 2h6v1h1v4h2v7H2V7h2V3h1V2zm1 2v3h4V4H6zM3 8v5h10V8H3z" />
+      <rect x="7" y="9" width="2" height="3" />
+    </svg>
+  )
+}
+
+export function PixelFolderIcon({ className = 'h-4 w-4 shrink-0' }: PixelIconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" shapeRendering="crispEdges" aria-hidden="true" className={className}>
+      <path d="M2 3h5v1h1v1h6v8H2V3zm1 1v2h10V6H7V5H6V4H3zm0 3v5h10V7H3z" />
+    </svg>
+  )
+}
+
+export function PixelDownloadIcon({ className = 'h-4 w-4 shrink-0' }: PixelIconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" shapeRendering="crispEdges" aria-hidden="true" className={className}>
+      <rect x="7" y="2" width="2" height="6" />
+      <path d="M4 7h8v2h-2v1H9v1H7v-1H6V9H4V7z" />
+      <path d="M2 11h2v2h8v-2h2v3H2v-3z" />
+    </svg>
+  )
+}
+
+export function PixelTrendIcon({
+  direction,
+  className = 'h-4 w-4 shrink-0',
+}: PixelIconProps & { direction: 'up' | 'down' }) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" shapeRendering="crispEdges" aria-hidden="true" className={className}>
+      {direction === 'up' ? (
+        <path d="M7 2h2v2h2v2h2v2H9v6H7V8H3V6h2V4h2V2z" />
+      ) : (
+        <path d="M7 2h2v6h4v2h-2v2H9v2H7v-2H5v-2H3V8h4V2z" />
+      )}
+    </svg>
+  )
+}
+
+export function PixelCloseIcon({ className = 'h-4 w-4 shrink-0' }: PixelIconProps) {
+  return (
+    <svg viewBox="0 0 16 16" fill="currentColor" shapeRendering="crispEdges" aria-hidden="true" className={className}>
+      <path d="M3 3h2v2H3V3zm8 0h2v2h-2V3zM5 5h2v2H5V5zm4 0h2v2H9V5zM7 7h2v2H7V7zM5 9h2v2H5V9zm4 0h2v2H9V9zm-6 2h2v2H3v-2zm8 0h2v2h-2v-2z" />
+    </svg>
+  )
+}

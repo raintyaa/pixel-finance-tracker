@@ -12,7 +12,7 @@ Dokumen ini adalah acuan baku (**ground truth**) bagi seluruh AI Agent yang beke
 - **Tech Stack**:
   - **Framework**: React 19 + TypeScript + Vite
   - **Styling**: Tailwind CSS v4 + Lucide React
-  - **Tipografi**: Google Fonts (`Silkscreen` untuk judul/header retro, `JetBrains Mono` untuk angka tabular dan mata uang, font sistem sans-serif untuk teks panjang/keterangan)
+  - **Tipografi**: Google Fonts (`Silkscreen` untuk judul/header/*badge*/tombol retro dan `Pixelify Sans` untuk teks UI, navigasi, keterangan, serta angka tabular mata uang)
   - **Penyimpanan Data**: Browser LocalStorage (*offline-first*) dengan sistem snapshot darurat di `src/utils/storage.ts`
   - **Server Port**: `5173` (dikunci melalui `strictPort: true` di `vite.config.ts` guna mencegah *port drift* yang memisahkan LocalStorage browser)
 

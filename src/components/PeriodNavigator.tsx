@@ -40,7 +40,7 @@ export default function PeriodNavigator({
   return (
     <section
       aria-label="Navigator periode"
-      className="pixel-box flex min-w-0 flex-col gap-3.5 bg-[var(--theme-card)] p-4 sm:p-5"
+      className="pixel-curve flex min-w-0 flex-col gap-4 bg-[var(--theme-card)] p-4 sm:p-5"
     >
       {/* Baris 1: Navigator bulan & tahun + lompat ke hari ini */}
       <div className="flex flex-wrap items-center justify-between gap-3">
@@ -55,10 +55,10 @@ export default function PeriodNavigator({
             <PixelArrowIcon direction="left" className="h-4 w-4" />
           </button>
 
-          <div className="min-w-0 text-center sm:min-w-[190px]">
+          <div className="min-w-0 text-center sm:min-w-[200px]">
             <div
               key={`${currentYear}-${currentMonth}`}
-              className={`truncate font-retro text-display font-bold tracking-normal text-[var(--theme-text)] md:text-2xl ${
+              className={`truncate font-retro text-display font-bold tracking-normal text-[var(--theme-text)] sm:text-2xl ${
                 monthDirection === 'prev'
                   ? 'motion-page-prev'
                   : monthDirection === 'next'
@@ -85,15 +85,15 @@ export default function PeriodNavigator({
         <button
           type="button"
           onClick={onResetToday}
-          className="pixel-button flex shrink-0 cursor-pointer items-center gap-1.5 bg-[var(--theme-gold-surface)] px-3 py-1.5 font-sans text-label font-bold tracking-normal text-[var(--theme-gold-text)] hover:bg-[var(--theme-gold-badge)]"
+          className="pixel-button flex shrink-0 cursor-pointer items-center gap-1.5 bg-[var(--theme-gold-surface)] px-3 py-1.5 font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)] hover:bg-[var(--theme-gold-badge)]"
         >
           <PixelBoltIcon className="h-3.5 w-3.5" />
           <span>HARI INI</span>
         </button>
       </div>
 
-      {/* Baris 2: Pilihan pekan adaptif (menangani 5 maupun 6 pekan tanpa terpotong di mobile) */}
-      <div className="grid min-w-0 grid-cols-2 gap-2 border-t-2 border-[var(--theme-border-subtle)] pt-3.5 sm:grid-cols-3 md:grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
+      {/* Baris 2: Pilihan pekan berbentuk pil piksel 1-step */}
+      <div className="grid min-w-0 grid-cols-2 gap-2.5 border-t-2 border-[var(--theme-border-subtle)] pt-3.5 sm:grid-cols-3 md:grid-cols-[repeat(auto-fit,minmax(0,1fr))]">
         {weeks.map((w) => {
           const isActive = w.weekNumber === selectedWeek
           return (
@@ -102,13 +102,13 @@ export default function PeriodNavigator({
               type="button"
               onClick={() => onSelectWeek(w.weekNumber)}
               aria-pressed={isActive}
-              className={`flex min-h-[50px] min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 border-2 border-[var(--theme-border)] px-2 py-2 text-center transition-[transform,background-color,color,box-shadow] duration-150 ${
+              className={`flex min-h-[54px] min-w-0 cursor-pointer flex-col items-center justify-center gap-0.5 px-2.5 py-2 text-center ${
                 isActive
-                  ? 'bg-[var(--theme-gold)] font-bold text-black shadow-[2px_2px_0px_var(--theme-shadow)]'
-                  : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card)] hover:text-[var(--theme-text)]'
+                  ? 'pixel-pill-active bg-[var(--theme-gold)] font-bold text-black'
+                  : 'pixel-pill bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card)] hover:text-[var(--theme-text)]'
               }`}
             >
-              <span className="font-sans text-label font-bold tracking-normal">
+              <span className="font-retro text-label font-bold tracking-normal">
                 MGG <span className="font-mono tabular-nums">{w.weekNumber}</span>
               </span>
               <span

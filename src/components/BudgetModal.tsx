@@ -1,6 +1,12 @@
 import { useState } from 'react'
 import { formatRupiah } from '../utils/currency'
 import { useExitAnimation } from '../utils/motion'
+import {
+  PixelCloseIcon,
+  PixelSaveIcon,
+  PixelTargetIcon,
+  PixelWarnIcon,
+} from './PixelIcons'
 
 interface BudgetModalProps {
   currentBudget: number
@@ -53,154 +59,162 @@ export default function BudgetModal({
         aria-labelledby="budget-modal-title"
         className={`${
           closing ? 'motion-crt-off' : 'motion-crt'
-        } pixel-box flex max-h-[90vh] w-full max-w-md flex-col gap-4 overflow-y-auto border-3 border-[var(--theme-border)] bg-[var(--theme-card)] p-5 shadow-[6px_6px_0px_var(--theme-shadow)]`}
+        } pixel-modal-frame flex max-h-[90vh] w-full max-w-md flex-col overflow-hidden bg-[var(--theme-card)]`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Header Modal */}
-        <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-xl leading-none" aria-hidden="true">
-              🎯
-            </span>
-            <h2
-              id="budget-modal-title"
-              className="font-retro text-data font-bold tracking-normal text-[var(--theme-gold-text)]"
-            >
-              BATAS BUDGET BULANAN
-            </h2>
-          </div>
-          <button
-            type="button"
-            onClick={requestClose}
-            className="pixel-button cursor-pointer bg-[var(--theme-card-subtle)] px-2 py-1 font-retro text-meta text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
-            title="Tutup dialog"
-          >
-            ✕
-          </button>
-        </div>
-
-        <p className="font-sans text-meta text-[var(--theme-text-muted)] leading-relaxed">
-          Tentukan batas maksimal pengeluaran bulananmu. Pixel Ledger akan memantau rasio HP / status
-          anggaran dan menampilkan peringatan jika pengeluaran mulai kritis.
-        </p>
-
-        {/* Ringkasan Realita Bulan Ini — baris pemisah datar tanpa background box */}
-        <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-3">
-          <div className="flex justify-between items-center text-meta">
-            <span className="font-sans text-[var(--theme-text-muted)]">Pengeluaran Bulan Ini:</span>
-            <span className="font-mono font-bold text-[var(--theme-expense-text)]">
-              {formatRupiah(currentMonthExpense)}
-            </span>
-          </div>
-          <div className="flex justify-between items-center text-meta">
-            <span className="font-sans text-[var(--theme-text-muted)]">Batas Saat Ini:</span>
-            <span className="font-mono font-bold text-[var(--theme-text)]">
-              {formatRupiah(currentBudget)}
-            </span>
-          </div>
-        </div>
-
-        {/* Form Set Budget */}
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-          <div className="flex flex-col gap-1.5">
-            <label
-              htmlFor="budget-limit-input"
-              className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]"
-            >
-              BATAS ANGGARAN BARU (RP)
-            </label>
-            <input
-              id="budget-limit-input"
-              type="number"
-              step="10000"
-              min="10000"
-              value={limitInput}
-              onChange={(e) => {
-                setLimitInput(e.target.value)
-                setError('')
-              }}
-              placeholder="cth: 2500000"
-              className="pixel-input w-full border-2 border-black bg-white px-3 py-2.5 font-mono text-body font-bold text-black focus:outline-none"
-              autoFocus
-            />
-
-            {/* Preset Cepat RPG */}
-            <div className="mt-1 flex flex-wrap gap-1.5">
-              {PRESET_LIMITS.map((preset) => (
-                <button
-                  key={preset}
-                  type="button"
-                  onClick={() => {
-                    setLimitInput(String(preset))
-                    setError('')
-                  }}
-                  className={`pixel-button cursor-pointer border border-black px-2 py-1 font-retro text-label font-bold transition-all ${
-                    parsedLimit === preset
-                      ? 'bg-[var(--theme-gold)] text-black'
-                      : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text)] hover:bg-[var(--theme-card)]'
-                  }`}
-                >
-                  {formatRupiah(preset)}
-                </button>
-              ))}
+        <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-5">
+          {/* Header Modal */}
+          <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
+            <div className="flex items-center gap-2">
+              <PixelTargetIcon className="h-5 w-5 text-[var(--theme-gold-text)]" />
+              <h2
+                id="budget-modal-title"
+                className="font-retro text-data font-bold tracking-normal text-[var(--theme-gold-text)]"
+              >
+                BATAS BUDGET BULANAN
+              </h2>
             </div>
-          </div>
-
-          {/* Real-time Preview Kalkulasi */}
-          {isValidNumber && (
-            <div
-              className={`border-t-2 pt-3 ${
-                previewRatio >= 100
-                  ? 'border-red-300 text-red-900'
-                  : previewRatio >= 80
-                  ? 'border-amber-300 text-amber-900'
-                  : 'border-[var(--theme-border-subtle)] text-[var(--theme-text)]'
-              }`}
-            >
-              <div className="flex justify-between items-center text-meta">
-                <span className="font-retro text-label font-bold tracking-normal">PREVIEW RASIO:</span>
-                <span className="font-mono font-bold">{previewRatio}% terpakai</span>
-              </div>
-              <div className="mt-1 flex justify-between items-center text-meta">
-                <span className="font-sans">
-                  {previewRemaining >= 0 ? 'Sisa Anggaran:' : 'Kelebihan (Over):'}
-                </span>
-                <span
-                  className={`font-mono font-bold ${
-                    previewRemaining < 0 ? 'text-red-600' : 'text-emerald-700'
-                  }`}
-                >
-                  {previewRemaining >= 0
-                    ? formatRupiah(previewRemaining)
-                    : `- ${formatRupiah(Math.abs(previewRemaining))}`}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {error && (
-            <p className="font-sans text-meta font-bold text-red-600" role="alert">
-              ⚠️ {error}
-            </p>
-          )}
-
-          {/* Tombol Aksi */}
-          <div className="mt-2 flex gap-2">
-            <button
-              type="submit"
-              className="pixel-button flex-1 cursor-pointer border-2 border-black bg-[var(--theme-gold)] py-2.5 font-retro text-meta font-bold text-black hover:bg-[var(--theme-gold-hover)]"
-            >
-              SIMPAN BATAS BUDGET
-            </button>
             <button
               type="button"
               onClick={requestClose}
-              className="pixel-button cursor-pointer border-2 border-black bg-[var(--theme-card-subtle)] px-4 py-2.5 font-retro text-meta font-bold text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
+              aria-label="Tutup dialog"
+              className="pixel-button flex h-8 w-8 cursor-pointer items-center justify-center bg-[var(--theme-card-subtle)] text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
+              title="Tutup dialog"
             >
-              BATAL
+              <PixelCloseIcon className="h-4 w-4" />
             </button>
           </div>
-        </form>
+
+          <p className="font-sans text-meta leading-normal text-[var(--theme-text-muted)]">
+            Tentukan batas maksimal pengeluaran bulananmu. Pixel Ledger akan memantau rasio HP /
+            status anggaran dan menampilkan peringatan jika pengeluaran mulai kritis.
+          </p>
+
+          {/* Ringkasan Realita Bulan Ini — baris pemisah datar tanpa background box */}
+          <div className="flex flex-col gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-3">
+            <div className="flex items-center justify-between text-meta">
+              <span className="font-sans text-[var(--theme-text-muted)]">Pengeluaran Bulan Ini:</span>
+              <span className="font-mono font-bold tabular-nums text-[var(--theme-expense-text)]">
+                {formatRupiah(currentMonthExpense)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between text-meta">
+              <span className="font-sans text-[var(--theme-text-muted)]">Batas Saat Ini:</span>
+              <span className="font-mono font-bold tabular-nums text-[var(--theme-text)]">
+                {formatRupiah(currentBudget)}
+              </span>
+            </div>
+          </div>
+
+          {/* Form Set Budget */}
+          <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <label
+                htmlFor="budget-limit-input"
+                className="font-retro text-label font-bold tracking-normal text-[var(--theme-text)]"
+              >
+                BATAS ANGGARAN BARU (RP)
+              </label>
+              <input
+                id="budget-limit-input"
+                type="number"
+                step="10000"
+                min="10000"
+                value={limitInput}
+                onChange={(e) => {
+                  setLimitInput(e.target.value)
+                  setError('')
+                }}
+                placeholder="cth: 2500000"
+                className="pixel-input w-full bg-[var(--theme-card)] px-3 py-2.5 font-mono text-data font-bold tabular-nums text-[var(--theme-text)] placeholder:text-[var(--theme-text-muted)]"
+                autoFocus
+              />
+
+              {/* Preset Cepat RPG */}
+              <div className="mt-1 flex flex-wrap gap-2">
+                {PRESET_LIMITS.map((preset) => (
+                  <button
+                    key={preset}
+                    type="button"
+                    onClick={() => {
+                      setLimitInput(String(preset))
+                      setError('')
+                    }}
+                    className={`pixel-button cursor-pointer px-2.5 py-1 font-retro text-label font-bold ${
+                      parsedLimit === preset
+                        ? 'bg-[var(--theme-gold)] text-black'
+                        : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text)] hover:bg-[var(--theme-card)]'
+                    }`}
+                  >
+                    {formatRupiah(preset)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Real-time Preview Kalkulasi */}
+            {isValidNumber && (
+              <div
+                className={`border-t-2 pt-3 ${
+                  previewRatio >= 100
+                    ? 'border-[var(--theme-expense)] text-[var(--theme-expense-text)]'
+                    : previewRatio >= 80
+                    ? 'border-[var(--theme-gold)] text-[var(--theme-gold-text)]'
+                    : 'border-[var(--theme-border-subtle)] text-[var(--theme-text)]'
+                }`}
+              >
+                <div className="flex items-center justify-between text-meta">
+                  <span className="font-retro text-label font-bold tracking-normal">PREVIEW RASIO:</span>
+                  <span className="font-mono font-bold tabular-nums">{previewRatio}% terpakai</span>
+                </div>
+                <div className="mt-1 flex items-center justify-between text-meta">
+                  <span className="font-sans">
+                    {previewRemaining >= 0 ? 'Sisa Anggaran:' : 'Kelebihan (Over):'}
+                  </span>
+                  <span
+                    className={`font-mono font-bold tabular-nums ${
+                      previewRemaining < 0
+                        ? 'text-[var(--theme-expense-text)]'
+                        : 'text-[var(--theme-income)]'
+                    }`}
+                  >
+                    {previewRemaining >= 0
+                      ? formatRupiah(previewRemaining)
+                      : `- ${formatRupiah(Math.abs(previewRemaining))}`}
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {error && (
+              <p
+                className="flex items-center gap-2 border-y-2 border-[var(--theme-expense)] bg-[var(--theme-expense-badge)] px-3 py-2 font-sans text-meta font-bold leading-normal text-[var(--theme-expense-text)]"
+                role="alert"
+              >
+                <PixelWarnIcon className="h-4 w-4 shrink-0" />
+                <span>{error}</span>
+              </p>
+            )}
+
+            {/* Tombol Aksi */}
+            <div className="mt-1 flex gap-3">
+              <button
+                type="submit"
+                className="pixel-button flex flex-1 cursor-pointer items-center justify-center gap-1.5 bg-[var(--theme-gold)] py-2.5 font-retro text-meta font-bold text-black hover:bg-[var(--theme-gold-hover)]"
+              >
+                <PixelSaveIcon className="h-4 w-4" />
+                <span>SIMPAN BATAS BUDGET</span>
+              </button>
+              <button
+                type="button"
+                onClick={requestClose}
+                className="pixel-button cursor-pointer bg-[var(--theme-card-subtle)] px-4 py-2.5 font-retro text-meta font-bold text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
+              >
+                BATAL
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   )

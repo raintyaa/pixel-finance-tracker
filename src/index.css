@@ -2,34 +2,34 @@
 
 @theme {
   --font-retro: 'Silkscreen', ui-monospace, monospace;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-sans: 'Pixelify Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Pixelify Sans', 'Silkscreen', ui-monospace, monospace;
 
   /* Role-based type scale: purpose first, value second */
-  --text-label: 0.6875rem;   /* 11px */
+  --text-label: 0.75rem;       /* 12px — crisp 4px-grid pixel labels & badges */
   --text-label--line-height: 1rem;
   --text-label--letter-spacing: 0em;
 
-  --text-meta: 0.75rem;      /* 12px */
-  --text-meta--line-height: 1.15rem;
+  --text-meta: 0.875rem;       /* 14px — subtitles, dates, dense ledger rows */
+  --text-meta--line-height: 1.3rem;
 
-  --text-body: 0.875rem;     /* 14px */
+  --text-body: 1rem;           /* 16px — primary UI body, nav, forms */
   --text-body--line-height: 1.5rem;
 
-  --text-brand: 1rem;        /* 16px */
-  --text-brand--line-height: 1.25rem;
+  --text-brand: 1.125rem;      /* 18px — brand wordmark */
+  --text-brand--line-height: 1.35rem;
 
-  --text-data: 1.125rem;     /* 18px */
-  --text-data--line-height: 1.4rem;
+  --text-data: 1.25rem;        /* 20px — panel headings, secondary KPI figures */
+  --text-data--line-height: 1.55rem;
 
-  --text-display: 1.25rem;   /* 20px */
-  --text-display--line-height: 1.5rem;
+  --text-display: 1.5rem;      /* 24px — section headings & desktop KPIs */
+  --text-display--line-height: 1.85rem;
 
-  --text-display-lg: 1.75rem; /* 28px */
-  --text-display-lg--line-height: 2rem;
+  --text-display-lg: 2rem;     /* 32px — hero balance mobile */
+  --text-display-lg--line-height: 2.3rem;
 
-  --text-display-xl: 2rem;   /* 32px */
-  --text-display-xl--line-height: 2.25rem;
+  --text-display-xl: 2.5rem;   /* 40px — hero balance desktop */
+  --text-display-xl--line-height: 2.75rem;
 }
 
 /* ========================================================
@@ -46,6 +46,9 @@
   --theme-border: #000000;
   --theme-border-subtle: #e4e4e7;
   --theme-shadow: #000000;
+  --theme-ambient-shadow: rgba(9, 9, 11, 0.14);
+  --theme-ambient-shadow-sm: rgba(9, 9, 11, 0.08);
+  --theme-gold-glow: rgba(245, 158, 11, 0.24);
   --theme-text: #09090b;
   --theme-text-muted: #6b6b73;
   --theme-gold: #f59e0b;
@@ -75,6 +78,9 @@
   --theme-border: #1c1917;
   --theme-border-subtle: #e7e5e4;
   --theme-shadow: #1c1917;
+  --theme-ambient-shadow: rgba(28, 25, 23, 0.16);
+  --theme-ambient-shadow-sm: rgba(28, 25, 23, 0.09);
+  --theme-gold-glow: rgba(217, 119, 6, 0.24);
   --theme-text: #1c1917;
   --theme-text-muted: #57534e;
   --theme-gold: #d97706;
@@ -104,6 +110,9 @@
   --theme-border: #000000;
   --theme-border-subtle: #000000;
   --theme-shadow: #000000;
+  --theme-ambient-shadow: rgba(0, 0, 0, 0.18);
+  --theme-ambient-shadow-sm: rgba(0, 0, 0, 0.11);
+  --theme-gold-glow: rgba(234, 179, 8, 0.30);
   --theme-text: #000000;
   --theme-text-muted: #52525b;
   --theme-gold: #eab308;
@@ -135,6 +144,8 @@ body {
   font-variant-numeric: tabular-nums;
   background-color: var(--theme-bg);
   color: var(--theme-text);
+  caret-color: var(--theme-gold-text);
+  text-underline-offset: 3px;
   margin: 0;
   padding: 0;
   transition: background-color 0.2s ease, color 0.2s ease;
@@ -149,7 +160,26 @@ body {
 /* Fokus keyboard yang konsisten di atas putih maupun emas */
 :focus-visible {
   outline: 2px solid var(--theme-border);
-  outline-offset: 2px;
+  outline-offset: 4px;
+}
+
+/* Scrollbar bertema kartrid */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--theme-card-subtle);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-gold);
+  border: 2px solid var(--theme-border);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-gold-hover);
 }
 
 /* Crisp Pixel Rendering */
@@ -159,55 +189,310 @@ svg {
   image-rendering: pixelated;
 }
 
-/* Retro Pixel Box Shadow & Keycap Bevels */
-.pixel-box {
-  border: 2px solid var(--theme-border);
-  box-shadow:
-    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.55),
-    3px 3px 0px 0px var(--theme-shadow);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
+@layer components {
+  .pixel-score-shadow {
+    text-shadow: 2px 2px 0px rgba(0, 0, 0, 0.14);
+  }
 
-.pixel-hero-bevel {
-  box-shadow:
-    inset 2px 2px 0px rgba(255, 255, 255, 0.45),
-    inset -2px -2px 0px rgba(0, 0, 0, 0.12),
-    3px 3px 0px 0px var(--theme-shadow);
-}
+  /* 2-Step Pixel-Curved Panel (grid piksel 3px, lengkung sudut 6px + bayangan berlapis) */
+  .pixel-curve {
+    position: relative;
+    border: 0;
+    box-shadow:
+      0 -6px 0 -3px var(--theme-border),
+      0 6px 0 -3px var(--theme-border),
+      -6px 0 0 -3px var(--theme-border),
+      6px 0 0 -3px var(--theme-border),
+      inset 0 3px 0 0 rgba(255, 255, 255, 0.55),
+      inset 3px 0 0 0 rgba(255, 255, 255, 0.35),
+      inset 0 -3px 0 0 rgba(0, 0, 0, 0.06),
+      3px 9px 0 -3px var(--theme-shadow),
+      9px 3px 0 -3px var(--theme-shadow),
+      6px 6px 0 -3px var(--theme-shadow),
+      0 14px 26px -8px var(--theme-ambient-shadow),
+      0 5px 10px -4px var(--theme-ambient-shadow-sm);
+    transition: transform 0.14s ease, box-shadow 0.18s ease;
+  }
 
-.pixel-button {
-  border: 2px solid var(--theme-border);
-  box-shadow:
-    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.5),
-    2px 2px 0px 0px var(--theme-shadow);
-  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
-}
+  .pixel-curve::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    background:
+      linear-gradient(var(--theme-border), var(--theme-border)) top left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) top right / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom right / 3px 3px no-repeat;
+  }
 
-.pixel-button:hover:not(:disabled) {
-  transform: translate(-1px, -1px);
-  box-shadow:
-    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.5),
-    3px 3px 0px 0px var(--theme-shadow);
-}
+  /* Hero Cartridge 2-Step Pixel Curve: bayangan bertingkat ganda + pendar hangat */
+  .pixel-hero-cartridge {
+    position: relative;
+    border: 0;
+    box-shadow:
+      0 -6px 0 -3px var(--theme-border),
+      0 6px 0 -3px var(--theme-border),
+      -6px 0 0 -3px var(--theme-border),
+      6px 0 0 -3px var(--theme-border),
+      inset 0 3px 0 0 rgba(255, 255, 255, 0.5),
+      inset 3px 0 0 0 rgba(255, 255, 255, 0.35),
+      inset 0 -3px 0 0 rgba(0, 0, 0, 0.14),
+      inset -3px 0 0 0 rgba(0, 0, 0, 0.1),
+      3px 9px 0 -3px var(--theme-shadow),
+      9px 3px 0 -3px var(--theme-shadow),
+      6px 6px 0 -3px var(--theme-shadow),
+      6px 12px 0 -3px var(--theme-shadow),
+      12px 6px 0 -3px var(--theme-shadow),
+      9px 9px 0 -3px var(--theme-shadow),
+      0 20px 36px -8px var(--theme-ambient-shadow),
+      0 8px 18px -4px var(--theme-gold-glow);
+    transition: transform 0.14s ease, box-shadow 0.18s ease;
+  }
 
-.pixel-button:active:not(:disabled) {
-  transform: translate(2px, 2px);
-  box-shadow: 0px 0px 0px 0px var(--theme-shadow);
-}
+  .pixel-hero-cartridge::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    background:
+      linear-gradient(var(--theme-border), var(--theme-border)) top left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) top right / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom right / 3px 3px no-repeat;
+  }
 
-/* Segmented 10-Block Pixel Gauge */
-.pixel-bar-fill {
-  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
-}
+  /* Frame Modal 2-Step Pixel Curve dengan elevasi melayang tinggi */
+  .pixel-modal-frame {
+    position: relative;
+    border: 0;
+    box-shadow:
+      0 -6px 0 -3px var(--theme-border),
+      0 6px 0 -3px var(--theme-border),
+      -6px 0 0 -3px var(--theme-border),
+      6px 0 0 -3px var(--theme-border),
+      inset 0 3px 0 0 rgba(255, 255, 255, 0.5),
+      inset 3px 0 0 0 rgba(255, 255, 255, 0.3),
+      6px 12px 0 -3px var(--theme-shadow),
+      12px 6px 0 -3px var(--theme-shadow),
+      9px 9px 0 -3px var(--theme-shadow),
+      0 24px 48px -10px rgba(0, 0, 0, 0.36);
+  }
 
-.pixel-gauge-grid {
-  background-image: repeating-linear-gradient(
-    to right,
-    transparent 0,
-    transparent calc(10% - 2px),
-    var(--theme-card) calc(10% - 2px),
-    var(--theme-card) 10%
-  );
+  .pixel-modal-frame::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 20;
+    background:
+      linear-gradient(var(--theme-border), var(--theme-border)) top left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) top right / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom left / 3px 3px no-repeat,
+      linear-gradient(var(--theme-border), var(--theme-border)) bottom right / 3px 3px no-repeat;
+  }
+
+  /* 1-Step Pixel-Curved Tile (sudut terpotong piksel 2px) */
+  .pixel-notch {
+    position: relative;
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.5),
+      inset -2px -2px 0 0 rgba(0, 0, 0, 0.06),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 10px 20px -6px var(--theme-ambient-shadow);
+    transition: transform 0.14s ease, box-shadow 0.18s ease;
+  }
+
+  /* Toast 1-Step Pixel Curve dengan bayangan melayang */
+  .pixel-toast-frame {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.5),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 16px 28px -6px rgba(0, 0, 0, 0.24);
+  }
+
+  /* 1-Step Pixel-Curved Interactive Button */
+  .pixel-button {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.45),
+      inset -2px -2px 0 0 rgba(0, 0, 0, 0.08),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 6px 12px -4px var(--theme-ambient-shadow);
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+  }
+
+  .pixel-button:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.55),
+      inset -2px -2px 0 0 rgba(0, 0, 0, 0.08),
+      3px 5px 0 0 var(--theme-shadow),
+      5px 3px 0 0 var(--theme-shadow),
+      0 9px 16px -4px var(--theme-ambient-shadow);
+  }
+
+  .pixel-button:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(0, 0, 0, 0.1);
+  }
+
+  /* Pilihan Pekan & Tema 1-Step Pixel Pill */
+  .pixel-pill {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border-subtle),
+      0 2px 0 0 var(--theme-border-subtle),
+      -2px 0 0 0 var(--theme-border-subtle),
+      2px 0 0 0 var(--theme-border-subtle);
+    transition: transform 0.1s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .pixel-pill:hover:not(:disabled) {
+    transform: translate(-1px, -1px);
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      2px 3px 0 0 var(--theme-shadow),
+      3px 2px 0 0 var(--theme-shadow),
+      0 5px 10px -4px var(--theme-ambient-shadow-sm);
+  }
+
+  .pixel-pill-active {
+    border: 0;
+    transform: translate(-1px, -1px);
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(255, 255, 255, 0.45),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 8px 14px -4px var(--theme-ambient-shadow);
+    transition: transform 0.1s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  /* Item Navigasi Sidebar (datar saat diam, membingkai pixel-notch saat hover) */
+  .pixel-nav-idle {
+    border: 0;
+    transition: transform 0.1s ease, background-color 0.15s ease, color 0.15s ease, box-shadow 0.12s ease;
+  }
+
+  .pixel-nav-idle:hover:not(:disabled) {
+    transform: translateX(2px);
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 6px 12px -4px var(--theme-ambient-shadow-sm);
+  }
+
+  /* Segmented Control 1-Step Pixel Curve */
+  .pixel-segment {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      2px 4px 0 0 var(--theme-shadow),
+      4px 2px 0 0 var(--theme-shadow),
+      0 6px 12px -4px var(--theme-ambient-shadow-sm);
+  }
+
+  /* Compact Badge 1-Step Pixel Curve */
+  .pixel-badge {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border);
+  }
+
+  /* Gauge Track & Input 1-Step Pixel Curve */
+  .pixel-meter {
+    position: relative;
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 0 2px 0 0 rgba(0, 0, 0, 0.12),
+      0 3px 6px -2px var(--theme-ambient-shadow-sm);
+  }
+
+  .pixel-input {
+    border: 0;
+    box-shadow:
+      0 -2px 0 0 var(--theme-border),
+      0 2px 0 0 var(--theme-border),
+      -2px 0 0 0 var(--theme-border),
+      2px 0 0 0 var(--theme-border),
+      inset 2px 2px 0 0 rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .pixel-input:focus {
+    outline: none;
+    box-shadow:
+      0 -2px 0 0 var(--theme-gold-hover),
+      0 2px 0 0 var(--theme-gold-hover),
+      -2px 0 0 0 var(--theme-gold-hover),
+      2px 0 0 0 var(--theme-gold-hover),
+      inset 2px 2px 0 0 rgba(0, 0, 0, 0.08),
+      0 0 0 4px var(--theme-gold-glow);
+  }
+
+  /* Segmented 10-Block Pixel Gauge */
+  .pixel-bar-fill {
+    box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
+  }
+
+  .pixel-gauge-grid {
+    background-image: repeating-linear-gradient(
+      to right,
+      transparent 0,
+      transparent calc(10% - 2px),
+      var(--theme-card) calc(10% - 2px),
+      var(--theme-card) 10%
+    );
+  }
 }
 
 /* ========================================================

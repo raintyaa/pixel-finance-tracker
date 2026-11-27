@@ -101,11 +101,11 @@ export default function AnalyticsView({
     budgetLimit > 0 ? Math.round((totalExpense / budgetLimit) * 100) : 0
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-7">
       {/* Header Bagian Analisis & Pengendali Periode */}
       <section
         aria-labelledby="analytics-heading"
-        className="flex flex-col gap-4"
+        className="flex flex-col gap-5"
       >
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
@@ -114,7 +114,7 @@ export default function AnalyticsView({
               className="font-retro text-display font-bold text-[var(--theme-text)] sm:text-2xl"
             >
               <span
-                className="mr-2 inline-block h-2.5 w-2.5 border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
+                className="mr-2 inline-block h-2.5 w-2.5 border border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
                 aria-hidden="true"
               />
               Analisis Keuangan
@@ -125,10 +125,10 @@ export default function AnalyticsView({
             </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-3">
             {/* Switch Bulan Ini vs Semua Waktu */}
             <div
-              className="inline-flex divide-x-2 divide-[var(--theme-border)] border-2 border-[var(--theme-border)]"
+              className="pixel-segment inline-flex divide-x-2 divide-[var(--theme-border)]"
               role="group"
               aria-label="Filter periode analisis"
             >
@@ -136,7 +136,7 @@ export default function AnalyticsView({
                 type="button"
                 onClick={() => onToggleViewScope('month')}
                 aria-pressed={viewScope === 'month'}
-                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                   viewScope === 'month'
                     ? 'bg-[var(--theme-gold)] text-black'
                     : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -149,7 +149,7 @@ export default function AnalyticsView({
                 type="button"
                 onClick={() => onToggleViewScope('all')}
                 aria-pressed={viewScope === 'all'}
-                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-retro text-label font-bold tracking-normal transition-colors ${
                   viewScope === 'all'
                     ? 'bg-[var(--theme-gold)] text-black'
                     : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
@@ -161,7 +161,7 @@ export default function AnalyticsView({
             </div>
 
             {viewScope === 'month' && (
-              <div className="inline-flex items-center gap-1.5">
+              <div className="inline-flex items-center gap-2">
                 <button
                   type="button"
                   onClick={onPrevMonth}
@@ -189,9 +189,9 @@ export default function AnalyticsView({
         </div>
 
         {/* 3 Kartu Statistik Kunci */}
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
           {/* Kartu 1: Arus Kas Bersih */}
-          <article className="pixel-box flex flex-col justify-between gap-3 bg-[var(--theme-card)] p-4 sm:p-5">
+          <article className="pixel-notch flex flex-col justify-between gap-3 bg-[var(--theme-card)] p-4 sm:p-5">
             <div>
               <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
                 ARUS KAS BERSIH
@@ -220,7 +220,7 @@ export default function AnalyticsView({
           </article>
 
           {/* Kartu 2: Rata-rata Harian */}
-          <article className="pixel-box flex flex-col justify-between gap-3 bg-[var(--theme-card)] p-4 sm:p-5">
+          <article className="pixel-notch flex flex-col justify-between gap-3 bg-[var(--theme-card)] p-4 sm:p-5">
             <div>
               <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-text-muted)]">
                 RATA-RATA / HARI AKTIF
@@ -245,7 +245,7 @@ export default function AnalyticsView({
           </article>
 
           {/* Kartu 3: Pos Pengeluaran Terbesar */}
-          <article className="pixel-box flex flex-col justify-between gap-3 bg-[var(--theme-gold-surface)] p-4 sm:p-5">
+          <article className="pixel-notch flex flex-col justify-between gap-3 bg-[var(--theme-gold-surface)] p-4 sm:p-5">
             <div>
               <h3 className="font-retro text-label font-bold tracking-normal text-[var(--theme-gold-text)]">
                 POS PENGELUARAN TERBESAR
@@ -288,7 +288,7 @@ export default function AnalyticsView({
       {/* Grid Utama: Distribusi Kategori & Pola Hari */}
       <section className="grid grid-cols-1 gap-6 lg:grid-cols-2">
         {/* Panel 1: Distribusi Pengeluaran per Kategori */}
-        <article className="pixel-box flex flex-col bg-[var(--theme-card)] p-4 sm:p-5">
+        <article className="pixel-curve flex flex-col bg-[var(--theme-card)] p-4 sm:p-5">
           <div className="flex items-baseline justify-between gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-3">
             <div>
               <h3 className="font-retro text-data font-bold tracking-normal text-[var(--theme-text)]">
@@ -350,7 +350,7 @@ export default function AnalyticsView({
                     aria-valuenow={item.percentage}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    className="relative h-3.5 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5"
+                    className="pixel-meter relative h-4 w-full overflow-hidden bg-[var(--theme-card-subtle)] p-0.5"
                   >
                     <div
                       className="h-full"
@@ -375,7 +375,7 @@ export default function AnalyticsView({
         </article>
 
         {/* Panel 2: Pola Pengeluaran per Hari (Minggu - Sabtu) */}
-        <article className="pixel-box flex flex-col bg-[var(--theme-card)] p-4 sm:p-5">
+        <article className="pixel-curve flex flex-col bg-[var(--theme-card)] p-4 sm:p-5">
           <div className="flex items-baseline justify-between gap-2 border-b-2 border-[var(--theme-border-subtle)] pb-3">
             <div>
               <h3 className="font-retro text-data font-bold tracking-normal text-[var(--theme-text)]">
@@ -399,7 +399,7 @@ export default function AnalyticsView({
                 maxDayTotal > 0 ? Math.round((day.total / maxDayTotal) * 100) : 0
 
               return (
-                <div key={day.dayIndex} className="flex flex-col gap-1">
+                <div key={day.dayIndex} className="flex flex-col gap-1.5">
                   <div className="flex items-center justify-between gap-2">
                     <div className="flex items-center gap-2">
                       <span
@@ -412,7 +412,7 @@ export default function AnalyticsView({
                         {day.dayName.toUpperCase()}
                       </span>
                       {day.isHighest && (
-                        <span className="inline-flex items-center gap-1 border border-[var(--theme-border)] bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
+                        <span className="pixel-badge inline-flex items-center gap-1 bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
                           <PixelFlameIcon className="h-3 w-3" />
                           <span>TERTINGGI</span>
                         </span>
@@ -435,7 +435,7 @@ export default function AnalyticsView({
                     aria-valuenow={widthPct}
                     aria-valuemin={0}
                     aria-valuemax={100}
-                    className="relative h-3.5 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5"
+                    className="pixel-meter relative h-4 w-full overflow-hidden bg-[var(--theme-card-subtle)] p-0.5"
                   >
                     {day.total > 0 && (
                       <div
