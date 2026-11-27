@@ -147,3 +147,74 @@ export function filterTransactions(
     })
     .sort((a, b) => b.date.localeCompare(a.date))
 }
+
+export type BudgetStatusLevel = 'healthy' | 'warning' | 'critical' | 'over'
+
+export interface BudgetHealth {
+  activeBudget: number
+  remainingBudget: number
+  usedPercentage: number
+  remainingHpPercentage: number
+  status: BudgetStatusLevel
+  statusLabel: string
+  hearts: 0 | 1 | 2 | 3
+}
+
+/**
+ * Menghitung daya tahan HP anggaran (100% -> 0% seiring kenaikan pengeluaran).
+ */
+export function getBudgetHealth(expense: number, limit: number): BudgetHealth {
+  const activeBudget = limit > 0 ? limit : 1500000
+  const remainingBudget = activeBudget - expense
+  const usedPercentage = Math.round((expense / activeBudget) * 100)
+  const remainingHpPercentage = Math.max(
+    0,
+    Math.min(100, Math.round((remainingBudget / activeBudget) * 100))
+  )
+
+  if (remainingBudget < 0) {
+    return {
+      activeBudget,
+      remainingBudget,
+      usedPercentage,
+      remainingHpPercentage: 0,
+      status: 'over',
+      statusLabel: 'OVER BUDGET!',
+      hearts: 0,
+    }
+  }
+
+  if (remainingHpPercentage <= 20) {
+    return {
+      activeBudget,
+      remainingBudget,
+      usedPercentage,
+      remainingHpPercentage,
+      status: 'critical',
+      statusLabel: 'HAMPIR HABIS',
+      hearts: 1,
+    }
+  }
+
+  if (remainingHpPercentage <= 50) {
+    return {
+      activeBudget,
+      remainingBudget,
+      usedPercentage,
+      remainingHpPercentage,
+      status: 'warning',
+      statusLabel: 'MULAI MENIPIS',
+      hearts: 2,
+    }
+  }
+
+  return {
+    activeBudget,
+    remainingBudget,
+    usedPercentage,
+    remainingHpPercentage,
+    status: 'healthy',
+    statusLabel: 'DOMPET SEHAT',
+    hearts: 3,
+  }
+}

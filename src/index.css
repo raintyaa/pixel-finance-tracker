@@ -1,7 +1,6 @@
 @import "tailwindcss";
 
 @theme {
-  --font-pixel: 'Pixelify Sans', ui-sans-serif, system-ui, sans-serif;
   --font-retro: 'Silkscreen', ui-monospace, monospace;
   --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -40,6 +39,7 @@
 /* Opsi 1: Clean Neo-Gold (Default) */
 :root, [data-theme="neo-gold"] {
   --theme-bg: #fafafa;
+  --theme-dot: rgba(9, 9, 11, 0.055);
   --theme-card: #ffffff;
   --theme-card-subtle: #f4f4f5;
   --theme-card-gold: #fef3c7;
@@ -67,7 +67,8 @@
 
 /* Opsi 2: Warm Paper & Vintage Coin */
 [data-theme="warm-paper"] {
-  --theme-bg: #fdfbf7;
+  --theme-bg: #faf6ee;
+  --theme-dot: rgba(28, 25, 23, 0.065);
   --theme-card: #ffffff;
   --theme-card-subtle: #f7f5f0;
   --theme-card-gold: #fef3c7;
@@ -75,7 +76,7 @@
   --theme-border-subtle: #e7e5e4;
   --theme-shadow: #1c1917;
   --theme-text: #1c1917;
-  --theme-text-muted: #78716c;
+  --theme-text-muted: #57534e;
   --theme-gold: #d97706;
   --theme-gold-hover: #b45309;
   --theme-gold-text: #92400e;
@@ -95,7 +96,8 @@
 
 /* Opsi 3: Cyber Arcade Yellow */
 [data-theme="cyber-arcade"] {
-  --theme-bg: #ffffff;
+  --theme-bg: #fffef5;
+  --theme-dot: rgba(0, 0, 0, 0.075);
   --theme-card: #ffffff;
   --theme-card-subtle: #fef9c3;
   --theme-card-gold: #fef08a;
@@ -109,16 +111,23 @@
   --theme-gold-text: #854d0e;
   --theme-gold-badge: #fef08a;
   --theme-gold-surface: #fef9c3;
-  --theme-income: #22c55e;
+  --theme-income: #15803d;
   --theme-income-fill: #22c55e;
   --theme-income-badge: #bbf7d0;
   --theme-income-surface: #dcfce7;
-  --theme-expense: #ef4444;
+  --theme-expense: #dc2626;
   --theme-expense-text: #b91c1c;
   --theme-expense-badge: #fecaca;
   --theme-expense-surface: #ffe4e6;
   --theme-text-muted-warm: #3f3f46;
   --theme-border-subtle-warm: #e5d48a;
+}
+
+/* Kanvas titik buku kas minimalis */
+.ledger-canvas {
+  background-color: var(--theme-bg);
+  background-image: radial-gradient(var(--theme-dot) 1px, transparent 1px);
+  background-size: 16px 16px;
 }
 
 body {
@@ -150,28 +159,55 @@ svg {
   image-rendering: pixelated;
 }
 
-/* Retro Pixel Box Shadow & Borders */
+/* Retro Pixel Box Shadow & Keycap Bevels */
 .pixel-box {
   border: 2px solid var(--theme-border);
-  box-shadow: 3px 3px 0px 0px var(--theme-shadow);
+  box-shadow:
+    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.55),
+    3px 3px 0px 0px var(--theme-shadow);
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.pixel-box-sm {
-  border: 2px solid var(--theme-border);
-  box-shadow: 2px 2px 0px 0px var(--theme-shadow);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.pixel-hero-bevel {
+  box-shadow:
+    inset 2px 2px 0px rgba(255, 255, 255, 0.45),
+    inset -2px -2px 0px rgba(0, 0, 0, 0.12),
+    3px 3px 0px 0px var(--theme-shadow);
 }
 
 .pixel-button {
   border: 2px solid var(--theme-border);
-  box-shadow: 2px 2px 0px 0px var(--theme-shadow);
-  transition: transform 0.05s ease, box-shadow 0.05s ease, background-color 0.15s ease;
+  box-shadow:
+    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.5),
+    2px 2px 0px 0px var(--theme-shadow);
+  transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
 }
 
-.pixel-button:active {
-  transform: translate(1px, 1px);
-  box-shadow: 1px 1px 0px 0px var(--theme-shadow);
+.pixel-button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow:
+    inset 1.5px 1.5px 0px rgba(255, 255, 255, 0.5),
+    3px 3px 0px 0px var(--theme-shadow);
+}
+
+.pixel-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 0px 0px 0px 0px var(--theme-shadow);
+}
+
+/* Segmented 10-Block Pixel Gauge */
+.pixel-bar-fill {
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.45);
+}
+
+.pixel-gauge-grid {
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0,
+    transparent calc(10% - 2px),
+    var(--theme-card) calc(10% - 2px),
+    var(--theme-card) 10%
+  );
 }
 
 /* ========================================================
@@ -342,8 +378,94 @@ svg {
   }
 }
 
+/* Percikan piksel koin emas saat kas/pemasukan bertambah */
+@keyframes pixel-spark {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx, 0px), var(--dy, -22px)) scale(0.75);
+  }
+}
+
+/* Hentakan mikro bar HP saat pengeluaran bertambah */
+@keyframes hp-hit {
+  0% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+  75% {
+    transform: translateX(-1px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* Pertumbuhan bertahap bar analisis (10 langkah piksel) */
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Toast piksel masuk dari bawah */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .motion-coin {
   animation: coin-drop 560ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.motion-spark {
+  animation: pixel-spark 520ms steps(6, end) both;
+}
+
+.motion-hp-hit {
+  animation: hp-hit 220ms steps(4, end) both;
+}
+
+.motion-bar-grow {
+  transform-origin: left center;
+  animation: bar-grow 360ms steps(10, end) backwards;
+}
+
+.motion-toast-in {
+  animation: toast-in 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* Transisi antar tab via View Transitions API */
+.main-stage {
+  view-transition-name: main-stage;
+}
+
+::view-transition-old(main-stage) {
+  animation: fade-out 130ms ease-in both;
+}
+
+::view-transition-new(main-stage) {
+  animation: page-next 200ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .motion-pop {
@@ -393,10 +515,10 @@ svg {
   animation: save-beat 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Bar daya menurun dalam 12 langkah piksel, bukan gradasi halus */
+/* Bar daya berkurang dalam 10 langkah piksel, bukan gradasi halus */
 .motion-health-fill {
   transform-origin: left center;
-  transition: transform 420ms steps(12, end), background-color 200ms ease;
+  transition: transform 420ms steps(10, end), background-color 200ms ease;
 }
 
 /* Reduce Motion: ruang gerak dihapus, umpan balik warna/opasitas tetap ada */
@@ -405,7 +527,10 @@ svg {
   .motion-pop,
   .motion-rise-in,
   .motion-drawer,
-  .motion-save-beat {
+  .motion-save-beat,
+  .motion-spark,
+  .motion-hp-hit,
+  .motion-bar-grow {
     animation: none !important;
   }
 
@@ -413,13 +538,22 @@ svg {
   .motion-crt,
   .motion-backdrop,
   .motion-page-next,
-  .motion-page-prev {
+  .motion-page-prev,
+  .motion-toast-in {
     animation: fade-in 140ms linear both !important;
   }
 
   .motion-crt-off,
   .motion-backdrop-out {
     animation: fade-out 120ms linear both !important;
+  }
+
+  ::view-transition-old(main-stage) {
+    animation: fade-out 120ms linear both;
+  }
+
+  ::view-transition-new(main-stage) {
+    animation: fade-in 140ms linear both;
   }
 
   .motion-health-fill {

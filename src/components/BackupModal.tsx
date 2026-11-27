@@ -122,7 +122,7 @@ export default function BackupModal({
                 PENCADANGAN & PEMULIHAN
               </h2>
               <p className="font-sans text-label tracking-normal text-[var(--theme-text-muted)]">
-                Manajemen Cadangan Data & Ekspor Riwayat (Hari 12)
+                Ekspor arsip JSON/CSV &amp; pulihkan data lokal
               </p>
             </div>
           </div>

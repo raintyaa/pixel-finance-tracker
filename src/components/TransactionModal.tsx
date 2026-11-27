@@ -3,15 +3,30 @@ import { DEFAULT_CATEGORIES } from '../data/initialData'
 import type { Transaction, TransactionType } from '../types/finance'
 import { getDayOfWeekFromDate, getTodayDateString } from '../utils/date'
 import { useExitAnimation } from '../utils/motion'
+import {
+  PixelCoinIcon,
+  PixelEditIcon,
+  PixelHistoryIcon,
+  PixelResetIcon,
+  PixelSaveIcon,
+  PixelWarnIcon,
+} from './PixelIcons'
 
 interface TransactionModalProps {
   onSubmit: (newTx: Transaction) => void
   onClose: () => void
-  // Jika diisi → mode edit (Ubah Transaksi); jika null/undefined → mode tambah
+  // Jika diisi -> mode edit (Ubah Transaksi); jika null/undefined -> mode tambah
   initialData?: Transaction | null
+  // Tanggal awal opsional saat pengguna mengklik sel hari tertentu di tabel mingguan
+  defaultDate?: string | null
 }
 
-export default function TransactionModal({ onSubmit, onClose, initialData }: TransactionModalProps) {
+export default function TransactionModal({
+  onSubmit,
+  onClose,
+  initialData,
+  defaultDate,
+}: TransactionModalProps) {
   const isEditMode = Boolean(initialData)
   const { closing, requestClose } = useExitAnimation(onClose)
 
@@ -22,7 +37,9 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
       DEFAULT_CATEGORIES.find((c) => c.type === 'expense')?.name ??
       ''
   )
-  const [date, setDate] = useState<string>(initialData?.date ?? getTodayDateString())
+  const [date, setDate] = useState<string>(
+    initialData?.date ?? defaultDate ?? getTodayDateString()
+  )
   const [description, setDescription] = useState<string>(initialData?.description ?? '')
   const [error, setError] = useState<string>('')
 
@@ -81,13 +98,24 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
       >
         {/* Judul Modal */}
         <div className="flex items-center justify-between border-b-2 border-[var(--theme-border-subtle)] pb-3">
-          <h2 className="font-retro text-data text-[var(--theme-gold-text)] tracking-normal font-bold">
-            {isEditMode ? '✏️ UBAH TRANSAKSI' : '📝 CATAT TRANSAKSI'}
+          <h2 className="flex items-center gap-2 font-retro text-data font-bold tracking-normal text-[var(--theme-gold-text)]">
+            {isEditMode ? (
+              <>
+                <PixelEditIcon className="h-4 w-4" />
+                <span>UBAH TRANSAKSI</span>
+              </>
+            ) : (
+              <>
+                <PixelHistoryIcon className="h-4 w-4" />
+                <span>CATAT TRANSAKSI</span>
+              </>
+            )}
           </h2>
           <button
             type="button"
             onClick={requestClose}
-            className="pixel-button bg-[var(--theme-card-subtle)] hover:bg-[var(--theme-card)] text-[var(--theme-text)] px-2 py-1 text-meta font-retro cursor-pointer"
+            aria-label="Tutup dialog"
+            className="pixel-button cursor-pointer bg-[var(--theme-card-subtle)] px-2 py-1 font-retro text-meta text-[var(--theme-text)] hover:bg-[var(--theme-card)]"
             title="Tutup"
           >
             ✕
@@ -105,25 +133,27 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
               type="button"
               aria-pressed={type === 'expense'}
               onClick={() => handleSelectType('expense')}
-              className={`pixel-button px-3 py-2 text-label font-retro tracking-normal transition-colors cursor-pointer font-bold ${
+              className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
                 type === 'expense'
                   ? 'bg-[var(--theme-expense)] text-white'
                   : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
-              💸 Pengeluaran
+              <PixelResetIcon className="h-3.5 w-3.5" />
+              <span>Pengeluaran</span>
             </button>
             <button
               type="button"
               aria-pressed={type === 'income'}
               onClick={() => handleSelectType('income')}
-              className={`pixel-button px-3 py-2 text-label font-retro tracking-normal transition-colors cursor-pointer font-bold ${
+              className={`pixel-button flex cursor-pointer items-center justify-center gap-1.5 px-3 py-2 font-retro text-label font-bold tracking-normal transition-colors ${
                 type === 'income'
                   ? 'bg-[var(--theme-income)] text-white'
                   : 'bg-[var(--theme-card-subtle)] text-[var(--theme-text-muted)] hover:text-[var(--theme-text)]'
               }`}
             >
-              💰 Pemasukan
+              <PixelCoinIcon className="h-3.5 w-3.5" />
+              <span>Pemasukan</span>
             </button>
           </div>
 
@@ -189,8 +219,9 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
           </label>
 
           {error && (
-            <p className="text-meta font-sans text-[var(--theme-expense-text)] bg-[var(--theme-expense-badge)] border-2 border-[var(--theme-expense)] px-3 py-2">
-              ⚠️ {error}
+            <p className="flex items-center gap-2 border-2 border-[var(--theme-expense)] bg-[var(--theme-expense-badge)] px-3 py-2 font-sans text-meta text-[var(--theme-expense-text)]">
+              <PixelWarnIcon className="h-4 w-4 shrink-0" />
+              <span>{error}</span>
             </p>
           )}
 
@@ -198,9 +229,10 @@ export default function TransactionModal({ onSubmit, onClose, initialData }: Tra
           <div className="flex gap-2 pt-1">
             <button
               type="submit"
-              className="pixel-button flex-1 bg-[var(--theme-gold)] hover:bg-[var(--theme-gold-hover)] text-black font-retro text-meta px-3 py-2.5 cursor-pointer font-bold"
+              className="pixel-button flex flex-1 cursor-pointer items-center justify-center gap-1.5 bg-[var(--theme-gold)] px-3 py-2.5 font-retro text-meta font-bold text-black hover:bg-[var(--theme-gold-hover)]"
             >
-              {isEditMode ? '💾 Simpan Perubahan' : '💾 Simpan Transaksi'}
+              <PixelSaveIcon className="h-4 w-4" />
+              <span>{isEditMode ? 'Simpan Perubahan' : 'Simpan Transaksi'}</span>
             </button>
             <button
               type="button"

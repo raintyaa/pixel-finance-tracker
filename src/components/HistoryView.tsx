@@ -4,6 +4,14 @@ import type { Transaction, TransactionType } from '../types/finance'
 import { filterTransactions, getCategoryIcon, isActiveExpense } from '../utils/analytics'
 import { formatRupiah } from '../utils/currency'
 import { formatDateIndo, getDayName } from '../utils/date'
+import {
+  PixelCoinIcon,
+  PixelEditIcon,
+  PixelHistoryIcon,
+  PixelPlusIcon,
+  PixelResetIcon,
+  PixelTrashIcon,
+} from './PixelIcons'
 
 interface HistoryViewProps {
   transactions: Transaction[]
@@ -75,10 +83,10 @@ export default function HistoryView({
         <div>
           <h2
             id="history-heading"
-            className="font-retro text-display font-bold text-black sm:text-2xl"
+            className="font-retro text-display font-bold text-[var(--theme-text)] sm:text-2xl"
           >
             <span
-              className="mr-2 inline-block h-2.5 w-2.5 border-2 border-black bg-[var(--theme-gold)] align-middle"
+              className="mr-2 inline-block h-2.5 w-2.5 border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
               aria-hidden="true"
             />
             Riwayat Transaksi
@@ -135,31 +143,48 @@ export default function HistoryView({
         {/* Filter Tipe & Toggle Arsip */}
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div
-            className="inline-flex divide-x-2 divide-black border-2 border-black"
+            className="inline-flex divide-x-2 divide-[var(--theme-border)] border-2 border-[var(--theme-border)]"
             role="group"
             aria-label="Filter tipe transaksi"
           >
-            {(
-              [
-                { value: 'all', label: 'SEMUA' },
-                { value: 'expense', label: '💸 PENGELUARAN' },
-                { value: 'income', label: '💰 PEMASUKAN' },
-              ] as const
-            ).map((opt) => (
-              <button
-                key={opt.value}
-                type="button"
-                aria-pressed={typeFilter === opt.value}
-                onClick={() => setTypeFilter(opt.value)}
-                className={`cursor-pointer px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
-                  typeFilter === opt.value
-                    ? 'bg-[var(--theme-gold)] text-black'
-                    : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-black'
-                }`}
-              >
-                {opt.label}
-              </button>
-            ))}
+            <button
+              type="button"
+              aria-pressed={typeFilter === 'all'}
+              onClick={() => setTypeFilter('all')}
+              className={`cursor-pointer px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                typeFilter === 'all'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              SEMUA
+            </button>
+            <button
+              type="button"
+              aria-pressed={typeFilter === 'expense'}
+              onClick={() => setTypeFilter('expense')}
+              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                typeFilter === 'expense'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              <PixelResetIcon className="h-3.5 w-3.5" />
+              <span>PENGELUARAN</span>
+            </button>
+            <button
+              type="button"
+              aria-pressed={typeFilter === 'income'}
+              onClick={() => setTypeFilter('income')}
+              className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                typeFilter === 'income'
+                  ? 'bg-[var(--theme-gold)] text-black'
+                  : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
+              }`}
+            >
+              <PixelCoinIcon className="h-3.5 w-3.5" />
+              <span>PEMASUKAN</span>
+            </button>
           </div>
 
           <label className="flex cursor-pointer items-center gap-2 font-sans text-meta text-[var(--theme-text)]">
@@ -210,9 +235,7 @@ export default function HistoryView({
       >
         {filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center px-4 py-12 text-center">
-            <span className="text-3xl" aria-hidden="true">
-              🗂️
-            </span>
+            <PixelHistoryIcon className="h-8 w-8 text-[var(--theme-text-muted)]" />
             <p className="mt-2 font-sans text-body font-bold text-[var(--theme-text)]">
               {transactions.length === 0
                 ? 'Belum ada transaksi tersimpan'
@@ -236,9 +259,10 @@ export default function HistoryView({
                 <button
                   type="button"
                   onClick={onOpenNewTransaction}
-                  className="pixel-button cursor-pointer bg-[var(--theme-gold)] px-4 py-2 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-gold-hover)]"
+                  className="pixel-button inline-flex cursor-pointer items-center gap-1.5 bg-[var(--theme-gold)] px-4 py-2 font-retro text-label font-bold tracking-normal text-black hover:bg-[var(--theme-gold-hover)]"
                 >
-                  + CATAT TRANSAKSI
+                  <PixelPlusIcon className="h-3.5 w-3.5" />
+                  <span>CATAT TRANSAKSI</span>
                 </button>
               )}
             </div>
@@ -263,16 +287,16 @@ export default function HistoryView({
                       <span className="font-mono text-label tracking-normal tabular-nums text-[var(--theme-text-muted)]">
                         {getDayName(tx.dayOfWeek)}, {formatDateIndo(tx.date)}
                       </span>
-                      <span className="border border-zinc-400 bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-sans text-label tracking-normal text-[var(--theme-text)]">
+                      <span className="border border-[var(--theme-border-subtle)] bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-sans text-label tracking-normal text-[var(--theme-text)]">
                         {getCategoryIcon(tx.category)} {tx.category}
                       </span>
                       {isClosed && (
-                        <span className="border border-[var(--theme-border)] bg-zinc-200 px-1.5 py-0.5 font-retro text-[10px] font-bold tracking-normal text-zinc-700">
+                        <span className="border border-[var(--theme-border)] bg-[var(--theme-card-subtle)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-text-muted)]">
                           DIBUKUKAN
                         </span>
                       )}
                       {isNonExpenseAdjust && (
-                        <span className="border border-[var(--theme-border)] bg-amber-100 px-1.5 py-0.5 font-retro text-[10px] font-bold tracking-normal text-amber-800">
+                        <span className="border border-[var(--theme-border)] bg-[var(--theme-gold-badge)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-[var(--theme-gold-text)]">
                           TRANSFER/SALDO
                         </span>
                       )}
@@ -292,7 +316,7 @@ export default function HistoryView({
                           : isClosed
                           ? 'text-[var(--theme-text-muted)] line-through'
                           : isNonExpenseAdjust
-                          ? 'text-zinc-600'
+                          ? 'text-[var(--theme-text-muted)]'
                           : 'text-[var(--theme-expense-text)]'
                       }`}
                     >
@@ -305,18 +329,18 @@ export default function HistoryView({
                         onClick={() => onEditTransaction(tx)}
                         title="Ubah transaksi"
                         aria-label={`Ubah transaksi: ${tx.description || tx.category}`}
-                        className="pixel-button cursor-pointer bg-[var(--theme-card)] px-2 py-1 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-gold)] hover:text-black"
+                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-1.5 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-gold)] hover:text-black"
                       >
-                        ✏️
+                        <PixelEditIcon className="h-3.5 w-3.5" />
                       </button>
                       <button
                         type="button"
                         onClick={() => onDeleteTransaction(tx)}
                         title="Hapus transaksi"
                         aria-label={`Hapus transaksi: ${tx.description || tx.category}`}
-                        className="pixel-button cursor-pointer bg-[var(--theme-card)] px-2 py-1 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-expense)] hover:text-white"
+                        className="pixel-button cursor-pointer bg-[var(--theme-card)] p-1.5 text-meta leading-none text-[var(--theme-text)] hover:bg-[var(--theme-expense)] hover:text-white"
                       >
-                        🗑️
+                        <PixelTrashIcon className="h-3.5 w-3.5" />
                       </button>
                     </div>
                   </div>

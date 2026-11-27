@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { BudgetConfig, Transaction } from '../types/finance'
-import { isActiveExpense, isBudgetExpense } from '../utils/analytics'
+import { getBudgetHealth, isActiveExpense, isBudgetExpense } from '../utils/analytics'
 
 describe('finance logic & accounting rules', () => {
   // Mock data transaksi autentik November
@@ -230,39 +230,52 @@ describe('finance logic & accounting rules', () => {
     })
   })
 
-  describe('Budget HP Bar Status Thresholds', () => {
-    const getBudgetStatus = (expense: number, limit: number) => {
-      const percentage = Math.round((expense / limit) * 100)
-      const remaining = limit - expense
-
-      if (remaining < 0) return { status: 'OVER BUDGET! 💀', percentage }
-      if (percentage >= 80) return { status: 'HAMPIR HABIS 🚨', percentage }
-      if (percentage >= 50) return { status: 'MULAI MENIPIS ⚠️', percentage }
-      return { status: 'DOMPET SEHAT 💚', percentage }
-    }
-
-    it('returns DOMPET SEHAT when expense is below 50%', () => {
-      const res = getBudgetStatus(141000, 1500000) // 9%
-      expect(res.status).toBe('DOMPET SEHAT 💚')
-      expect(res.percentage).toBe(9)
+  describe('Budget HP Bar Status Thresholds (100% -> 0% draining)', () => {
+    it('returns full 100% HP and 3 hearts when expense is 0', () => {
+      const res = getBudgetHealth(0, 1500000)
+      expect(res.status).toBe('healthy')
+      expect(res.statusLabel).toBe('DOMPET SEHAT')
+      expect(res.remainingHpPercentage).toBe(100)
+      expect(res.hearts).toBe(3)
     })
 
-    it('returns MULAI MENIPIS when expense is between 50% and 79%', () => {
-      const res = getBudgetStatus(900000, 1500000) // 60%
-      expect(res.status).toBe('MULAI MENIPIS ⚠️')
-      expect(res.percentage).toBe(60)
+    it('returns healthy status when remaining HP is above 50%', () => {
+      const res = getBudgetHealth(141000, 1500000) // ~91% HP left
+      expect(res.status).toBe('healthy')
+      expect(res.statusLabel).toBe('DOMPET SEHAT')
+      expect(res.remainingHpPercentage).toBe(91)
+      expect(res.usedPercentage).toBe(9)
+      expect(res.hearts).toBe(3)
     })
 
-    it('returns HAMPIR HABIS when expense is between 80% and 100%', () => {
-      const res = getBudgetStatus(1350000, 1500000) // 90%
-      expect(res.status).toBe('HAMPIR HABIS 🚨')
-      expect(res.percentage).toBe(90)
+    it('returns warning status (2 hearts) when remaining HP is between 21% and 50%', () => {
+      const res = getBudgetHealth(900000, 1500000) // 40% HP left
+      expect(res.status).toBe('warning')
+      expect(res.statusLabel).toBe('MULAI MENIPIS')
+      expect(res.remainingHpPercentage).toBe(40)
+      expect(res.hearts).toBe(2)
     })
 
-    it('returns OVER BUDGET when expense exceeds budget limit', () => {
-      const res = getBudgetStatus(1800000, 1500000) // 120%
-      expect(res.status).toBe('OVER BUDGET! 💀')
-      expect(res.percentage).toBe(120)
+    it('returns critical status (1 heart) when remaining HP is 0% to 20% without exceeding limit', () => {
+      const res = getBudgetHealth(1350000, 1500000) // 10% HP left
+      expect(res.status).toBe('critical')
+      expect(res.statusLabel).toBe('HAMPIR HABIS')
+      expect(res.remainingHpPercentage).toBe(10)
+      expect(res.hearts).toBe(1)
+
+      const exactLimit = getBudgetHealth(1500000, 1500000)
+      expect(exactLimit.status).toBe('critical')
+      expect(exactLimit.remainingHpPercentage).toBe(0)
+      expect(exactLimit.hearts).toBe(1)
+    })
+
+    it('returns over status (0% HP, 0 hearts) when expense exceeds budget limit', () => {
+      const res = getBudgetHealth(1800000, 1500000)
+      expect(res.status).toBe('over')
+      expect(res.statusLabel).toBe('OVER BUDGET!')
+      expect(res.remainingHpPercentage).toBe(0)
+      expect(res.remainingBudget).toBe(-300000)
+      expect(res.hearts).toBe(0)
     })
   })
 })

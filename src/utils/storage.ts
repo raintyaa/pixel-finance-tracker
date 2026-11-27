@@ -8,6 +8,11 @@ import type { BudgetConfig, Transaction } from '../types/finance'
 export const STORAGE_KEY = 'pixel_ledger_transactions_v4'
 export const STORAGE_BACKUP_KEY = 'pixel_ledger_transactions_backup_v4'
 export const STORAGE_BUDGET_KEY = 'pixel_ledger_budget_v1'
+export const STORAGE_THEME_KEY = 'pixel_ledger_theme_v1'
+
+export type ThemeId = 'neo-gold' | 'warm-paper' | 'cyber-arcade'
+
+const VALID_THEMES: readonly ThemeId[] = ['neo-gold', 'warm-paper', 'cyber-arcade']
 
 export const DEFAULT_BUDGET: BudgetConfig = {
   monthlyLimit: 1500000,
@@ -150,5 +155,34 @@ export function saveBudget(budget: BudgetConfig): void {
     storage.setItem(STORAGE_BUDGET_KEY, JSON.stringify(budget))
   } catch (error) {
     console.warn('Gagal menyimpan batas budget ke LocalStorage:', error)
+  }
+}
+
+/**
+ * Membaca tema kartrid yang dipilih pengguna dari LocalStorage.
+ */
+export function loadTheme(): ThemeId {
+  const storage = getStorage()
+  if (!storage) return 'neo-gold'
+
+  try {
+    const raw = storage.getItem(STORAGE_THEME_KEY) as ThemeId | null
+    return raw && VALID_THEMES.includes(raw) ? raw : 'neo-gold'
+  } catch {
+    return 'neo-gold'
+  }
+}
+
+/**
+ * Menyimpan pilihan tema kartrid ke LocalStorage.
+ */
+export function saveTheme(theme: ThemeId): void {
+  const storage = getStorage()
+  if (!storage) return
+
+  try {
+    storage.setItem(STORAGE_THEME_KEY, theme)
+  } catch (error) {
+    console.warn('Gagal menyimpan tema ke LocalStorage:', error)
   }
 }

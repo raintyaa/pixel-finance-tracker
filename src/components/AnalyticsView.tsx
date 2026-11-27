@@ -8,6 +8,13 @@ import {
 import { formatRupiah } from '../utils/currency'
 import { MONTH_NAMES } from '../utils/date'
 import type { ViewScope } from './PeriodNavigator'
+import {
+  PixelArrowIcon,
+  PixelCalendarIcon,
+  PixelChartIcon,
+  PixelFlameIcon,
+  PixelGlobeIcon,
+} from './PixelIcons'
 
 interface AnalyticsViewProps {
   transactions: Transaction[]
@@ -104,10 +111,10 @@ export default function AnalyticsView({
           <div>
             <h2
               id="analytics-heading"
-              className="font-retro text-display font-bold text-black sm:text-2xl"
+              className="font-retro text-display font-bold text-[var(--theme-text)] sm:text-2xl"
             >
               <span
-                className="mr-2 inline-block h-2.5 w-2.5 border-2 border-black bg-[var(--theme-gold)] align-middle"
+                className="mr-2 inline-block h-2.5 w-2.5 border-2 border-[var(--theme-border)] bg-[var(--theme-gold)] align-middle"
                 aria-hidden="true"
               />
               Analisis Keuangan
@@ -121,7 +128,7 @@ export default function AnalyticsView({
           <div className="flex flex-wrap items-center gap-2">
             {/* Switch Bulan Ini vs Semua Waktu */}
             <div
-              className="inline-flex divide-x-2 divide-black border-2 border-black"
+              className="inline-flex divide-x-2 divide-[var(--theme-border)] border-2 border-[var(--theme-border)]"
               role="group"
               aria-label="Filter periode analisis"
             >
@@ -129,25 +136,27 @@ export default function AnalyticsView({
                 type="button"
                 onClick={() => onToggleViewScope('month')}
                 aria-pressed={viewScope === 'month'}
-                className={`cursor-pointer px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
                   viewScope === 'month'
                     ? 'bg-[var(--theme-gold)] text-black'
-                    : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-black'
+                    : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
                 }`}
               >
-                📅 BULAN INI
+                <PixelCalendarIcon className="h-3.5 w-3.5" />
+                <span>BULAN INI</span>
               </button>
               <button
                 type="button"
                 onClick={() => onToggleViewScope('all')}
                 aria-pressed={viewScope === 'all'}
-                className={`cursor-pointer px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
+                className={`inline-flex cursor-pointer items-center gap-1.5 px-3 py-1.5 font-sans text-label font-bold tracking-normal transition-colors ${
                   viewScope === 'all'
                     ? 'bg-[var(--theme-gold)] text-black'
-                    : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-black'
+                    : 'bg-[var(--theme-card)] text-[var(--theme-text-muted)] hover:bg-[var(--theme-card-subtle)] hover:text-[var(--theme-text)]'
                 }`}
               >
-                🌐 SEMUA WAKTU
+                <PixelGlobeIcon className="h-3.5 w-3.5" />
+                <span>SEMUA WAKTU</span>
               </button>
             </div>
 
@@ -160,9 +169,9 @@ export default function AnalyticsView({
                   title="Bulan sebelumnya"
                   className="pixel-button flex h-8 w-8 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-retro text-meta font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
                 >
-                  ◀
+                  <PixelArrowIcon direction="left" className="h-3.5 w-3.5" />
                 </button>
-                <span className="min-w-[120px] text-center font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
+                <span className="min-w-[104px] text-center font-retro text-label font-bold tracking-normal text-[var(--theme-text)]">
                   {MONTH_NAMES[selectedMonth - 1].slice(0, 3).toUpperCase()} {selectedYear}
                 </span>
                 <button
@@ -172,7 +181,7 @@ export default function AnalyticsView({
                   title="Bulan berikutnya"
                   className="pixel-button flex h-8 w-8 cursor-pointer items-center justify-center bg-[var(--theme-card)] font-retro text-meta font-bold text-[var(--theme-gold-text)] hover:bg-[var(--theme-card-gold)]"
                 >
-                  ▶
+                  <PixelArrowIcon direction="right" className="h-3.5 w-3.5" />
                 </button>
               </div>
             )}
@@ -243,7 +252,7 @@ export default function AnalyticsView({
               </h3>
               {topCategory ? (
                 <div className="mt-2">
-                  <p className="truncate font-sans text-body font-bold text-black">
+                  <p className="truncate font-sans text-body font-bold text-[var(--theme-text)]">
                     <span className="mr-1.5" aria-hidden="true">
                       {topCategory.icon}
                     </span>
@@ -263,7 +272,7 @@ export default function AnalyticsView({
               {topCategory ? (
                 <>
                   Menyerap{' '}
-                  <strong className="font-mono tabular-nums text-black">
+                  <strong className="font-mono tabular-nums text-[var(--theme-text)]">
                     {topCategory.percentage}%
                   </strong>{' '}
                   total beban ({budgetUsagePct}% dari batas budget)
@@ -296,9 +305,7 @@ export default function AnalyticsView({
 
           {categoryBreakdown.length === 0 ? (
             <div className="flex flex-1 flex-col items-center justify-center py-10 text-center">
-              <span className="text-3xl" aria-hidden="true">
-                📊
-              </span>
+              <PixelChartIcon className="h-8 w-8 text-[var(--theme-text-muted)]" />
               <p className="mt-2 font-sans text-body font-bold text-[var(--theme-text)]">
                 Belum ada data pengeluaran aktif
               </p>
@@ -308,7 +315,10 @@ export default function AnalyticsView({
               </p>
             </div>
           ) : (
-            <div className="mt-2 flex flex-col divide-y divide-[var(--theme-border-subtle)]">
+            <div
+              key={`cat-${periodLabel}`}
+              className="mt-2 flex flex-col divide-y divide-[var(--theme-border-subtle)]"
+            >
               {categoryBreakdown.map((item, index) => (
                 <div key={item.category} className="flex flex-col gap-1.5 py-3">
                   <div className="flex items-baseline justify-between gap-2">
@@ -333,13 +343,29 @@ export default function AnalyticsView({
                     </div>
                   </div>
 
-                  {/* Bar Persentase Pixel */}
-                  <div className="h-3 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5">
+                  {/* Bar Persentase Piksel 10-Segmen */}
+                  <div
+                    role="progressbar"
+                    aria-label={`Porsi pengeluaran kategori ${item.category}`}
+                    aria-valuenow={item.percentage}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    className="relative h-3.5 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5"
+                  >
                     <div
-                      className={`h-full ${
-                        index === 0 ? 'bg-[var(--theme-expense)]' : 'bg-[var(--theme-gold)]'
-                      }`}
+                      className="h-full"
                       style={{ width: `${Math.max(4, item.percentage)}%` }}
+                    >
+                      <div
+                        className={`pixel-bar-fill motion-bar-grow h-full w-full ${
+                          index === 0 ? 'bg-[var(--theme-expense)]' : 'bg-[var(--theme-gold)]'
+                        }`}
+                        style={{ animationDelay: `${Math.min(index * 40, 240)}ms` }}
+                      />
+                    </div>
+                    <div
+                      aria-hidden="true"
+                      className="pixel-gauge-grid pointer-events-none absolute inset-0"
                     />
                   </div>
                 </div>
@@ -364,8 +390,11 @@ export default function AnalyticsView({
             </span>
           </div>
 
-          <div className="mt-3 flex flex-1 flex-col justify-between gap-3">
-            {dayBreakdown.map((day) => {
+          <div
+            key={`days-${periodLabel}`}
+            className="mt-3 flex flex-1 flex-col justify-between gap-3"
+          >
+            {dayBreakdown.map((day, index) => {
               const widthPct =
                 maxDayTotal > 0 ? Math.round((day.total / maxDayTotal) * 100) : 0
 
@@ -383,8 +412,9 @@ export default function AnalyticsView({
                         {day.dayName.toUpperCase()}
                       </span>
                       {day.isHighest && (
-                        <span className="border border-black bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-[10px] font-bold leading-none tracking-normal text-white">
-                          TERTINGGI
+                        <span className="inline-flex items-center gap-1 border border-[var(--theme-border)] bg-[var(--theme-expense)] px-1.5 py-0.5 font-retro text-label font-bold leading-none tracking-normal text-white">
+                          <PixelFlameIcon className="h-3 w-3" />
+                          <span>TERTINGGI</span>
                         </span>
                       )}
                     </div>
@@ -399,15 +429,31 @@ export default function AnalyticsView({
                     </span>
                   </div>
 
-                  <div className="h-3 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5">
+                  <div
+                    role="progressbar"
+                    aria-label={`Pengeluaran hari ${day.dayName}`}
+                    aria-valuenow={widthPct}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    className="relative h-3.5 w-full overflow-hidden border-2 border-[var(--theme-border)] bg-[var(--theme-card-subtle)] p-0.5"
+                  >
                     {day.total > 0 && (
                       <div
-                        className={`h-full ${
-                          day.isHighest ? 'bg-[var(--theme-expense)]' : 'bg-[var(--theme-gold)]'
-                        }`}
+                        className="h-full"
                         style={{ width: `${Math.max(4, widthPct)}%` }}
-                      />
+                      >
+                        <div
+                          className={`pixel-bar-fill motion-bar-grow h-full w-full ${
+                            day.isHighest ? 'bg-[var(--theme-expense)]' : 'bg-[var(--theme-gold)]'
+                          }`}
+                          style={{ animationDelay: `${Math.min(index * 40, 240)}ms` }}
+                        />
+                      </div>
                     )}
+                    <div
+                      aria-hidden="true"
+                      className="pixel-gauge-grid pointer-events-none absolute inset-0"
+                    />
                   </div>
                 </div>
               )
